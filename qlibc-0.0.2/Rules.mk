@@ -1,4 +1,4 @@
-# This File Is Part Of qlibc 1.0.0 Formal Version
+# This File Is Part Of qlibc 0.0.2 Formal Version
 # Create on : 2024-04-23
 # Copyright : QiuYiXiang
 
@@ -24,7 +24,7 @@ FLAGS		+=	$(WARNING) $(GNU_VERSION)
 
 # Macros For qlibc
 LIBRARY_NAME	:=	qlibc
-LIBRARY_VERSION	:=	1.0.0
+LIBRARY_VERSION	:=	0.0.2
 NAME			:=	$(LIBRARY_NAME)-$(LIBRARY_VERSION)
 
 # Macros For Directories

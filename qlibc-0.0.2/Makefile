@@ -1,6 +1,6 @@
 # Main Makefile For qlibc
 
-# Formal Version qlibc 1.0.0
+# Formal Version qlibc 0.0.2
 
 # Create on : 2024-04-23
 # Copyright : QiuYiXiang

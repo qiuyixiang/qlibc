@@ -15,14 +15,12 @@
 // Include Header File
 #include <stdio.h>
 
-#define QLIBC_VERSION   "1.0.0"
+#define QLIBC_VERSION   "0.0.2"
 #define QLIBC_NAME      "qlibc"
 
 #define _SRT(_) ""#_ 
 
 void show_info(const char * __component){
-    fprintf(stdout, "Test Cases : \t %s\t Successfully !!!\n", __component);
+    fprintf(stdout, "Test Cases \033[0;32m%s\033[0m Successfully !!!\n", __component);
 }
-
-
 #endif

@@ -1,6 +1,6 @@
 # Makefile For Test Cases
 
-# Formal Version qlibc 1.0.0
+#Version qlibc 0.0.2
 
 # Create on : 2024-04-23
 # Copyright : QiuYiXiang
@@ -16,6 +16,9 @@ INCLUDE_DIR		:=	../include
 LIBRARY			:=	$(LIBRARY_DIR)/$(NAME).a
 TEST_INCLUDE	:=	-isystem $(INCLUDE_DIR) -iquote $(INCLUDE_DIR)
 
+MACRO_DEBUG		:=	-U NDEBUG -U __X86__
+MACRO_QLIBC		:=	-D _DEBUGGER_Q
+
 # Disable Detailed Information by Default
 ifeq ($(VERBOSE), 0) 
 define _CMD 
@@ -28,7 +31,7 @@ endef
 endif
 
 $(TEST_NAME).o : $(TEST_NAME).c $(TEST_HEADERS)
-	$(call _CMD, $(GCC) $(FLAGS) $(TEST_INCLUDE) -c $< -o $@)
+	$(call _CMD, $(GCC) $(FLAGS) $(MACRO_DEBUG) $(MACRO_QLIBC) $(TEST_INCLUDE) -c $< -o $@)
 
 # Main Target For Building Test Cases
 .PHONY: all 
