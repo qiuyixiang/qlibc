@@ -1,2 +1,2 @@
 # qlibc
-A lightweight C runtime library, simple, easy to use, and portable.
+Qlibc is an Implementation of C Standard Library, which is a lightweight , simple, easy to use, and portable.
