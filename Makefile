@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 unsigned
+# Copyright (c) 2025 QIU YIXIANG
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,9 @@
 
 include ./config/config.mk
 
-
+# Tool Configuration
 CC					:=		gcc
+AR					:=		ar
 
 # Path Relative Variable
 SOURCE_DIR			:=		./src
@@ -34,7 +35,13 @@ INCLUDE_DIR			:=		./include
 CONFIG_DIR			:=		./config
 BUILD_DIR			:=		./build
 ARCH_DIR			:=		./arch
+TEST_DIR			:=		./test
 OBJ_DIR				:=		$(BUILD_DIR)/obj
+
+# Check Command Line Argument
+ifdef V
+VERBOSE				:=		$(V)
+endif
 
 # GNU C Compiler Flags
 
@@ -65,6 +72,15 @@ CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) \
 							$(CC_ENVIRONMENT) $(CC_PREPROCESSOR)
 
+export CC_WARNING CC_OPTIMIZER CC_DEBUGGER
+export CC
+
+# Options for Linker
+LD_FLAGS			:=	
+LD_FLAGS			+=		-nolibc -nostdlib
+LD_FLAGS			+=		-nostartfiles 
+export LD_FLAGS
+
 # Source File List
 SRC_LIST			:=		$(sort $(shell find $(SOURCE_DIR) -name "*.c"))
 ARCH_LIST			:=		$(sort $(shell find $(ARCH_DIR) -name "*.c"))
@@ -75,8 +91,47 @@ ALL_SRC_LIST		+=		$(ARCH_LIST)
 
 # Object File List
 OBJ_LIST			:=		$(ALL_SRC_LIST:.c=.o)
-
+OBJ_LIST			:=		$(addprefix $(OBJ_DIR)/, $(notdir $(OBJ_LIST)))
 
 .DEFAULT_GOAL		:=	all
-all:
-	@echo $(OBJ_LIST)
+.PHONY				:=	clean check_obj test lib
+
+all: lib
+
+# Build the qlibc library
+lib: check_obj info $(OBJ_LIST)
+# Build for static library
+ifeq ($(METHOD), static)
+ifeq ($(VERBOSE), 1)
+	$(AR) rcs $(BUILD_DIR)/lib$(LIB)-$(VERSION).a $(OBJ_LIST)
+else 
+	@$(AR) rcs $(BUILD_DIR)/lib$(LIB)-$(VERSION).a $(OBJ_LIST)
+	@echo "+ AR\t\tlib$(LIB)-$(VERSION).a"
+endif
+# Build for dynamic library
+endif
+	@echo "Successfully build the $(METHOD) library in : $(BUILD_DIR)/lib$(LIB)-$(VERSION).a\n"
+
+info:
+	@echo "Qlibc A light-weighted C Standard Library Which is fully portable to any system."
+	@echo "Current build Version: $(VERSION)"
+	@echo "Copyright (C) QIU YIXIANG"
+	@echo "For more information using the command <make help>\n"
+
+test: lib
+	@$(MAKE) -C $(TEST_DIR)
+	@$(TEST_DIR)/main.out
+
+check_obj:
+	@mkdir -p $(OBJ_DIR)
+clean:
+	@rm -rf	$(BUILD_DIR)
+	@$(MAKE) -C $(TEST_DIR) clean
+
+$(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c
+ifeq ($(VERBOSE), 1)
+	$(CC) $(CC_FLAGS) -c $< -o $@
+else
+	@$(CC) $(CC_FLAGS) -c $< -o $@
+	@echo "+ CC\t\t$(notdir $<)"
+endif

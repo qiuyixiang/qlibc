@@ -34,3 +34,5 @@ DEBUG			:=		false
 TOOL_CHAIN		:=		
 # C ANSI/ISO standard version
 STD				:=		11
+# Verbose Display
+VERBOSE			:=		0
