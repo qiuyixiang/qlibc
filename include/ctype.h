@@ -29,6 +29,7 @@
 extern "C" { 
 #endif
 
+// Implementation of C character type library
 int isalnum(int ch);
 int isalpha(int ch);
 int isblank(int ch);
@@ -46,12 +47,6 @@ int toupper(int ch);
 
 #ifdef __cplusplus
 }
-#endif
-
-// Using Macro for faster optimization for C
-#ifndef __cplusplus
-
-
 #endif
 
 #endif

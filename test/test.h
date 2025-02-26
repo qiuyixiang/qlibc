@@ -65,6 +65,10 @@ extern TEST_CASE(ctype);
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
+#ifdef assert
+#undef assert
+#endif
+
 #endif 
 
 #endif

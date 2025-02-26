@@ -41,7 +41,6 @@ int isspace(int ch){
  * isalnum  ->             isupper
  *             isdigit
  */
-
 int islower(int ch){
     return (((unsigned)ch - LOWER_START) < 26);
 }
