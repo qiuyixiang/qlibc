@@ -2,9 +2,11 @@
 
 Qlibc is a lightweight C standard library that supports multiple architectures. And currently support ANSI/ISO C11. It is completely independent of glibc, libc, and other standard libraries, and can be ported to any freestanding environment or custom kernel. 
 
-**Copyright (C) QIU YIXIANG**
+**Copyright (C):  QIU YIXIANG**
 
 **Current Version:** 0.1
+
+**LICENSE: MIT**
 
 
 
@@ -30,12 +32,11 @@ You can also use the provided test framework in `qlibc/test` to test the library
 make test
 ```
 
+
+
 ## Progress
 
 The current implementation progress of header files is summarized below:
 
-- `<assert.h>` - finished
+Finished :  <assert.h>,  <ctype.h>,  <stdbool.h>
 
-- `<ctype.h>` - finished
-
-    

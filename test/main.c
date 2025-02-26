@@ -12,8 +12,7 @@
 
 int main(int argc, char *argv[]){
 
-    RUN_TEST(assert);
-    RUN_TEST(ctype);
+    RUN_ALL_TEST();
 
     return 0;
 }
