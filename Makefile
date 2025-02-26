@@ -46,7 +46,7 @@ endif
 # GNU C Compiler Flags
 
 # Options for Warning message
-CC_WARNING			:=		-Wall -Wextra -Werror -Wno-unused-parameter
+CC_WARNING			:=		-Wall -Wextra -Werror 
 # Options for Optimization
 CC_OPTIMIZER		:=		
 ifeq ($(DEBUG), false)

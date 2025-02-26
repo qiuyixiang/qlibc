@@ -22,12 +22,36 @@
  *  SOFTWARE.
  */
 
-// Define Some Feature Support For Qlibc Library
+#ifndef _QLIBC_CTYPE_H
+#define _QLIBC_CTYPE_H
 
-#ifndef _QLIBC_FEATURES_H
-#define _QLIBC_FEATURES_H
+#ifdef __cplusplus
+extern "C" { 
+#endif
 
-#define _MACRO_CONCAT(_VAR1, _VAR2)     _VAR1##_VAR2
-#define _MACRO_STR(_VAR)                #_VAR
+int isalnum(int ch);
+int isalpha(int ch);
+int isblank(int ch);
+int iscntrl(int ch);
+int isdigit(int ch);
+int isgraph(int ch);
+int islower(int ch);
+int isprint(int ch);
+int ispunct(int ch);
+int isspace(int ch);
+int isupper(int ch);
+int isxdigit(int ch);
+int tolower(int ch);
+int toupper(int ch);
+
+#ifdef __cplusplus
+}
+#endif
+
+// Using Macro for faster optimization for C
+#ifndef __cplusplus
+
+
+#endif
 
 #endif

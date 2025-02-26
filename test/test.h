@@ -25,6 +25,7 @@
 #ifndef QLIBC_TEST_H
 #define QLIBC_TEST_H
 #include <stdio.h>
+#include <assert.h>
 
 /// A Simple Utility Test Macros
 #define CONCAT(LHS, RHS)    LHS##RHS
@@ -32,7 +33,14 @@
 #define BEGIN_DECL          {
 #define END_DECL            }
 
-#define TEST_CASE(CASE)     void CONCAT(test, CASE)()
+#define TEST_CASE(CASE)     void CONCAT(test_, CASE)()
+#define SUB_TEST_CASE(CASE) TEST_CASE(CASE)
+#define RUN_SUB_CASE(CASE)  CONCAT(test_, CASE)()
+
+#define EXPECT_TRUE(EXPR)           assert((EXPR))
+#define EXPECT_FALSE(EXPR)          assert(!(EXPR))
+#define EXPECT_EQ(VAL1, VAL2)       assert((VAL1) == (VAL2))
+#define EXPECT_NE(VAL1, VAL2)       assert((VAL1) != (VAL2))
 
 /// Only main.c needs these interfaces
 #ifdef MAIN_TEST
@@ -47,10 +55,10 @@
 #define _COLOR_CYAN         "\033[36m"  
 #define _COLOR_WHITE        "\033[37m"  
 
-#define RUN_SUCCESS(CASE)   fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] " \
-                            "Test Case Success\n", STRING(CASE))
-#define RUN_TEST(CASE)      CONCAT(test, CASE)(); \
-                            RUN_SUCCESS(CASE)     \
+#define _RUN_SUCCESS(CASE)  fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] " \
+                            "\tTest Case Success\n", STRING(CASE))
+#define RUN_TEST(CASE)      CONCAT(test_, CASE)(); \
+                            _RUN_SUCCESS(CASE)     \
 
 extern TEST_CASE(assert);
 extern TEST_CASE(ctype);
