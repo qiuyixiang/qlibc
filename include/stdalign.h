@@ -22,19 +22,22 @@
  *  SOFTWARE.
  */
 
-// Define Some Feature Support For Qlibc Library
+#ifndef _QLIBC_STDALIGN_H
+#define _QLIBC_STDALIGN_H
+#include <features.h>
 
-#ifndef _QLIBC_FEATURES_H
-#define _QLIBC_FEATURES_H
+// This headers only available when ANSI/ISO C >= C11
+#if (defined(__STDC_VERSION__))    && \
+    (__STDC_VERSION__ >= _STDC_C11) && \
+    (__STDC_VERSION__ < _STDC_C23)
 
-#define _MACRO_CONCAT(_VAR1, _VAR2)     _VAR1##_VAR2
-#define _MACRO_STR(_VAR)                #_VAR
+// Just Redefinition of C keyword (Since ANSI/ISO C23)
+#define alignas _Alignas
+#define alignof _Alignof 
 
-#define _STDC_C90   199009L
-#define _STDC_C95   199409L
-#define _STDC_C99   199901L
-#define _STDC_C11   201112L
-#define _STDC_C17   201710L
-#define _STDC_C23   202311L
+#define __alignas_is_defined 1
+#define __alignof_is_defined 1
+
+#endif
 
 #endif
