@@ -21,12 +21,13 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-#define MAIN_TEST
-#include "test.h"
 
-int main(int argc, char *argv[]){
+// Define Some Feature Support For Qlibc Library
 
-    RUN_TEST(assert);
+#ifndef _QLIBC_FEATURE_H
+#define _QLIBC_FEATURE_H
 
-    return 0;
-}
+#define _MACRO_CONCAT(_VAR1, _VAR2)     _VAR1##_VAR2
+#define _MACRO_STR(_VAR)                #_VAR
+
+#endif

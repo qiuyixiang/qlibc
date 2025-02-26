@@ -21,12 +21,31 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-#define MAIN_TEST
-#include "test.h"
 
-int main(int argc, char *argv[]){
+// Declaration Of C assert macro
+#include <features.h>
+#include <stdio.h>
+#undef assert
 
-    RUN_TEST(assert);
+#ifdef NDEBUG
+#define assert(expr) ((void)0)
+#else
+#define assert(expr) ((expr) ? ((void)0) : \
+        __assert_fail(_MACRO_STR(expr), __func__, __FILE__, __LINE__))
+#endif
 
-    return 0;
+#ifndef __cplusplus
+#undef static_assert
+#define static_assert _Static_assert
+#endif
+
+
+#ifdef __cplusplus
+extern "C" { 
+#endif
+void __assert_fail(const char * _expr, const char * _func, const char * _file, int _line);
+#ifdef __cplusplus
 }
+#endif
+
+

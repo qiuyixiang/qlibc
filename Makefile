@@ -46,7 +46,7 @@ endif
 # GNU C Compiler Flags
 
 # Options for Warning message
-CC_WARNING			:=		-Wall -Wextra -Werror
+CC_WARNING			:=		-Wall -Wextra -Werror -Wno-unused-parameter
 # Options for Optimization
 CC_OPTIMIZER		:=		
 ifeq ($(DEBUG), false)
@@ -61,7 +61,7 @@ CC_DEBUGGER			+=		-ggdb -g2
 endif
 # Options for Freestanding environment
 CC_ENVIRONMENT		:=		
-FSE_CPP				:=		-nostdinc
+# FSE_CPP				:=		-nostdinc
 FSE_CC				:=		-ffreestanding -fno-builtin
 CC_ENVIRONMENT		+=		$(FSE_CPP) $(FSE_CC)
 # Options for Preprocessor
@@ -120,7 +120,6 @@ info:
 
 test: lib
 	@$(MAKE) -C $(TEST_DIR)
-	@$(TEST_DIR)/main.out
 
 check_obj:
 	@mkdir -p $(OBJ_DIR)

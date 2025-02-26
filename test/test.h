@@ -24,8 +24,39 @@
 
 #ifndef QLIBC_TEST_H
 #define QLIBC_TEST_H
+#include <stdio.h>
 
-// A Simple Utility Test Macros
+/// A Simple Utility Test Macros
+#define CONCAT(LHS, RHS)    LHS##RHS
+#define STRING(VAR)         #VAR
+#define BEGIN_DECL          {
+#define END_DECL            }
 
+#define TEST_CASE(CASE)     void CONCAT(test, CASE)()
+
+/// Only main.c needs these interfaces
+#ifdef MAIN_TEST
+
+#define _COLOR_RESET        "\033[0m"
+#define _COLOR_BLACK        "\033[30m"  
+#define _COLOR_RED          "\033[31m"  
+#define _COLOR_GREEN        "\033[32m"  
+#define _COLOR_YELLOW       "\033[33m"  
+#define _COLOR_BLUE         "\033[34m"  
+#define _COLOR_MAGENTA      "\033[35m"  
+#define _COLOR_CYAN         "\033[36m"  
+#define _COLOR_WHITE        "\033[37m"  
+
+#define RUN_SUCCESS(CASE)   fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] " \
+                            "Test Case Success\n", STRING(CASE))
+#define RUN_TEST(CASE)      CONCAT(test, CASE)(); \
+                            RUN_SUCCESS(CASE)     \
+
+extern TEST_CASE(assert);
+extern TEST_CASE(ctype);
+extern TEST_CASE(stdio);
+extern TEST_CASE(stdlib);
+
+#endif 
 
 #endif

@@ -21,12 +21,13 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
-#define MAIN_TEST
-#include "test.h"
 
-int main(int argc, char *argv[]){
-
-    RUN_TEST(assert);
-
-    return 0;
+#include <stdio.h>
+#include <stdlib.h>
+// Implementation of C assert function handler
+void __assert_fail(const char * _expr, const char * _func, const char * _file, int _line){
+    fprintf(stdout, "Assertion failed: (%s), function %s, file %s, line %d\n", 
+        _expr, _func, _file, _line);
+    fflush(NULL);
+    abort();
 }

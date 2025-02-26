@@ -50,7 +50,7 @@ all: dir_check main
 
 main: $(OBJ_LIST)
 ifeq ($(METHOD), static)
-	@$(CC) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ./main.out
+	@$(CC) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ../main.out
 	@echo "+ LD\t\tmain.out"
 endif
 
@@ -58,7 +58,7 @@ dir_check:
 	@mkdir -p $(BUILD_DIR)
 clean:
 	@rm -rf $(BUILD_DIR)
-	@rm -f ./main.out 
+	@rm -f ../main.out 
 
 $(BUILD_DIR)/%.o : $(TEST_DIR)/%.c
 	@$(CC) $(CC_FLAGS) -c $< -o $@

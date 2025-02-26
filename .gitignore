@@ -1,0 +1,10 @@
+# Ignore Build File
+./build/
+./test/build/
+./test/main.out
+
+# Ignore VS Code Generated Dir
+.vscode/
+
+# Ignore Mac OS File System Patch
+.DS_Store
