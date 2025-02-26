@@ -40,6 +40,7 @@ int islower(int ch);
 int isprint(int ch);
 int ispunct(int ch);
 int isspace(int ch);
+
 int isupper(int ch);
 int isxdigit(int ch);
 int tolower(int ch);
