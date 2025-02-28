@@ -22,19 +22,15 @@
  *  SOFTWARE.
  */
 
-// Define Some Feature Support For Qlibc Library
-// This file is not part of ANSI/ISO C Standard Library
-#ifndef _QLIBC_FEATURES_H
-#define _QLIBC_FEATURES_H
+#ifndef _QLIBC_STDNORETURN_H
+#define _QLIBC_STDNORETURN_H
 
-#define _MACRO_CONCAT(_VAR1, _VAR2)     _VAR1##_VAR2
-#define _MACRO_STR(_VAR)                #_VAR
+#ifndef __cplusplus
+#include <features.h>
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= _STDC_C11))
+#define noreturn _Noreturn
+#endif
 
-#define _STDC_C90   199009L
-#define _STDC_C95   199409L
-#define _STDC_C99   199901L
-#define _STDC_C11   201112L
-#define _STDC_C17   201710L
-#define _STDC_C23   202311L
+#endif
 
 #endif

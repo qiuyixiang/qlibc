@@ -65,6 +65,7 @@ extern TEST_CASE(ctype);
 extern TEST_CASE(stdbool);
 extern TEST_CASE(stddef);
 extern TEST_CASE(stdalign);
+extern TEST_CASE(stdnoreturn);
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
@@ -73,7 +74,8 @@ extern TEST_CASE(stdlib);
         RUN_TEST(ctype);        \
         RUN_TEST(stdbool);      \
         RUN_TEST(stddef);       \
-        RUN_TEST(stdalign);      
+        RUN_TEST(stdalign);     \
+        RUN_TEST(stdnoreturn);   
 
 #ifdef assert
 #undef assert
