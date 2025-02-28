@@ -4,7 +4,6 @@
 #ifndef _QLIBC_STDINT_H
 #error "Expected <stdint.h> in qlibc !"
 #endif
-
 #define BITS(TYPE)  8 * sizeof(TYPE)
 #define BITS_8      8
 #define BITS_16     16
@@ -21,22 +20,39 @@
     EXPECT_EQ(CONCAT4(PREFIX1, 8, _, POSTFIX), CONCAT4(PREFIX2, 8, _, POSTFIX));    \
     EXPECT_EQ(CONCAT4(PREFIX1, 16, _, POSTFIX), CONCAT4(PREFIX2, 16, _, POSTFIX));  \
     EXPECT_EQ(CONCAT4(PREFIX1, 32, _, POSTFIX), CONCAT4(PREFIX2, 32, _, POSTFIX));  \
-    EXPECT_EQ(CONCAT4(PREFIX1, 64, _, POSTFIX), CONCAT4(PREFIX2, 64, _, POSTFIX))   
+    EXPECT_EQ(CONCAT4(PREFIX1, 64, _, POSTFIX), CONCAT4(PREFIX2, 64, _, POSTFIX))
+    
+/**
+ * Note: some of these test cases below depends on the 
+ * machine architecture, if your test machine differs from
+ * your target architecture, some of these tests may fail to
+ * run.
+ */
 TEST_CASE(stdint){
-    // Test for Int types
+    // Test for fixed-width integer types
     CHECK_TYPE_BITS(int);
     CHECK_TYPE_BITS(int_fast);
     CHECK_TYPE_BITS(int_least);
 
-    EXPECT_EQ(BITS(intmax_t), BITS(long));
-    EXPECT_EQ(BITS(intptr_t), BITS(long));
+    EXPECT_EQ(BITS(intmax_t), BITS_64);
+
+#if (defined(TEST_ARCH_x86_64))
+    EXPECT_EQ(BITS(intptr_t), BITS_64);
+#elif (defined(TEST_ARCH_i386))
+    EXPECT_EQ(BITS(intptr_t), BITS_32);
+#endif
 
     CHECK_TYPE_BITS(uint);
     CHECK_TYPE_BITS(uint_fast);
     CHECK_TYPE_BITS(uint_least);
 
-    EXPECT_EQ(BITS(uintmax_t), BITS(unsigned long));
-    EXPECT_EQ(BITS(uintptr_t), BITS(unsigned long));
+    EXPECT_EQ(BITS(uintmax_t), BITS_64);
+
+#if (defined(TEST_ARCH_x86_64))
+    EXPECT_EQ(BITS(uintptr_t), BITS_64);
+#elif (defined(TEST_ARCH_i386))
+    EXPECT_EQ(BITS(uintptr_t), BITS_32);
+#endif
 
     EXPECT_TRUE((uint8_t)0x80 > (uint8_t)0x7f);
     EXPECT_TRUE((int8_t)0x80 < (int8_t)0x7f);
@@ -69,13 +85,25 @@ TEST_CASE(stdint){
     EXPECT_EQ(INTMAX_MAX, INT64_MAX);
     EXPECT_EQ(UINTMAX_MAX, UINT64_MAX);
 
+#if (defined(TEST_ARCH_x86_64))
     EXPECT_EQ(INTPTR_MIN, INT64_MIN);
     EXPECT_EQ(INTPTR_MAX, INT64_MAX);
     EXPECT_EQ(UINTPTR_MAX, UINT64_MAX);
+#elif (defined(TEST_ARCH_i386))
+    EXPECT_EQ(INTPTR_MIN, INT32_MIN);
+    EXPECT_EQ(INTPTR_MAX, INT32_MAX);
+    EXPECT_EQ(UINTPTR_MAX, UINT32_MAX);
+#endif
 
+#if (defined(TEST_ARCH_x86_64))
     EXPECT_EQ(PTRDIFF_MIN, INT64_MIN);
     EXPECT_EQ(PTRDIFF_MAX, INT64_MAX);
     EXPECT_EQ(SIZE_MAX, UINT64_MAX);
+#elif (defined(TEST_ARCH_i386))
+    EXPECT_EQ(PTRDIFF_MIN, INT32_MIN);
+    EXPECT_EQ(PTRDIFF_MAX, INT32_MAX);
+    EXPECT_EQ(SIZE_MAX, UINT32_MAX);
+#endif
 
     EXPECT_EQ(SIG_ATOMIC_MIN, INT32_MIN);
     EXPECT_EQ(SIG_ATOMIC_MAX, INT32_MAX);
@@ -83,7 +111,6 @@ TEST_CASE(stdint){
     EXPECT_TRUE(WCHAR_MIN == 0 || WCHAR_MIN == INT32_MIN);
     EXPECT_TRUE(WCHAR_MAX == UINT32_MAX || WCHAR_MAX == INT32_MAX);
 
-    EXPECT_EQ(WINT_MIN, INT32_MIN);
-    EXPECT_EQ(WINT_MAX, INT32_MAX);
-
+    EXPECT_TRUE(WINT_MIN == 0 || WINT_MIN == INT32_MIN);
+    EXPECT_TRUE(WINT_MAX == UINT32_MAX || WINT_MAX == INT32_MAX);
 }

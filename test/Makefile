@@ -27,14 +27,23 @@ include ../config/config.mk
 TEST_DIR			:=		./cases
 LIB_DIR				:=		../build
 INCLUDE_DIR			:=		../include
+ARCH_DIR			:=		../arch
+INCLUDE_ARCH_DIR	:=		$(ARCH_DIR)/$(ARCH)
 BUILD_DIR			:=		./build
+
+# Set Test Architecture
+TEST_ARCH			:=		$(ARCH)
 
 # GNU C Compiler Flags
 CC_WARNING			+=		-Wno-unused-parameter
 CC_ENVIRONMENT		:=		-fno-builtin
+CC_MACROS			:=		
+CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
+CC_PREPROCESSOR		:=		-isystem $(INCLUDE_DIR) -isystem $(INCLUDE_ARCH_DIR)
+
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) $(CC_ENVIRONMENT)
-CC_FLAGS			+=		-isystem $(INCLUDE_DIR)
+CC_FLAGS			+=		$(CC_PREPROCESSOR) $(CC_MACROS)
 
 # Directory Search
 CASES_SRC			:=		$(sort $(shell find $(TEST_DIR) -name "*.c"))

@@ -30,7 +30,7 @@
 
 /**
  * In Version 0.1 only consider that the host environemnt
- * is freestanding which means it is in a dependent kernel or
+ * is freestanding which means it is in a independent kernel or
  * bare bone environment in 32-bits or 64-bits formal machine. 
  * So the types defined here will not consider conflict
  */
@@ -54,7 +54,6 @@ typedef int32_t                 int_least32_t;
 typedef int64_t                 int_least64_t;
 
 typedef long                    intmax_t;
-typedef long                    intptr_t;
 
 // Unsigned Integer types
 typedef unsigned char           uint8_t;
@@ -73,7 +72,6 @@ typedef uint32_t                uint_least32_t;
 typedef uint64_t                uint_least64_t;
 
 typedef unsigned long           uintmax_t;
-typedef unsigned long           uintptr_t;
 
 /// Type define for Max and Min Value
 
@@ -130,14 +128,6 @@ typedef unsigned long           uintptr_t;
 #define INTMAX_MAX              INT64_MAX
 #define UINTMAX_MAX             UINT64_MAX
 
-#define INTPTR_MIN              INTMAX_MIN
-#define INTPTR_MAX              INTMAX_MAX
-#define UINTPTR_MAX             UINTMAX_MAX
-
-#define PTRDIFF_MIN             INT64_MIN
-#define PTRDIFF_MAX             INT64_MAX
-#define SIZE_MAX                UINT64_MAX
-
 #define SIG_ATOMIC_MIN          INT32_MIN
 #define SIG_ATOMIC_MAX          INT32_MAX
 
@@ -151,7 +141,20 @@ typedef unsigned long           uintptr_t;
 #define WCHAR_MAX               UINT32_MAX
 #endif              
 
-#define WINT_MIN                INT32_MIN
-#define WINT_MAX                INT32_MAX
+#define WINT_MIN                0
+#define WINT_MAX                UINT32_MAX
+
+/// The types below depends on specific machine architecture
+#include <bits/stdint.h>
+
+typedef __intptr_t__            intptr_t;
+typedef __uintptr_t__           uintptr_t;
+
+#define INTPTR_MIN              __INTPTR_MIN__      
+#define INTPTR_MAX              __INTPTR_MAX__      
+#define UINTPTR_MAX             __UINTPTR_MAX__     
+#define PTRDIFF_MIN             __PTRDIFF_MIN__     
+#define PTRDIFF_MAX             __PTRDIFF_MAX__     
+#define SIZE_MAX                __SIZE_MAX__        
 
 #endif

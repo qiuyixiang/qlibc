@@ -45,6 +45,24 @@
 #define EXPECT_EQ(VAL1, VAL2)       assert((VAL1) == (VAL2))
 #define EXPECT_NE(VAL1, VAL2)       assert((VAL1) != (VAL2))
 
+/// Macros for Machine Architecture
+/// Make sure that the consistence between target architecture and host architecture
+#if (defined(__x86_64__) || defined(__amd64__)) && (defined(QLIBC_ARCH_x86_64))
+#define TEST_ARCH_x86_64
+#endif
+
+#if (defined(__i386__) || defined(__x86__)) && (defined(QLIBC_ARCH_i386))
+#define TEST_ARCH_i386
+#endif
+
+#if (defined(__arm__)) && (defined(QLIBC_ARCH_arm))
+#define TEST_ARCH_arm
+#endif
+
+#if (defined(__aarch64__)) && (defined(QLIBC_ARCH_aarch64))
+#define TEST_ARCH_aarch64
+#endif
+
 /// Only main.c needs these interfaces
 #ifdef MAIN_TEST
 
@@ -61,7 +79,7 @@
 #define _RUN_SUCCESS(CASE)  fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] " \
                             "\tTest Case Success\n", STRING(CASE))
 #define RUN_TEST(CASE)      CONCAT(test_, CASE)(); \
-                            _RUN_SUCCESS(CASE)     \
+                            _RUN_SUCCESS(CASE)     
 
 extern TEST_CASE(assert);
 extern TEST_CASE(ctype);

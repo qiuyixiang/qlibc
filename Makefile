@@ -37,6 +37,7 @@ BUILD_DIR			:=		./build
 ARCH_DIR			:=		./arch
 TEST_DIR			:=		./test
 OBJ_DIR				:=		$(BUILD_DIR)/obj
+INCLUDE_ARCH_DIR	:=		$(ARCH_DIR)/$(ARCH)
 
 # Check Command Line Argument
 ifdef V
@@ -66,7 +67,7 @@ FSE_CC				:=		-ffreestanding -fno-builtin
 CC_ENVIRONMENT		+=		$(FSE_CPP) $(FSE_CC)
 # Options for Preprocessor
 CC_PREPROCESSOR		:=		
-CC_PREPROCESSOR		+=		-I $(INCLUDE_DIR)
+CC_PREPROCESSOR		+=		-I $(INCLUDE_DIR) -I $(INCLUDE_ARCH_DIR)
 
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) \
