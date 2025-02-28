@@ -28,7 +28,10 @@
 #include <assert.h>
 
 /// A Simple Utility Test Macros
-#define CONCAT(LHS, RHS)    LHS##RHS
+#define CONCAT(LHS, RHS)                        LHS ## RHS
+#define CONCAT3(VAL1, VAL2, VAL3)               VAL1 ## VAL2 ## VAL3   
+#define CONCAT4(VAL1, VAL2, VAL3, VAL4)         VAL1 ## VAL2 ## VAL3 ## VAL4
+
 #define STRING(VAR)         #VAR
 #define BEGIN_DECL          {
 #define END_DECL            }
@@ -66,6 +69,7 @@ extern TEST_CASE(stdbool);
 extern TEST_CASE(stddef);
 extern TEST_CASE(stdalign);
 extern TEST_CASE(stdnoreturn);
+extern TEST_CASE(stdint);
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
@@ -75,7 +79,8 @@ extern TEST_CASE(stdlib);
         RUN_TEST(stdbool);      \
         RUN_TEST(stddef);       \
         RUN_TEST(stdalign);     \
-        RUN_TEST(stdnoreturn);   
+        RUN_TEST(stdnoreturn);  \
+        RUN_TEST(stdint)
 
 #ifdef assert
 #undef assert

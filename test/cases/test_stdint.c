@@ -1,0 +1,89 @@
+#include "../test.h"
+#include <stdint.h>
+
+#ifndef _QLIBC_STDINT_H
+#error "Expected <stdint.h> in qlibc !"
+#endif
+
+#define BITS(TYPE)  8 * sizeof(TYPE)
+#define BITS_8      8
+#define BITS_16     16
+#define BITS_32     32
+#define BITS_64     64
+
+#define CHECK_TYPE_BITS(PREFIX)                          \
+    EXPECT_EQ(BITS(CONCAT3(PREFIX, 8, _t)), BITS_8);     \
+    EXPECT_EQ(BITS(CONCAT3(PREFIX, 16, _t)), BITS_16);   \
+    EXPECT_EQ(BITS(CONCAT3(PREFIX, 32, _t)), BITS_32);   \
+    EXPECT_EQ(BITS(CONCAT3(PREFIX, 64, _t)), BITS_64)  
+
+#define CHECK_TYPE_VALUE_EQ(PREFIX1, PREFIX2, POSTFIX)                              \
+    EXPECT_EQ(CONCAT4(PREFIX1, 8, _, POSTFIX), CONCAT4(PREFIX2, 8, _, POSTFIX));    \
+    EXPECT_EQ(CONCAT4(PREFIX1, 16, _, POSTFIX), CONCAT4(PREFIX2, 16, _, POSTFIX));  \
+    EXPECT_EQ(CONCAT4(PREFIX1, 32, _, POSTFIX), CONCAT4(PREFIX2, 32, _, POSTFIX));  \
+    EXPECT_EQ(CONCAT4(PREFIX1, 64, _, POSTFIX), CONCAT4(PREFIX2, 64, _, POSTFIX))   
+TEST_CASE(stdint){
+    // Test for Int types
+    CHECK_TYPE_BITS(int);
+    CHECK_TYPE_BITS(int_fast);
+    CHECK_TYPE_BITS(int_least);
+
+    EXPECT_EQ(BITS(intmax_t), BITS(long));
+    EXPECT_EQ(BITS(intptr_t), BITS(long));
+
+    CHECK_TYPE_BITS(uint);
+    CHECK_TYPE_BITS(uint_fast);
+    CHECK_TYPE_BITS(uint_least);
+
+    EXPECT_EQ(BITS(uintmax_t), BITS(unsigned long));
+    EXPECT_EQ(BITS(uintptr_t), BITS(unsigned long));
+
+    EXPECT_TRUE((uint8_t)0x80 > (uint8_t)0x7f);
+    EXPECT_TRUE((int8_t)0x80 < (int8_t)0x7f);
+
+    // Check Min and Max Value
+    EXPECT_EQ(INT8_MIN, (int8_t)0x80);
+    EXPECT_EQ(INT16_MIN, (int16_t)0x8000);
+    EXPECT_EQ(INT32_MIN, (int32_t)0x80000000);
+    EXPECT_EQ(INT64_MIN, (int64_t)0x8000000000000000);
+
+    EXPECT_EQ(INT8_MAX, (int8_t)0x7f);
+    EXPECT_EQ(INT16_MAX, (int16_t)0x7fff);
+    EXPECT_EQ(INT32_MAX, (int32_t)0x7fffffff);
+    EXPECT_EQ(INT64_MAX, (int64_t)0x7fffffffffffffff);
+
+    EXPECT_EQ(UINT8_MAX, (uint8_t)0xff);
+    EXPECT_EQ(UINT16_MAX, (uint16_t)0xffff);
+    EXPECT_EQ(UINT32_MAX, (uint32_t)0xffffffff);
+    EXPECT_EQ(UINT64_MAX, (uint64_t)0xffffffffffffffff);
+
+    CHECK_TYPE_VALUE_EQ(INT_FAST, INT, MIN);
+    CHECK_TYPE_VALUE_EQ(INT_FAST, INT, MAX);
+    CHECK_TYPE_VALUE_EQ(UINT_FAST, UINT, MAX);
+
+    CHECK_TYPE_VALUE_EQ(INT_LEAST, INT, MIN);
+    CHECK_TYPE_VALUE_EQ(INT_LEAST, INT, MAX);
+    CHECK_TYPE_VALUE_EQ(UINT_LEAST, UINT, MAX);
+
+    EXPECT_EQ(INTMAX_MIN, INT64_MIN);
+    EXPECT_EQ(INTMAX_MAX, INT64_MAX);
+    EXPECT_EQ(UINTMAX_MAX, UINT64_MAX);
+
+    EXPECT_EQ(INTPTR_MIN, INT64_MIN);
+    EXPECT_EQ(INTPTR_MAX, INT64_MAX);
+    EXPECT_EQ(UINTPTR_MAX, UINT64_MAX);
+
+    EXPECT_EQ(PTRDIFF_MIN, INT64_MIN);
+    EXPECT_EQ(PTRDIFF_MAX, INT64_MAX);
+    EXPECT_EQ(SIZE_MAX, UINT64_MAX);
+
+    EXPECT_EQ(SIG_ATOMIC_MIN, INT32_MIN);
+    EXPECT_EQ(SIG_ATOMIC_MAX, INT32_MAX);
+
+    EXPECT_TRUE(WCHAR_MIN == 0 || WCHAR_MIN == INT32_MIN);
+    EXPECT_TRUE(WCHAR_MAX == UINT32_MAX || WCHAR_MAX == INT32_MAX);
+
+    EXPECT_EQ(WINT_MIN, INT32_MIN);
+    EXPECT_EQ(WINT_MAX, INT32_MAX);
+
+}

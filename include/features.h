@@ -37,4 +37,15 @@
 #define _STDC_C17   201710L
 #define _STDC_C23   202311L
 
+// Current the qlibc doesn't support for unicode encoding
+#define QLIBC_WCHAR_SUPPORT         0
+
+// Macros for the qlibc library version
+#ifndef QLIBC_VERSION
+#define _QLIBC_VERSION_             0.1
+#else
+#define _QLIBC_VERSION_             QLIBC_VERSION     
+#endif
+
+
 #endif
