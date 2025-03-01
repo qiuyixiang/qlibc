@@ -116,6 +116,7 @@ extern TEST_CASE(stddef);
 extern TEST_CASE(stdalign);
 extern TEST_CASE(stdnoreturn);
 extern TEST_CASE(stdint);
+extern TEST_CASE(limits);
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
@@ -126,7 +127,8 @@ extern TEST_CASE(stdlib);
         RUN_TEST(stddef);       \
         RUN_TEST(stdalign);     \
         RUN_TEST(stdnoreturn);  \
-        RUN_TEST(stdint)
+        RUN_TEST(stdint);       \
+        RUN_TEST(limits)
 
 #ifdef assert
 #undef assert
