@@ -160,4 +160,26 @@ typedef __uintptr_t__           uintptr_t;
 #define PTRDIFF_MAX             __PTRDIFF_MAX__     
 #define SIZE_MAX                __SIZE_MAX__        
 
+#define INT8_C(value)           value
+#define INT16_C(value)          value
+#define INT32_C(value)          value
+
+#define UINT8_C(value)          value
+#define UINT16_C(value)         value
+#define UINT32_C(value)         value ## U
+
+#if (UINTPTR_MAX == UINT64_MAX)
+// On the 64-bits Machine
+#define INT64_C(value)          value ## L
+#define UINT64_C(value)         value ## UL
+#define INTMAX_C(value)         value ## L
+#define UINTMAX_C(value)        value ## UL
+#else 
+// On the 32-bits Machine
+#define INT64_C(value)          value ## LL
+#define UINT64_C(value)         value ## ULL
+#define INTMAX_C(value)         value ## LL
+#define UINTMAX_C(value)        value ## ULL
+#endif
+
 #endif

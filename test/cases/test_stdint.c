@@ -22,6 +22,14 @@
     EXPECT_EQ(CONCAT4(PREFIX1, 16, _, POSTFIX), CONCAT4(PREFIX2, 16, _, POSTFIX));  \
     EXPECT_EQ(CONCAT4(PREFIX1, 32, _, POSTFIX), CONCAT4(PREFIX2, 32, _, POSTFIX));  \
     EXPECT_EQ(CONCAT4(PREFIX1, 64, _, POSTFIX), CONCAT4(PREFIX2, 64, _, POSTFIX))
+
+#define CHECK_TYPE_SIZE(PREFIX1, PREFIX2)                                               \
+    EXPECT_EQ(sizeof((CONCAT3(PREFIX2, 8, _t))CONCAT3(PREFIX1, 8, _C)(0)),              \
+            sizeof(CONCAT3(PREFIX2, 8, _t)));                                           \
+    EXPECT_EQ(sizeof((CONCAT3(PREFIX2, 16, _t))CONCAT3(PREFIX1, 16, _C)(0)),            \
+            sizeof(CONCAT3(PREFIX2, 16, _t)));                                          \
+    EXPECT_EQ(sizeof(CONCAT3(PREFIX1, 32, _C)(0)), sizeof(CONCAT3(PREFIX2, 32, _t)));   \
+    EXPECT_EQ(sizeof(CONCAT3(PREFIX1, 64, _C)(0)), sizeof(CONCAT3(PREFIX2, 64, _t))); 
     
 /**
  * Note: some of these test cases below depends on the 
@@ -114,4 +122,16 @@ TEST_CASE(stdint){
 
     EXPECT_TRUE(WINT_MIN == 0 || WINT_MIN == INT32_MIN);
     EXPECT_TRUE(WINT_MAX == UINT32_MAX || WINT_MAX == INT32_MAX);
+
+    // Test for Integer Literal Constant Value
+    CHECK_TYPE_SIZE(INT, int);
+    CHECK_TYPE_SIZE(UINT, uint);
+
+    EXPECT_EQ(sizeof(INTMAX_C(0)), sizeof(intmax_t));
+    EXPECT_EQ(sizeof(UINTMAX_C(0)), sizeof(uintmax_t));
+
+    EXPECT_EQ(INT32_C(123), 123);
+    EXPECT_EQ(UINT32_C(123), 123U);
+    EXPECT_EQ(INTMAX_C(1234567890123456789), (intmax_t)1234567890123456789);
+    EXPECT_EQ(UINTMAX_C(1234567890123456789), (uintmax_t)1234567890123456789);
 }
