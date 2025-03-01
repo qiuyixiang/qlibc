@@ -4,6 +4,7 @@
 #ifndef _QLIBC_STDINT_H
 #error "Expected <stdint.h> in qlibc !"
 #endif
+
 #define BITS(TYPE)  8 * sizeof(TYPE)
 #define BITS_8      8
 #define BITS_16     16
@@ -36,9 +37,9 @@ TEST_CASE(stdint){
 
     EXPECT_EQ(BITS(intmax_t), BITS_64);
 
-#if (defined(TEST_ARCH_x86_64))
+#if (TEST_WORD == BITS64)
     EXPECT_EQ(BITS(intptr_t), BITS_64);
-#elif (defined(TEST_ARCH_i386))
+#elif (TEST_WORD == BITS32)
     EXPECT_EQ(BITS(intptr_t), BITS_32);
 #endif
 
@@ -48,9 +49,9 @@ TEST_CASE(stdint){
 
     EXPECT_EQ(BITS(uintmax_t), BITS_64);
 
-#if (defined(TEST_ARCH_x86_64))
+#if (TEST_WORD == BITS64)
     EXPECT_EQ(BITS(uintptr_t), BITS_64);
-#elif (defined(TEST_ARCH_i386))
+#elif (TEST_WORD == BITS32)
     EXPECT_EQ(BITS(uintptr_t), BITS_32);
 #endif
 
@@ -85,21 +86,21 @@ TEST_CASE(stdint){
     EXPECT_EQ(INTMAX_MAX, INT64_MAX);
     EXPECT_EQ(UINTMAX_MAX, UINT64_MAX);
 
-#if (defined(TEST_ARCH_x86_64))
+#if (TEST_WORD == BITS64)
     EXPECT_EQ(INTPTR_MIN, INT64_MIN);
     EXPECT_EQ(INTPTR_MAX, INT64_MAX);
     EXPECT_EQ(UINTPTR_MAX, UINT64_MAX);
-#elif (defined(TEST_ARCH_i386))
+#elif (TEST_WORD == BITS32)
     EXPECT_EQ(INTPTR_MIN, INT32_MIN);
     EXPECT_EQ(INTPTR_MAX, INT32_MAX);
     EXPECT_EQ(UINTPTR_MAX, UINT32_MAX);
 #endif
 
-#if (defined(TEST_ARCH_x86_64))
+#if (TEST_WORD == BITS64)
     EXPECT_EQ(PTRDIFF_MIN, INT64_MIN);
     EXPECT_EQ(PTRDIFF_MAX, INT64_MAX);
     EXPECT_EQ(SIZE_MAX, UINT64_MAX);
-#elif (defined(TEST_ARCH_i386))
+#elif (TEST_WORD == BITS32)
     EXPECT_EQ(PTRDIFF_MIN, INT32_MIN);
     EXPECT_EQ(PTRDIFF_MAX, INT32_MAX);
     EXPECT_EQ(SIZE_MAX, UINT32_MAX);

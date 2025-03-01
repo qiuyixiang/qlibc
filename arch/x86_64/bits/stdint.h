@@ -22,7 +22,7 @@
  *  SOFTWARE.
  */
 
-// Integer type implementation for i386 architecture
+// Integer type implementation for x86_64 architecture
 
 typedef long                __intptr_t__;
 typedef unsigned long       __uintptr_t__;

@@ -53,7 +53,9 @@ typedef int16_t                 int_least16_t;
 typedef int32_t                 int_least32_t;
 typedef int64_t                 int_least64_t;
 
-typedef long                    intmax_t;
+// In the 32-bits machine the long long is a 64-bits type, 
+// but long only 32-bits.
+typedef long long               intmax_t;
 
 // Unsigned Integer types
 typedef unsigned char           uint8_t;
@@ -71,7 +73,7 @@ typedef uint16_t                uint_least16_t;
 typedef uint32_t                uint_least32_t;
 typedef uint64_t                uint_least64_t;
 
-typedef unsigned long           uintmax_t;
+typedef unsigned long long      uintmax_t;
 
 /// Type define for Max and Min Value
 
@@ -152,7 +154,8 @@ typedef __uintptr_t__           uintptr_t;
 
 #define INTPTR_MIN              __INTPTR_MIN__      
 #define INTPTR_MAX              __INTPTR_MAX__      
-#define UINTPTR_MAX             __UINTPTR_MAX__     
+#define UINTPTR_MAX             __UINTPTR_MAX__
+     
 #define PTRDIFF_MIN             __PTRDIFF_MIN__     
 #define PTRDIFF_MAX             __PTRDIFF_MAX__     
 #define SIZE_MAX                __SIZE_MAX__        

@@ -45,22 +45,50 @@
 #define EXPECT_EQ(VAL1, VAL2)       assert((VAL1) == (VAL2))
 #define EXPECT_NE(VAL1, VAL2)       assert((VAL1) != (VAL2))
 
+/**
+ * The Macro TEST_ARCH and TEST_WORD is the two main control macros
+ * for the test framework, they mainly support machine specific test
+ * cases control. 
+ */
+
 /// Macros for Machine Architecture
+#undef TEST_ARCH
+#define NONE_ARCH       0
+#define x86_64          1
+#define amd64           2
+#define i386            3
+#define x86             4
+#define arm             5
+#define aarch64         6
+
 /// Make sure that the consistence between target architecture and host architecture
-#if (defined(__x86_64__) || defined(__amd64__)) && (defined(QLIBC_ARCH_x86_64))
-#define TEST_ARCH_x86_64
+#if (defined(__x86_64__)) && (defined(QLIBC_ARCH_x86_64))
+#define TEST_ARCH       x86_64
+#elif (defined(__amd64__)) && (defined(QLIBC_ARCH_amd64))
+#define TEST_ARCH       amd64
+#elif (defined(__i386__)) && (defined(QLIBC_ARCH_i386))
+#define TEST_ARCH       i386
+#elif (defined(__x86__)) && (defined(QLIBC_ARCH_x86))
+#define TEST_ARCH       x86
+#elif (defined(__arm__)) && (defined(QLIBC_ARCH_arm))
+#define TEST_ARCH       arm
+#elif (defined(__aarch64__)) && (defined(QLIBC_ARCH_aarch64))
+#define TEST_ARCH       aarch64
+#else
+#define TEST_ARCH       NONE_ARCH
 #endif
 
-#if (defined(__i386__) || defined(__x86__)) && (defined(QLIBC_ARCH_i386))
-#define TEST_ARCH_i386
-#endif
-
-#if (defined(__arm__)) && (defined(QLIBC_ARCH_arm))
-#define TEST_ARCH_arm
-#endif
-
-#if (defined(__aarch64__)) && (defined(QLIBC_ARCH_aarch64))
-#define TEST_ARCH_aarch64
+/// Macros for Machine word size
+#undef TEST_WORD
+#define BITS32          32
+#define BITS64          64
+#define NON_WORD_SIZE   0
+#if (TEST_ARCH == i386) || (TEST_ARCH == x86) || (TEST_ARCH == arm)
+#define TEST_WORD       BITS32
+#elif (TEST_ARCH == x86_64) || (TEST_ARCH == amd64) || (TEST_ARCH == aarch64)
+#define TEST_WORD       BITS64
+#else
+#define TEST_WORD       NON_WORD_SIZE
 #endif
 
 /// Only main.c needs these interfaces
