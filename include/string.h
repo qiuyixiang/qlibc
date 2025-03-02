@@ -33,6 +33,14 @@ extern "C" {
 
 // String examination
 size_t strlen(const char* str);
+int strcmp(const char* lhs, const char* rhs);
+int strncmp(const char* lhs, const char* rhs, size_t count);
+
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+int strcoll(const char* lhs, const char* rhs);
+#endif
+
+char* strchr(const char* str, int ch);
 
 #ifdef __cplusplus
 }

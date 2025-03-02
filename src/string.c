@@ -30,9 +30,33 @@
 /**
  * Implementation of strlen: current version 0.1 without optimization. 
  * In the future version it will be optimized for better memory block access.
+ * TODO: Optimize for memory block access read for one word per time
  */
+
 size_t strlen(const char* str){
     const char * __p = str;
-    while (*__p) __p++;
+    for (; *__p; ++__p);
     return __p - str;
+}
+int strcmp(const char* lhs, const char* rhs){
+    for (; *lhs && (*lhs == *rhs); ++lhs, ++rhs);
+    return *(unsigned char*)lhs - *(unsigned char*)rhs;
+}
+int strncmp(const char* lhs, const char* rhs, size_t count){
+    if (count == 0)
+        return 0;
+    --count;
+    for (; *lhs && *rhs && count && (*lhs == *rhs); ++lhs, ++rhs, --count);
+    return *(unsigned char*)lhs - *(unsigned char*)rhs;
+}
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+#error "Not implement strcoll for local yet !"
+int strcoll(const char* lhs, const char* rhs) { }
+#endif
+
+char* strchr(const char* str, int ch){
+    for (; *str ; ++str)
+        if (*(unsigned char *)str == (unsigned char)ch)
+            return (char *)str;
+    return (ch == '\0') ? (char *)str : NULL;
 }
