@@ -39,6 +39,7 @@ CC_WARNING			+=		-Wno-unused-parameter
 CC_ENVIRONMENT		:=		-fno-builtin
 CC_MACROS			:=		
 CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
+CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
 CC_PREPROCESSOR		:=		-isystem $(INCLUDE_DIR) -isystem $(INCLUDE_ARCH_DIR)
 
 CC_FLAGS			:=		-std=c$(STD)

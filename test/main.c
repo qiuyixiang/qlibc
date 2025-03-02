@@ -12,6 +12,7 @@
 
 int main(int argc, char *argv[]){
 
+    SHOW_MACHINE(QLIBC_ARCH_STR);
     RUN_ALL_TEST();
 
     return 0;
