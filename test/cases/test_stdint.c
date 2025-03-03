@@ -46,9 +46,9 @@ TEST_CASE(stdint){
     EXPECT_EQ(BITS(intmax_t), BITS_64);
 
 #if (TEST_WORD == BITS64)
-    EXPECT_TRUE(sizeof(void *), 8);
+    EXPECT_EQ(sizeof(void *), 8);
 #elif (TEST_WORD == BITS32)
-    EXPECT_TRUE(sizeof(void *), 4);
+    EXPECT_EQ(sizeof(void *), 4);
 #endif
 
 #if (TEST_WORD == BITS64)

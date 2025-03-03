@@ -37,7 +37,7 @@
 #define _STDC_C17   201710L
 #define _STDC_C23   202311L
 
-// Macro for spefify whether qlibc is finished
+// Macro for specify whether qlibc is finished
 #define FINISH                      0
 // Current the qlibc doesn't support for unicode encoding
 #define QLIBC_WCHAR_SUPPORT         0
@@ -49,7 +49,7 @@
 #define _QLIBC_VERSION_             QLIBC_VERSION     
 #endif
 
-/// Compitable with glibc features when qlibc is not finished
+/// Compatible with glibc features when qlibc is not finished
 #if (defined(FINISH)) && (FINISH == 0) && (defined(__linux__))
 #include </usr/include/features.h>
 #endif

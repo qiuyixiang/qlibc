@@ -56,17 +56,14 @@
 #undef TEST_ARCH
 #define NONE_ARCH       0
 #define x86_64          1
-#define amd64           2
-#define i386            3
-#define x86             4
-#define arm             5
-#define aarch64         6
+#define i386            2
+#define x86             3
+#define arm             4
+#define aarch64         5
 
 /// Make sure that the consistence between target architecture and host architecture
-#if (defined(__x86_64__)) && (defined(QLIBC_ARCH_x86_64))
+#if ((defined(__x86_64__)) || defined(__amd64__)) && (defined(QLIBC_ARCH_x86_64))
 #define TEST_ARCH       x86_64
-#elif (defined(__amd64__)) && (defined(QLIBC_ARCH_amd64))
-#define TEST_ARCH       amd64
 #elif (defined(__i386__)) && (defined(QLIBC_ARCH_i386))
 #define TEST_ARCH       i386
 #elif (defined(__x86__)) && (defined(QLIBC_ARCH_x86))
@@ -84,9 +81,10 @@
 #define BITS32          32
 #define BITS64          64
 #define NON_WORD_SIZE   0
+
 #if (TEST_ARCH == i386) || (TEST_ARCH == x86) || (TEST_ARCH == arm)
 #define TEST_WORD       BITS32
-#elif (TEST_ARCH == x86_64) || (TEST_ARCH == amd64) || (TEST_ARCH == aarch64)
+#elif (TEST_ARCH == x86_64) || (TEST_ARCH == aarch64)
 #define TEST_WORD       BITS64
 #else
 #define TEST_WORD       NON_WORD_SIZE
@@ -107,11 +105,8 @@
 #define _COLOR_WHITE        "\033[37m"  
 
 // Macros for Host Machine Architecture String
-#ifdef __x86_64__
+#if (defined(__x86_64__)) || (defined(__amd64__))
 #define HOST_MACHINE    "x86_64"
-#endif
-#ifdef __amd64__
-#define HOST_MACHINE    "amd64"
 #endif
 #ifdef __i386__
 #define HOST_MACHINE    "i386"
