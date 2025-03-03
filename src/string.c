@@ -26,6 +26,8 @@
 
 
 // String examination
+// Most of the string examination function don't check whether
+// the pointer is NULL, if is NULL it will cause segment fault !
 
 /**
  * Implementation of strlen: current version 0.1 without optimization. 
@@ -33,15 +35,18 @@
  * TODO: Optimize for memory block access read for one word per time
  */
 
+// returns the length of a given string
 size_t strlen(const char* str){
     const char * __p = str;
     for (; *__p; ++__p);
     return __p - str;
 }
+// compares two strings
 int strcmp(const char* lhs, const char* rhs){
     for (; *lhs && (*lhs == *rhs); ++lhs, ++rhs);
     return *(unsigned char*)lhs - *(unsigned char*)rhs;
 }
+// compares a certain amount of characters of two strings
 int strncmp(const char* lhs, const char* rhs, size_t count){
     if (count == 0)
         return 0;
@@ -49,11 +54,13 @@ int strncmp(const char* lhs, const char* rhs, size_t count){
     for (; *lhs && *rhs && count && (*lhs == *rhs); ++lhs, ++rhs, --count);
     return *(unsigned char*)lhs - *(unsigned char*)rhs;
 }
+
 #if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
 #error "Not implement strcoll for local yet !"
 int strcoll(const char* lhs, const char* rhs) { }
 #endif
 
+// Finds the first occurrence of ch  in the null-terminated byte string
 char* strchr(const char* str, int ch){
     for (; *str ; ++str)
         if (*(unsigned char *)str == (unsigned char)ch)
