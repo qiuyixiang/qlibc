@@ -29,6 +29,10 @@ typedef long            ptrdiff_t;
 typedef long double     max_align_t;
 typedef unsigned long   size_t;
 
+#ifndef __cplusplus
+typedef int             wchar_t;
+#endif
+
 #ifdef __cplusplus
 #define NULL    0L
 #else
