@@ -40,11 +40,11 @@ CC_ENVIRONMENT		:=		-fno-builtin
 CC_MACROS			:=		
 CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
 CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
-CC_PREPROCESSOR		:=		-isystem $(INCLUDE_DIR) -isystem $(INCLUDE_ARCH_DIR)
+CC_INCLUDES			:=		-isystem $(INCLUDE_DIR) -isystem $(INCLUDE_ARCH_DIR)
 
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) $(CC_ENVIRONMENT)
-CC_FLAGS			+=		$(CC_PREPROCESSOR) $(CC_MACROS)
+CC_FLAGS			+=		$(CC_INCLUDES) $(CC_MACROS) $(CC_ARCH)
 
 # Directory Search
 CASES_SRC			:=		$(sort $(shell find $(TEST_DIR) -name "*.c"))
@@ -60,7 +60,7 @@ all: dir_check main
 
 main: $(OBJ_LIST)
 ifeq ($(METHOD), static)
-	@$(CC) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ../main.out
+	@$(CC) $(LD_FLAGS) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ../main.out
 	@echo "+ LD\t\tmain.out"
 endif
 

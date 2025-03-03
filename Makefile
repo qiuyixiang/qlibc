@@ -68,18 +68,27 @@ CC_ENVIRONMENT		+=		$(FSE_CPP) $(FSE_CC)
 # Options for Preprocessor
 CC_INCLUDES			:=		
 CC_INCLUDES			+=		-I $(INCLUDE_DIR) -I $(INCLUDE_ARCH_DIR)
+# Options for Architecture
+CC_ARCH				:=		
+ifeq ($(ARCH), i386)
+CC_ARCH				+=		-m32
+endif
 
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) \
-							$(CC_ENVIRONMENT) $(CC_INCLUDES)
+							$(CC_ENVIRONMENT) $(CC_INCLUDES) $(CC_ARCH)
 
-export CC_WARNING CC_OPTIMIZER CC_DEBUGGER
+export CC_WARNING CC_OPTIMIZER CC_DEBUGGER CC_ARCH
 export CC
 
 # Options for Linker
 LD_FLAGS			:=	
-LD_FLAGS			+=		-nolibc -nostdlib
-LD_FLAGS			+=		-nostartfiles 
+# LD_FLAGS			+=		-nolibc -nostdlib
+# LD_FLAGS			+=		-nostartfiles 
+ifeq ($(ARCH), i386)
+LD_FLAGS			+=		-m32
+endif
+
 export LD_FLAGS
 
 # Source File List
