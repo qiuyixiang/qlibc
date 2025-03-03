@@ -100,3 +100,38 @@ size_t strcspn(const char *dest, const char *src){
         ++__count;
     return __count;
 }
+
+// Finds the first occurrence of ch in the initial count bytes
+// The behavior is undefined if access occurs beyond the end of the array searched. 
+// The behavior is undefined if ptr is a null pointer.
+void* memchr(const void* ptr, int ch, size_t count){
+    for (const unsigned char* __start = ptr;
+        count; --count, ++__start)
+        if (*__start == (unsigned char)ch)
+            return (void*)__start;
+    return NULL;
+}
+// Compares the first count bytes of the objects pointed to by lhs and rhs
+int memcmp(const void* lhs, const void* rhs, size_t count){
+    const unsigned char * __lhs = lhs;
+    const unsigned char * __rhs = rhs; 
+    for (; count && (*__lhs == *__rhs); --count, ++__lhs, ++__rhs);
+    return count ? (*__lhs - *__rhs) : 0;
+}
+// Fill the value ch into each of the first count characters of the object pointed to by dest.
+void* memset(void *dest, int ch, size_t count){
+    unsigned char *__dest = dest;
+    for (; count; --count, ++__dest)
+        *__dest = (unsigned char)ch;
+    return dest;
+}
+// Copies count characters from the object pointed to by src to the object pointed to by dest.
+// If the objects overlap (which is a violation of the restrict contract) 
+// the behavior is undefined !
+void* memcpy(void *restrict dest, const void *restrict src, size_t count){
+    unsigned char * __dest = dest;
+    const unsigned char * __src = src;
+    for (; count; ++__dest, ++__src, --count)
+        *__dest = *__src;
+    return (void*)dest;
+}

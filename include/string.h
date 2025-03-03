@@ -27,6 +27,18 @@
 
 #include <stddef.h>
 
+// Undefine all macros to avoid conflict
+#undef strlen
+#undef strcmp
+#undef strncmp
+#undef strchr
+#undef strrchr
+#undef strspn
+#undef strcspn
+#undef memchr
+#undef memcmp
+#undef memset
+
 #ifdef __cplusplus
 extern "C" { 
 #endif
@@ -44,6 +56,12 @@ char* strchr(const char* str, int ch);
 char* strrchr(const char* str, int ch);
 size_t strspn(const char* dest, const char* src);
 size_t strcspn(const char *dest, const char *src);
+
+// Character array manipulation
+void* memchr(const void* ptr, int ch, size_t count);
+int memcmp(const void* lhs, const void* rhs, size_t count);
+void* memset(void *dest, int ch, size_t count);
+void* memcpy(void *restrict dest, const void *restrict src, size_t count);
 
 #ifdef __cplusplus
 }

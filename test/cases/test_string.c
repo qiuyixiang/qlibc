@@ -6,18 +6,37 @@
 #define GREATER             > 0
 #define NULL_TERMINATOR     0x00
 
+#define BUFFER_SIZE_S       64
+#define BUFFER_SIZE_M       128
+#define BUFFER_SIZE_L       256
+#define BUFFER_SIZE_1K      1024
+#define BUFFER_SIZE_2K      2048
+
+// This macro ensure that the variables will not conflict with
+// outer variable space.
+#define EXPECT_ALL_EQU(DEST, VALUE, SIZE)               \
+BEGIN_DECL                                              \
+    unsigned char * _buffer = (unsigned char *)DEST;    \
+    size_t _count = (size_t)SIZE;                       \
+    for ( ; _count; ++_buffer, --_count)                \
+        EXPECT_EQ(*_buffer, (unsigned char)VALUE);      \
+END_DECL                  
+
 static const char all_lower_cases[] = "abcdefghijklmnopqrstuvwxyz";
 static const char all_upper_cases[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 static const char long_str[] = "WIJDKALDIWNDLSMCJSHDUWHDGAGWJDIQWOWKD:DWJSIDJCALDJWGBCIWGDJSICBWVQUDNSKC\
                                     <SMDHSUABSKDIWNDWBUQIWPEPPDSJD CBASJD";
 
+// Test String examination                                   
 SUB_TEST_CASE(strlen){
+BEGIN_DECL
     const char buffer[] = "This is a formal test for strlen";
     EXPECT_EQ(strlen(buffer), sizeof(buffer) - 1);
     const char only_one[] = "S";
     const char __attribute__((unused)) next = '\0';
     EXPECT_EQ(strlen(only_one), 1);
+END_DECL
 
     EXPECT_EQ(strlen(long_str), sizeof(long_str) - 1);
     EXPECT_EQ(strlen(all_lower_cases), sizeof(all_lower_cases) - 1);
@@ -39,6 +58,7 @@ SUB_TEST_CASE(strcmp){
     EXPECT_TRUE(strcmp("d", "D") GREATER);
     EXPECT_TRUE(strcmp("abC", "abc") LESS);
 
+BEGIN_DECL
     unsigned char fix_buffer[2];
     fix_buffer[0] = 0x01;
     fix_buffer[1] = NULL_TERMINATOR;
@@ -50,6 +70,7 @@ SUB_TEST_CASE(strcmp){
         EXPECT_TRUE(strcmp((const char *)fix_buffer, (const char *)cmp_buffer) LESS);
         EXPECT_TRUE(strcmp((const char *)cmp_buffer, (const char *)fix_buffer) GREATER);
     }
+END_DECL
 
     EXPECT_TRUE(strcmp(long_str, long_str) EQU);
 }
@@ -84,18 +105,22 @@ SUB_TEST_CASE(strchr){
     EXPECT_EQ(strchr("ABCDE", 'F'), NULL);
     EXPECT_EQ(strchr("ABCDE", 'W'), NULL);
 
+BEGIN_DECL
     const char buffer[] = "ABCDEABCDEABCDE";
     EXPECT_EQ(strchr(buffer, 'A'), buffer);
     EXPECT_EQ(strchr(buffer, 'B'), buffer + 1);
     EXPECT_EQ(strchr(buffer, 'C'), buffer + 2);
     EXPECT_EQ(strchr(buffer, 'D'), buffer + 3);
     EXPECT_EQ(strchr(buffer, 'E'), buffer + 4);
+END_DECL
 
     EXPECT_EQ(*strchr(long_str, ':'), ':');
     EXPECT_EQ(*strchr(long_str, '<'), '<');
 
+BEGIN_DECL
     const char only_two[] = "A";
     EXPECT_EQ(*strchr(only_two, NULL_TERMINATOR), NULL_TERMINATOR);
+END_DECL
 }
 SUB_TEST_CASE(strrchr){
     EXPECT_EQ(*strrchr("ABCDE", 'E'), 'E');
@@ -104,6 +129,7 @@ SUB_TEST_CASE(strrchr){
     EXPECT_EQ(strrchr("ABCDE", 'F'), NULL);
     EXPECT_EQ(strrchr("ABCDE", 'W'), NULL);
 
+BEGIN_DECL
     const char buffer[] = "ABCDEABCDEABCDE";
     EXPECT_EQ(strrchr(buffer, 'A'), &buffer[10]);
     EXPECT_EQ(strrchr(buffer, 'B'), &buffer[11]);
@@ -112,6 +138,7 @@ SUB_TEST_CASE(strrchr){
     EXPECT_EQ(strrchr(buffer, 'E'), &buffer[14]);
     EXPECT_EQ(*strrchr(buffer, NULL_TERMINATOR), buffer[15]);
     EXPECT_EQ(strrchr(buffer, NULL_TERMINATOR), &buffer[15]);
+END_DECL
 
     EXPECT_EQ(*strrchr(long_str, ':'), ':');
     EXPECT_EQ(*strrchr(long_str, '<'), '<');
@@ -200,7 +227,94 @@ BEGIN_DECL
     EXPECT_EQ(analysis_result, 6);
 END_DECL
 }
+
+// Test Character array manipulation
+SUB_TEST_CASE(memchr){
+BEGIN_DECL
+    unsigned char buffer[] = "ABCDEFGHI";
+    EXPECT_EQ(*(unsigned char*)memchr(buffer, 'D', sizeof(buffer)), 'D');
+    EXPECT_EQ(*(unsigned char*)memchr(buffer, 'A', sizeof(buffer)), 'A');
+    EXPECT_EQ(*(unsigned char*)memchr(buffer, 'E', sizeof(buffer)), 'E');
+    EXPECT_EQ(*(unsigned char*)memchr(buffer, 'I', sizeof(buffer)), 'I');
+    EXPECT_EQ(*(unsigned char*)memchr(buffer, NULL_TERMINATOR, sizeof(buffer)), NULL_TERMINATOR);
+    EXPECT_EQ(memchr(buffer, 'Q', sizeof(buffer)), NULL);
+    EXPECT_EQ(memchr(buffer, 'Z', sizeof(buffer)), NULL);
+    EXPECT_EQ(memchr(buffer, 'a', sizeof(buffer)), NULL);
+END_DECL
+}
+SUB_TEST_CASE(memcmp){
+    EXPECT_EQ(memcmp("ABCD", "ABCD", 4), strcmp("ABCD", "ABCD"));
+    EXPECT_EQ(memcmp("AB", "A", 2), strcmp("AB", "A"));
+    EXPECT_EQ(memcmp("A", "AB", 2), strcmp("A", "AB"));
+    EXPECT_TRUE(memcmp("ABCD", "ABC", 5) GREATER);
+    EXPECT_TRUE(memcmp("ABC", "ABCD", 5) LESS);
+    EXPECT_TRUE(memcmp("ABCD", "ABC", 10) GREATER);
+    EXPECT_TRUE(memcmp("ABC", "ABCD", 10) LESS);
+    EXPECT_TRUE(memcmp(all_lower_cases, all_lower_cases, sizeof(all_lower_cases)) EQU);
+    EXPECT_TRUE(memcmp(all_lower_cases, all_lower_cases, 10) EQU);
+    EXPECT_TRUE(memcmp("a", "A", 1) GREATER);
+    EXPECT_TRUE(memcmp("", "", 1) EQU);
+}
+SUB_TEST_CASE(memset){
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memset(dest, 'A', 20), &dest[0]);
+    EXPECT_ALL_EQU(dest, 'A', 20);
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memset(dest, 0x55, 8), &dest[0]);
+    EXPECT_ALL_EQU(dest, 0x55, 8);
+    EXPECT_EQ(memset(dest, 0xaa, 8), &dest[0]);
+    EXPECT_ALL_EQU(dest, 0xaa, 8);
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_L];
+    EXPECT_EQ(memset(dest, 0xbb, BUFFER_SIZE_L), &dest[0]);
+    EXPECT_ALL_EQU(dest, 0xbb, BUFFER_SIZE_L);
+END_DECL
+}
+SUB_TEST_CASE(memcpy){
+BEGIN_DECL
+    unsigned char buffer[] = "ABCDEFG";
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memcpy(dest, buffer, sizeof(buffer)), &dest[0]);
+    EXPECT_FALSE(memcmp(dest, buffer, sizeof(buffer)));
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memcpy(dest, all_lower_cases, sizeof(all_lower_cases)), &dest[0]);
+    EXPECT_FALSE(memcmp(dest, all_lower_cases, sizeof(all_lower_cases)));
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memcpy(dest, all_upper_cases, sizeof(all_upper_cases)), &dest[0]);
+    EXPECT_FALSE(memcmp(dest, all_upper_cases, sizeof(all_upper_cases)));
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    EXPECT_EQ(memcpy(dest, all_upper_cases, 10), &dest[0]);
+    EXPECT_FALSE(memcmp(dest, all_upper_cases, 10));
+END_DECL
+BEGIN_DECL
+    // Without overlap
+    unsigned char dest[BUFFER_SIZE_S];
+    memset(dest, 0, BUFFER_SIZE_S);
+    EXPECT_EQ(memset(dest, 0x55, 10), &dest[0]);
+    EXPECT_ALL_EQU(dest, 0x55, 10);
+    EXPECT_EQ(memcpy(&dest[10], dest, 10), &dest[10]);
+    EXPECT_ALL_EQU(dest, 0x55, 20);
+END_DECL
+BEGIN_DECL
+    unsigned char dest[BUFFER_SIZE_S];
+    memset(dest, 0, BUFFER_SIZE_S);
+    EXPECT_EQ(memcpy(dest, all_lower_cases, sizeof(all_lower_cases) - 1), &dest[0]);
+    EXPECT_FALSE(memcmp(dest, all_lower_cases, sizeof(all_lower_cases) - 1));
+    EXPECT_EQ(dest[sizeof(all_lower_cases)], 0);
+END_DECL
+}
 TEST_CASE(string){
+    // Test String examination
     RUN_SUB_CASE(strlen);
     RUN_SUB_CASE(strcmp);
     RUN_SUB_CASE(strncmp);
@@ -211,4 +325,10 @@ TEST_CASE(string){
     RUN_SUB_CASE(strrchr);
     RUN_SUB_CASE(strspn);
     RUN_SUB_CASE(strcspn);
+
+    // Test Character array manipulation
+    RUN_SUB_CASE(memchr);
+    RUN_SUB_CASE(memcmp);
+    RUN_SUB_CASE(memset);
+    RUN_SUB_CASE(memcpy);
 }   
