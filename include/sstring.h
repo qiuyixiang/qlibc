@@ -41,6 +41,9 @@ int strcoll(const char* lhs, const char* rhs);
 #endif
 
 char* strchr(const char* str, int ch);
+char* strrchr(const char* str, int ch);
+size_t strspn(const char* dest, const char* src);
+size_t strcspn(const char *dest, const char *src);
 
 #ifdef __cplusplus
 }

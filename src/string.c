@@ -60,10 +60,43 @@ int strncmp(const char* lhs, const char* rhs, size_t count){
 int strcoll(const char* lhs, const char* rhs) { }
 #endif
 
-// Finds the first occurrence of ch  in the null-terminated byte string
+// Finds the first occurrence of ch in the null-terminated byte string
 char* strchr(const char* str, int ch){
     for (; *str ; ++str)
         if (*(unsigned char *)str == (unsigned char)ch)
             return (char *)str;
     return (ch == '\0') ? (char *)str : NULL;
+}
+// Finds the last occurrence of ch in the null-terminated byte string
+char* strrchr(const char* str, int ch){
+    const char * __last = NULL;
+    for (; *str; ++str)
+        if (*(unsigned char *)str == (unsigned char)ch)
+            __last = str;
+    return (ch == '\0') ? (char *)str : (char *)__last;
+}
+/**
+ * Returns the length of the maximum initial segment in dest,
+ *   that consists of only the characters found in src. 
+ * Implementation detail: Using a Hash Table to quick search whether
+ *   dest[i] exists in src[i]. O(len(dest) + len(src))
+ */
+size_t strspn(const char* dest, const char* src){
+    char __hash[256] = {0};
+    for (size_t __index = 0; src[__index]; ++__index)
+        __hash[(size_t)src[__index]] = 1;
+    size_t __count = 0;
+    while (dest[__count] && __hash[(size_t)dest[__count]])
+        ++__count;
+    return __count;
+}
+// Similar to strspn but is complement (in dest but not in src)
+size_t strcspn(const char *dest, const char *src){
+    char __hash[256] = {0};
+    for (size_t __index = 0; src[__index]; ++__index)
+        __hash[(size_t)src[__index]] = 1;
+    size_t __count = 0;
+    while (dest[__count] && !__hash[(size_t)dest[__count]])
+        ++__count;
+    return __count;
 }
