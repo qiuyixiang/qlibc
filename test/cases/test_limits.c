@@ -43,7 +43,7 @@ TEST_CASE(limits){
     EXPECT_EQ(UINT_MAX, (unsigned int)0xffffffff);
     
 #if (TEST_WORD == BITS32)
-    EXPECT_EQ(ULONG_MAX, (unsigned long)0xffffffff)
+    EXPECT_EQ(ULONG_MAX, (unsigned long)0xffffffff);
 #elif (TEST_WORD == BITS64)
     EXPECT_EQ(ULONG_MAX, (unsigned long)0xffffffffffffffff);
 #endif
