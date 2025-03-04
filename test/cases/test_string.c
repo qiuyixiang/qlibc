@@ -228,6 +228,91 @@ BEGIN_DECL
 END_DECL
 }
 
+SUB_TEST_CASE(strpbrk){
+    EXPECT_EQ(*strpbrk("abcdef", "cde"), 'c');
+    EXPECT_EQ(*strpbrk("abcdef", "f"), 'f');
+    EXPECT_EQ(*strpbrk("ab?cdef", "?"), '?');
+    EXPECT_EQ(strpbrk("abcdef", "g"), NULL);
+    EXPECT_EQ(strpbrk("abcdef", "z"), NULL);
+    EXPECT_EQ(*strpbrk(all_lower_cases, "f"), 'f');
+
+BEGIN_DECL
+    const char buffer[] = "abcdabcdabcd";
+    EXPECT_EQ(strpbrk(buffer, "a"), &buffer[0]);
+    EXPECT_EQ(strpbrk(buffer, "b"), &buffer[1]);
+    EXPECT_EQ(strpbrk(buffer, "c"), &buffer[2]);
+    EXPECT_EQ(strpbrk(buffer, "d"), &buffer[3]);
+    EXPECT_EQ(strpbrk(buffer, "abcd"), &buffer[0]);
+END_DECL
+    EXPECT_TRUE(strcmp(strpbrk("hello world", "o"), "o world") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("abcdef", "cd"), "cdef") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("abcdef", "a"), "abcdef") EQU);
+
+    EXPECT_TRUE(strcmp(strpbrk("hello world", "oe"), "ello world") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("abcdef", "dcba"), "abcdef") EQU);
+
+    EXPECT_EQ(strpbrk("hello", "xyz"), NULL);
+    EXPECT_EQ(strpbrk("", "xyz"), NULL);
+    EXPECT_EQ(strpbrk("hello", ""), NULL);
+    EXPECT_EQ(strpbrk("", "aeiou"), NULL);
+    EXPECT_EQ(strpbrk("abcdef", "z"), NULL);
+
+    EXPECT_TRUE(strcmp(strpbrk("hello", "o"), "o") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("abcdef", "f"), "f") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("hello\nworld", "\n"), "\nworld") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("12345", "5"), "5") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("abc123", "0123456789"), "123") EQU);
+    EXPECT_TRUE(strcmp(strpbrk("hello world", " "), " world") EQU);
+}
+
+SUB_TEST_CASE(strstr){
+    EXPECT_EQ(sizeof(""), 1);
+    EXPECT_TRUE(strcmp(strstr("abc", ""), "abc") EQU);
+    EXPECT_TRUE(strcmp(strstr("", ""), "") EQU);
+    EXPECT_TRUE(strcmp(strstr(all_lower_cases, ""), all_lower_cases) EQU);
+    EXPECT_TRUE(strcmp(strstr(all_upper_cases, ""), all_upper_cases) EQU);
+    EXPECT_TRUE(strcmp(strstr(long_str, ""), long_str) EQU);
+
+    EXPECT_EQ(*strstr("abcd", "ab"), 'a');
+    EXPECT_EQ(*strstr("abcd", "abc"), 'a');
+    EXPECT_EQ(*strstr("abcd", "abcd"), 'a');
+BEGIN_DECL
+    const char buffer[] = "abcdabcdabcd";
+    EXPECT_EQ(strstr(buffer, "abc"), &buffer[0]);
+    EXPECT_EQ(strstr(buffer, "abcd"), &buffer[0]);
+    EXPECT_EQ(strstr(buffer, "abcda"), &buffer[0]);
+    EXPECT_EQ(strstr(buffer, "da"), &buffer[3]);
+    EXPECT_EQ(strstr(buffer, "cd"), &buffer[2]);
+    EXPECT_EQ(strstr(buffer, "dab"), &buffer[3]);
+END_DECL
+    EXPECT_EQ(strstr("abcd", "efg"), NULL);
+    EXPECT_EQ(strstr("abcdefg", "ll"), NULL);
+    EXPECT_EQ(strstr("abcdefg", "a?"), NULL);
+    EXPECT_EQ(strstr("abcdefg", "ab?"), NULL);
+    EXPECT_EQ(strstr("abcdefg", "abc/"), NULL);
+    EXPECT_EQ(strstr("abcdefg", "abcdefgh"), NULL);
+
+    EXPECT_TRUE(strcmp(strstr("hello world", "world"), "world") EQU);
+    EXPECT_TRUE(strcmp(strstr("abcdef", "cd"), "cdef") EQU);
+    EXPECT_TRUE(strcmp(strstr("abcdef", "a"), "abcdef") EQU);
+    EXPECT_TRUE(strcmp(strstr("hello", "hello"), "hello") EQU);
+    
+    EXPECT_TRUE(strcmp(strstr("hello", "hell"), "hello") EQU);
+    EXPECT_TRUE(strcmp(strstr("hello", "ell"), "ello") EQU);
+    EXPECT_TRUE(strcmp(strstr("hello", ""), "hello") EQU);
+    EXPECT_TRUE(strcmp(strstr("", ""), "") EQU);
+    
+    EXPECT_TRUE(strcmp(strstr("aaaaa", "aa"), "aaaaa") EQU);
+    EXPECT_TRUE(strcmp(strstr("aaaaa", "aaa"), "aaaaa") EQU);
+    EXPECT_TRUE(strcmp(strstr("hello", "o"), "o") EQU);
+    EXPECT_TRUE(strcmp(strstr("abcdef", "f"), "f") EQU);
+
+    EXPECT_EQ(strstr("hello", "xyz"), NULL);
+    EXPECT_EQ(strstr("", "xyz"), NULL);
+    EXPECT_EQ(strstr("abcdef", "z"), NULL);
+    EXPECT_EQ(strstr("abc", "abcdef"), NULL);
+}
+
 // Test Character array manipulation
 SUB_TEST_CASE(memchr){
 BEGIN_DECL
@@ -325,6 +410,8 @@ TEST_CASE(string){
     RUN_SUB_CASE(strrchr);
     RUN_SUB_CASE(strspn);
     RUN_SUB_CASE(strcspn);
+    RUN_SUB_CASE(strpbrk);
+    RUN_SUB_CASE(strstr);
 
     // Test Character array manipulation
     RUN_SUB_CASE(memchr);
