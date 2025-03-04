@@ -42,7 +42,16 @@ char* strcpy(char *restrict dest, const char *restrict src){
  * - If count > len(src) : additional null characters are written to dest until 
  *      the total of count characters have been written.
  */
-
+char* strncpy(char *restrict dest, const char *restrict src, size_t count){
+    size_t len_src = strlen(src);
+    if (count <= len_src)
+        memcpy(dest, src, count);
+    else{
+        memcpy(dest, src, len_src);
+        memset(dest + len_src, '\0', count - len_src);
+    }
+    return (char *)dest;
+}
 
 // String examination
 
