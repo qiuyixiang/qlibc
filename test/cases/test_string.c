@@ -28,6 +28,40 @@ static const char all_upper_cases[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const char long_str[] = "WIJDKALDIWNDLSMCJSHDUWHDGAGWJDIQWOWKD:DWJSIDJCALDJWGBCIWGDJSICBWVQUDNSKC\
                                     <SMDHSUABSKDIWNDWBUQIWPEPPDSJD CBASJD";
 
+// Test String manipulation
+SUB_TEST_CASE(strcpy){
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S];
+    memset(buffer, 0, BUFFER_SIZE_S);
+    EXPECT_EQ(strcpy(buffer, "abcdefgh"), buffer);
+    EXPECT_TRUE(strcmp(buffer, "abcdefgh") EQU);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S];
+    memset(buffer, 0x55, BUFFER_SIZE_S);
+    EXPECT_EQ(strcpy(buffer, ""), buffer);
+    EXPECT_TRUE(strcmp(buffer, "") EQU);
+    EXPECT_EQ(buffer[1], 0x55);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S];
+    memset(buffer, 0, BUFFER_SIZE_S);
+    EXPECT_EQ(strcpy(buffer, all_lower_cases), buffer);
+    EXPECT_TRUE(strcmp(buffer, all_lower_cases) EQU);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S];
+    memset(buffer, 0, BUFFER_SIZE_S);
+    EXPECT_EQ(strcpy(buffer, all_upper_cases), buffer);
+    EXPECT_TRUE(strcmp(buffer, all_upper_cases) EQU);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_L];
+    memset(buffer, 0, BUFFER_SIZE_L);
+    EXPECT_EQ(strcpy(buffer, long_str), buffer);
+    EXPECT_TRUE(strcmp(buffer, long_str) EQU);
+END_DECL
+}                                    
 // Test String examination                                   
 SUB_TEST_CASE(strlen){
 BEGIN_DECL
@@ -399,6 +433,9 @@ BEGIN_DECL
 END_DECL
 }
 TEST_CASE(string){
+    // Test String manipulation
+    RUN_SUB_CASE(strcpy);
+
     // Test String examination
     RUN_SUB_CASE(strlen);
     RUN_SUB_CASE(strcmp);

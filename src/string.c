@@ -22,10 +22,32 @@
  *  SOFTWARE.
  */
 #include <stddef.h>
+#include <string.h>
 // Implementation of C String library
 
+// String manipulation
+
 /**
- * String examination
+ * Copies the null-terminated byte string pointed to by src, 
+ * including the null terminator,
+ * to the character array whose first element is pointed to by dest
+ */
+char* strcpy(char *restrict dest, const char *restrict src){
+    return (char *)memcpy(dest, src, strlen(src) + 1);
+}
+
+/**
+ * Copies at most count characters of the character array pointed to by src 
+ * to character array pointed to by dest. 
+ * - If count <= len(src) :  the resulting character array is not null-terminated.
+ * - If count > len(src) : additional null characters are written to dest until 
+ *      the total of count characters have been written.
+ */
+
+
+// String examination
+
+/**
  * Most of the string examination function don't check whether
  * the pointer is NULL, if is NULL it will cause segment fault !
  */
@@ -130,6 +152,9 @@ char* strstr(const char* str, const char* substr){
     }
     return NULL;
 }
+
+// Character array manipulation
+
 /**
  * Finds the first occurrence of ch in the initial count bytes
  * The behavior is undefined if access occurs beyond the end of the array searched.

@@ -42,6 +42,9 @@
 #ifdef __cplusplus
 extern "C" { 
 #endif
+// String manipulation
+char* strcpy(char *restrict dest, const char *restrict src);
+char* strncpy(char *restrict dest, const char *restrict src, size_t count);
 
 // String examination
 size_t strlen(const char* str);
