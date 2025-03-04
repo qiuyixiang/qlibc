@@ -25,8 +25,6 @@
 #ifndef _QLIBC_STRING_H
 #define _QLIBC_STRING_H
 
-#include <stddef.h>
-
 // Undefine all macros to avoid conflict
 #undef strlen
 #undef strcmp
@@ -38,6 +36,14 @@
 #undef memchr
 #undef memcmp
 #undef memset
+
+#ifndef __cplusplus
+#define NULL ((void*)0)
+#else
+#define NULL nullptr
+#endif
+
+typedef unsigned long   size_t;
 
 #ifdef __cplusplus
 extern "C" { 
