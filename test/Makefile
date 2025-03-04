@@ -70,6 +70,29 @@ clean:
 	@rm -rf $(BUILD_DIR)
 	@rm -f ../main.out 
 
+# Define for sub-test cases dependencies
+
+# Special Rule define for test string
+STRING_UNIT				:=		test_string
+TEST_STRING_DIR			:=		$(TEST_DIR)/$(STRING_UNIT)
+CASES_STRING_DEP		:=		$(TEST_STRING_DIR)/character_array.h 	\
+								$(TEST_STRING_DIR)/examination.h		\
+								$(TEST_STRING_DIR)/manipulation.h		
+$(BUILD_DIR)/$(STRING_UNIT).o: 	$(CASES_STRING_DEP)
+
+# Special Rule define for test stdlib
+STDLIB_UNIT				:=		test_stdlib
+TEST_STDLIB_DIR			:=		$(TEST_DIR)/$(STDLIB_UNIT)
+CASES_STRING_DEP		:=	
+$(BUILD_DIR)/$(STDLIB_UNIT).o:	$(CASES_STRING_DEP)
+
+# Special Rule define for test stdio
+STDIO_UNIT				:=		test_stdio
+TEST_STDIO_DIR			:=		$(TEST_DIR)/$(STDIO_UNIT)
+CASES_STDIO_DEP			:=	
+$(BUILD_DIR)/$(STDIO_UNIT).o:	$(CASES_STDIO_DEP)
+
+# General Rules for build test cases file
 $(BUILD_DIR)/%.o : $(TEST_DIR)/%.c
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 	@echo "+ CC\t\t$(notdir $<)"
