@@ -37,10 +37,11 @@ TEST_CASE(string){
     RUN_SUB_CASE(strcspn);
     RUN_SUB_CASE(strpbrk);
     RUN_SUB_CASE(strstr);
-    
+
     // Test Character array manipulation
     RUN_SUB_CASE(memchr);
     RUN_SUB_CASE(memcmp);
     RUN_SUB_CASE(memset);
     RUN_SUB_CASE(memcpy);
+    RUN_SUB_CASE(memmove);
 }   

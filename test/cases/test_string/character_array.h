@@ -3,7 +3,7 @@
 
 /**
  * Test Character array manipulation
- * Functions: memchr, memcmp, memset, memcpy
+ * Functions: memchr, memcmp, memset, memcpy, memmove
  */
 
 // Test for memchr
@@ -92,5 +92,56 @@ BEGIN_DECL
     EXPECT_EQ(memcpy(dest, all_lower_cases, sizeof(all_lower_cases) - 1), &dest[0]);
     EXPECT_FALSE(memcmp(dest, all_lower_cases, sizeof(all_lower_cases) - 1));
     EXPECT_EQ(dest[sizeof(all_lower_cases)], 0);
+END_DECL
+}
+// Test for memmove
+SUB_TEST_CASE(memmove){
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S];
+
+    memset(buffer, 0, sizeof(buffer));
+    EXPECT_EQ(strcpy(buffer, "HelloWorld"), buffer);
+    EXPECT_EQ(memmove(buffer + 5, buffer, 5), buffer + 5); 
+    EXPECT_TRUE(strcmp(buffer, "HelloHello") EQU);
+
+    memset(buffer, 0, sizeof(buffer));
+    EXPECT_EQ(strcpy(buffer, "123456789"), buffer);
+    EXPECT_EQ(memmove(buffer + 2, buffer, 5), buffer + 2); 
+    EXPECT_TRUE(strcmp(buffer, "121234589") EQU);
+
+    memset(buffer, 0, sizeof(buffer));
+    EXPECT_EQ(strcpy(buffer, "abcdef"), buffer);
+    EXPECT_EQ(memmove(buffer, buffer + 2, 4), buffer);
+    EXPECT_TRUE(strncmp(buffer, "cdef", 4) EQU);  
+
+    memset(buffer, 0, sizeof(buffer));
+    EXPECT_EQ(strcpy(buffer, "overlap"), buffer);
+    EXPECT_EQ(memmove(buffer, buffer, 7), buffer); 
+    EXPECT_TRUE(strcmp(buffer, "overlap") EQU);
+
+    memset(buffer, 0xaa, sizeof(buffer));
+    EXPECT_EQ(memmove(buffer, "data", 0), buffer); 
+    EXPECT_EQ(buffer[0], (char)0xaa); 
+    EXPECT_ALL_EQU(buffer, 0xaa, BUFFER_SIZE_S)
+
+    memset(buffer, 0x55, sizeof(buffer));
+    EXPECT_EQ(memmove(buffer, "", 1), buffer);  
+    EXPECT_EQ(buffer[0], NULL_TERMINATOR);
+    EXPECT_EQ(buffer[1], (char)0x55);
+    EXPECT_ALL_EQU(&buffer[1], 0x55, 32);
+
+    memset(buffer, 0, sizeof(buffer));
+    EXPECT_EQ(strcpy(buffer, "abcdefgh"), buffer);
+    EXPECT_EQ(memmove(buffer + 2, buffer, 3), buffer + 2);  
+    EXPECT_TRUE(strncmp(buffer, "abab", 4) EQU);
+    EXPECT_TRUE(strcmp(buffer, "ababcfgh") EQU);
+END_DECL
+BEGIN_DECL
+    char largeSrc[BUFFER_SIZE_1K];
+    char largeDest[BUFFER_SIZE_1K];
+    memset(largeSrc, 'X', BUFFER_SIZE_1K - 1);
+    largeSrc[BUFFER_SIZE_1K - 1] = '\0';
+    EXPECT_EQ(memmove(largeDest, largeSrc, BUFFER_SIZE_1K), largeDest);
+    EXPECT_TRUE(strcmp(largeDest, largeSrc) EQU);
 END_DECL
 }

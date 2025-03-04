@@ -201,3 +201,24 @@ void* memcpy(void *restrict dest, const void *restrict src, size_t count){
         *__dest = *__src;
     return (void*)dest;
 }
+/**
+ * Copies count characters from the object pointed to by src to the object pointed to by dest.
+ * The object may be overlap !
+ */
+void* memmove(void* dest, const void* src, size_t count){
+    if ((dest == src) || !count)
+        return dest;
+    unsigned char* __dest = dest;
+    const unsigned char * __src = src;
+    // without overlap just call memcpy
+    if ((__dest < __src) || (__dest >= (__src + count)))
+        memcpy(dest, src, count);
+    else{ 
+        // with overlap copy backwards
+        __dest += count;
+        __src += count;
+        for (; count; --count)
+            *(--__dest) = *(--__src);
+    }
+    return dest;
+}
