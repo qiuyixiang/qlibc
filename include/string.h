@@ -57,6 +57,8 @@ extern "C" {
 // String manipulation
 char* strcpy(char *restrict dest, const char *restrict src);
 char* strncpy(char *restrict dest, const char *restrict src, size_t count);
+char *strcat(char *restrict dest, const char *restrict src);
+char *strncat(char *restrict dest, const char *restrict src, size_t count);
 
 // String examination
 size_t strlen(const char* str);

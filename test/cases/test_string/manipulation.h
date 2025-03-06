@@ -3,7 +3,7 @@
 
 /**
  * Test String manipulation
- * Functions: strcpy, strncpy
+ * Functions: strcpy, strncpy, strcat, strncat
  */
 
 // Test for strcpy
@@ -90,5 +90,140 @@ BEGIN_DECL
     EXPECT_EQ(dest[6], NULL_TERMINATOR);
     EXPECT_EQ(dest[8], NULL_TERMINATOR);
     EXPECT_EQ(dest[10], 'X');
+END_DECL
+}
+// Test for strcat
+SUB_TEST_CASE(strcat){
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Hello ";
+    const char src[] = "World";
+    EXPECT_EQ(strcat(buffer, src), buffer);
+    EXPECT_EQ(strcmp(buffer, "Hello World"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Hello";
+    char *result = strcat(buffer, " World");
+    EXPECT_TRUE(result == buffer);
+    EXPECT_EQ(strcmp(buffer, "Hello World"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Test";
+    char *result = strcat(buffer, "");
+    EXPECT_TRUE(result == buffer);
+    EXPECT_EQ(strcmp(buffer, "Test"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "";
+    char *result = strcat(buffer, "Append");
+    EXPECT_TRUE(result == buffer);
+    EXPECT_EQ(strcmp(buffer, "Append"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Start";
+    strcat(buffer, " Middle");
+    strcat(buffer, " End");
+    EXPECT_EQ(strcmp(buffer, "Start Middle End"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Safe";
+    strcat(buffer, "!");
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "A";
+    strcat(buffer, " B");
+    strcat(buffer, " C");
+    strcat(buffer, " D");
+    strcat(buffer, " E");
+    EXPECT_EQ(strcmp(buffer, "A B C D E"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+}
+// Test for strncat
+SUB_TEST_CASE(strncat){
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Hello";
+    EXPECT_EQ(strncat(buffer, " WW world", 3), buffer);
+    EXPECT_EQ(strcmp(buffer, "Hello WW"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Hello";
+    char * result = strncat(buffer, " World", 10);
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "Hello World"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Test";
+    memset(&buffer[strlen(buffer) + 1], 0x44, 20);
+    EXPECT_EQ(strcmp(buffer, "Test"), 0);
+    EXPECT_EQ(buffer[4], NULL_TERMINATOR);
+    EXPECT_EQ(buffer[5], 0x44);
+    char * result = strncat(buffer, "123456", 3); 
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "Test123"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "CS";
+    char * result = strncat(buffer, "50", BUFFER_SIZE_S);
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "CS50"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Keep";
+    char * result = strncat(buffer, "", 5);
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "Keep"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "";
+    char * result = strncat(buffer, "Data", 10);
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "Data"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Safe";
+    strncat(buffer, "!", 1);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR); 
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "A";
+    EXPECT_EQ(strncat(buffer, " B", 2), buffer);
+    EXPECT_EQ(strncat(buffer, " C", 2), buffer);
+    EXPECT_EQ(strncat(buffer, " D", 2), buffer);
+    EXPECT_EQ(strncat(buffer, " E", 2), buffer);
+    EXPECT_EQ(strcmp(buffer, "A B C D E"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    char buffer[BUFFER_SIZE_S] = "Static";
+    char * result = strncat(buffer, "Check", 0);
+    EXPECT_EQ(result, buffer);
+    EXPECT_EQ(strcmp(buffer, "Static"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+END_DECL
+BEGIN_DECL
+    // Special cases ensure that the appended string always ends with '\0'
+    char buffer[BUFFER_SIZE_S];
+    // Make sure the memory is disrupted
+    memset(buffer, 0x44, BUFFER_SIZE_S);
+    buffer[0] = 'A';
+    buffer[1] = NULL_TERMINATOR;
+    EXPECT_EQ(strcmp(buffer, "A"), 0);
+    EXPECT_EQ(strncat(buffer, "1234567", 4), buffer);
+    EXPECT_EQ(strcmp(buffer, "A1234"), 0);
+    EXPECT_EQ(buffer[strlen(buffer)], NULL_TERMINATOR);
+    EXPECT_EQ(buffer[strlen(buffer) + 1], 0x44);
+    EXPECT_EQ(buffer[strlen(buffer) + 2], 0x44);
 END_DECL
 }

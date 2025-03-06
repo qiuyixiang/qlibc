@@ -23,6 +23,8 @@ TEST_CASE(string){
     // Test String manipulation
     RUN_SUB_CASE(strcpy);
     RUN_SUB_CASE(strncpy);
+    RUN_SUB_CASE(strcat);
+    RUN_SUB_CASE(strncat);
 
     // Test String examination
     RUN_SUB_CASE(strlen);

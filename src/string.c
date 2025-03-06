@@ -35,7 +35,6 @@
 char* strcpy(char *restrict dest, const char *restrict src){
     return (char *)memcpy(dest, src, strlen(src) + 1);
 }
-
 /**
  * Copies at most count characters of the character array pointed to by src 
  * to character array pointed to by dest. 
@@ -53,7 +52,30 @@ char* strncpy(char *restrict dest, const char *restrict src, size_t count){
     }
     return (char *)dest;
 }
-
+/**
+ * Appends a copy of the null-terminated byte string pointed to by src to the end of
+ * the null-terminated byte string pointed to by dest. 
+ * The character src[0] replaces the null terminator at the end of dest.
+ */
+char *strcat(char *restrict dest, const char *restrict src){
+    strcpy(dest + strlen(dest), src);
+    return dest;
+}
+/**
+ * Appends at most count characters from the character array pointed to by src,'
+ * stopping if the null character is found, to the end of the null-terminated byte string pointed to by dest. 
+ * The terminating null character is always appended in the end.
+ * (so the maximum number of bytes the function may write is count+1).
+ */
+char *strncat(char *restrict dest, const char *restrict src, size_t count){
+    size_t _dest_len = strlen(dest);
+    size_t _src_len = strlen(src);
+    size_t _write_count = (count < _src_len) ? count : _src_len;
+    
+    memcpy(dest + _dest_len, src, _write_count);
+    dest[_dest_len + _write_count] = NULL_TER;
+    return dest;
+}
 // String examination
 
 /**
