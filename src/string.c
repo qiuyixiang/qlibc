@@ -23,6 +23,7 @@
  */
 #include <string.h>
 // Implementation of C String library
+#define NULL_TER    '\0'
 
 // String manipulation
 
@@ -48,7 +49,7 @@ char* strncpy(char *restrict dest, const char *restrict src, size_t count){
         memcpy(dest, src, count);
     else{
         memcpy(dest, src, len_src);
-        memset(dest + len_src, '\0', count - len_src);
+        memset(dest + len_src, NULL_TER, count - len_src);
     }
     return (char *)dest;
 }
@@ -96,7 +97,7 @@ char* strchr(const char* str, int ch){
     for (; *str ; ++str)
         if (*(unsigned char *)str == (unsigned char)ch)
             return (char *)str;
-    return (ch == '\0') ? (char *)str : NULL;
+    return (ch == NULL_TER) ? (char *)str : NULL;
 }
 // Finds the last occurrence of ch in the null-terminated byte string
 char* strrchr(const char* str, int ch){
@@ -104,7 +105,7 @@ char* strrchr(const char* str, int ch){
     for (; *str; ++str)
         if (*(unsigned char *)str == (unsigned char)ch)
             __last = str;
-    return (ch == '\0') ? (char *)str : (char *)__last;
+    return (ch == NULL_TER) ? (char *)str : (char *)__last;
 }
 /**
  * Returns the length of the maximum initial segment in dest,
@@ -147,18 +148,53 @@ char *strpbrk(const char *dest, const char *breakset){
  */
 /// TODO: Optimize algorithm use KMP or BM
 char* strstr(const char* str, const char* substr){
-    if (*substr == '\0')
+    if (*substr == NULL_TER)
         return (char *)str;
     for (; *str; ++str){
         if (*str == *substr){
             const char * __accept = str;
             const char * __substr = substr;
             for (;*__substr && (*__substr == *__accept); ++__substr, ++__accept);
-            if (*__substr == '\0')
+            if (*__substr == NULL_TER)
                 return (char *)str;
         }
     }
     return NULL;
+}
+/**
+ * A sequence of calls to strtok breaks the string pointed to by str into 
+ * a sequence of tokens, each of which is delimited by a character from the 
+ * string pointed to by delim.
+ * - If str is non-null the call is the first call in the sequence
+ * - If str is null the call is one of the subsequent calls in the sequence,
+ *   the search target is determined by the previous call in the sequence
+ */
+char* strtok(char* restrict str, const char* restrict delim){
+    /**
+     * Because this function has a local status it is not a 
+     * thread-safe function !
+     */ 
+    static char * _last_saved_ptr = NULL;
+    if (str)
+        _last_saved_ptr = str;
+    else if (!_last_saved_ptr)
+        return NULL;
+    // Jump font invalid character
+    str = _last_saved_ptr + strspn(_last_saved_ptr, delim);
+    // If reach at the end of the string then finish tokenize
+    if (!(*str))
+        return NULL;
+    // Calculate the offset of valid character
+    size_t _offset = strcspn(str, delim);
+    // Update the _last_saved_ptr to the next position
+    _last_saved_ptr = str + _offset;
+    // If already reached to the end of the string
+    if (*_last_saved_ptr != NULL_TER){
+        *_last_saved_ptr = NULL_TER;
+        ++_last_saved_ptr;
+    }else
+        _last_saved_ptr = NULL;
+    return str;
 }
 
 // Character array manipulation
@@ -210,7 +246,7 @@ void* memmove(void* dest, const void* src, size_t count){
         return dest;
     unsigned char* __dest = dest;
     const unsigned char * __src = src;
-    // without overlap just call memcpy
+    // without overlap just call memcpy (if dest not in range (src, src + count])
     if ((__dest < __src) || (__dest >= (__src + count)))
         memcpy(dest, src, count);
     else{ 

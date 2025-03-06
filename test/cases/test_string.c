@@ -37,6 +37,7 @@ TEST_CASE(string){
     RUN_SUB_CASE(strcspn);
     RUN_SUB_CASE(strpbrk);
     RUN_SUB_CASE(strstr);
+    RUN_SUB_CASE(strtok);
 
     // Test Character array manipulation
     RUN_SUB_CASE(memchr);

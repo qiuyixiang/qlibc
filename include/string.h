@@ -25,6 +25,9 @@
 #ifndef _QLIBC_STRING_H
 #define _QLIBC_STRING_H
 
+// All features in string form ANSI/ISO C99 Should be implemented in 
+// qlibc version 0.1
+
 // Undefine all macros to avoid conflict
 #undef strlen
 #undef strcmp
@@ -33,9 +36,12 @@
 #undef strrchr
 #undef strspn
 #undef strcspn
+
 #undef memchr
 #undef memcmp
 #undef memset
+#undef memcpy
+#undef memmove
 
 #ifndef __cplusplus
 #define NULL ((void*)0)
@@ -67,6 +73,7 @@ size_t strspn(const char* dest, const char* src);
 size_t strcspn(const char *dest, const char *src);
 char* strpbrk(const char *dest, const char *breakset);
 char* strstr(const char* str, const char* substr);
+char* strtok(char* restrict str, const char* restrict delim);
 
 // Character array manipulation
 void* memchr(const void* ptr, int ch, size_t count);

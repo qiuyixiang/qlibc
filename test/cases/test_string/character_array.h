@@ -2,7 +2,7 @@
 #include "test_string.h"
 
 /**
- * Test Character array manipulation
+ * Test Character array manipulation.
  * Functions: memchr, memcmp, memset, memcpy, memmove
  */
 

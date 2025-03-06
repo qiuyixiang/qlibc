@@ -4,7 +4,7 @@
 /**
  * Test String examination 
  * Functions: strlen, strcmp, strncmp, strcoll, strchr, strrchr
- *            strspn, strcspn, strpbrk, strstr
+ *            strspn, strcspn, strpbrk, strstr, strtok
 */              
 
 // Test for strlen
@@ -293,4 +293,190 @@ END_DECL
     EXPECT_EQ(strstr("abcdef", "z"), NULL);
     EXPECT_EQ(strstr("abc", "abcdef"), NULL);
 }
+// Test for strtok
+SUB_TEST_CASE(strtok){
+BEGIN_DECL
+    char str[] = "hello,world";
+    char *token = strtok(str, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "hello") EQU);
+
+    token = strtok(NULL, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "world") EQU);
+
+    EXPECT_TRUE(strcspn("world", ",") == 5);
+    token = strtok(NULL, ",");
+    EXPECT_EQ(token, NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = "hello,,world";
+    char *token = strtok(str, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "hello") EQU);
+
+    token = strtok(NULL, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "world") EQU); 
+
+    token = strtok(NULL, ",");
+    EXPECT_EQ(token, NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = "hello,world,";
+    char *token = strtok(str, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "hello") EQU);
+
+    token = strtok(NULL, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "world") EQU);
+
+    token = strtok(NULL, ",");
+    EXPECT_EQ(token, NULL); 
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = ",,,";
+    char *token = strtok(str, ",");
+    EXPECT_EQ(token, NULL); 
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = "";
+    char *token = strtok(str, ",");
+    EXPECT_EQ(token, NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = "hello";
+    char *token = strtok(str, ",");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "hello") EQU);
+
+    token = strtok(NULL, ",");
+    EXPECT_EQ(token, NULL);
+    EXPECT_EQ((token = strtok(NULL, ",")), NULL);
+END_DECL
+BEGIN_DECL
+    char buffer[] = "abc abc abc";
+    const char * delim = " ";
+    char * token;
+    token = strtok(buffer, delim);
+    EXPECT_EQ(token, &buffer[0]);
+    EXPECT_TRUE(strcmp(token, "abc") EQU);
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[4]);
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[8]);
+    EXPECT_EQ((token = strtok(NULL, delim)), NULL);
+    char expected[BUFFER_SIZE_S];
+
+    EXPECT_EQ(sizeof(buffer), 12);
+    EXPECT_EQ(memcpy(expected, buffer, sizeof(buffer)), &expected[0]);
+    EXPECT_TRUE(memcmp(buffer, expected, sizeof(buffer)) EQU);
+
+    expected[4] = NULL_TERMINATOR;
+    expected[7] = NULL_TERMINATOR;
+    expected[11] = NULL_TERMINATOR;
+    // Whatever the count is equal 0 if one of lhs or rhs equals NULL the 
+    // compare will stop !
+    EXPECT_TRUE(strncmp(buffer, expected, sizeof(buffer)) EQU);
+    expected[3] = NULL_TERMINATOR;
+    expected[4] = 'a';
+    EXPECT_TRUE(memcmp(expected, buffer, sizeof(buffer)) EQU);
+    // after all strtok the buffer will be changed to "abc\0abc\0abc\0"
+    EXPECT_TRUE(memcmp(buffer, "abc\0abc\0abc", sizeof(buffer)) EQU);
+END_DECL
+BEGIN_DECL
+    char buffer[] = "This is, a full sentence ! And with : ? !";
+    const char * delim = "!?:, .";
+    char * token;
+
+    EXPECT_EQ((token = strtok(buffer, delim)), &buffer[0]);
+    EXPECT_TRUE(strcmp(token, "This") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[5]);
+    EXPECT_TRUE(strcmp(token, "is") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[9]);
+    EXPECT_TRUE(strcmp(token, "a") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[11]);
+    EXPECT_TRUE(strcmp(token, "full") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[16]);
+    EXPECT_TRUE(strcmp(token, "sentence") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[27]);
+    EXPECT_TRUE(strcmp(token, "And") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), &buffer[31]);
+    EXPECT_TRUE(strcmp(token, "with") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, delim)), NULL);
+    EXPECT_EQ((token = strtok(NULL, delim)), NULL);
+END_DECL
+BEGIN_DECL
+    char str[] = "hello, world!test";
+    char *token = strtok(str, ", !");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "hello") EQU);
+
+    token = strtok(NULL, ", !");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "world") EQU);
+
+    token = strtok(NULL, ", !");
+    EXPECT_TRUE(token != NULL);
+    EXPECT_TRUE(strcmp(token, "test") EQU);
+
+    token = strtok(NULL, ", !");
+    EXPECT_EQ(token, NULL);
+    EXPECT_EQ((token = strtok(NULL, ", !")), NULL);
+END_DECL
+BEGIN_DECL
+    char str1[] = "one,two,three";
+    char str2[] = "apple orange banana";
     
+    char *token1 = strtok(str1, ",");
+    EXPECT_TRUE(token1 != NULL);
+    EXPECT_TRUE(strcmp(token1, "one") EQU);
+
+    // The previous status on str1 has broken
+    char *token2 = strtok(str2, " ");
+    EXPECT_TRUE(token2 != NULL);
+    EXPECT_TRUE(strcmp(token2, "apple") EQU);
+
+    token1 = strtok(NULL, ",");
+    EXPECT_TRUE(token1 != NULL);
+    EXPECT_TRUE(strcmp(token1, "orange banana") EQU);
+
+    token2 = strtok(NULL, " ");
+    EXPECT_EQ(token2, NULL);
+    EXPECT_EQ((token2 = strtok(NULL, " ")), NULL);
+END_DECL
+BEGIN_DECL
+    // Tokenize with different deliminator
+    char buffer[] = "abcd efgh? ijk; e";
+    char * token = NULL;
+
+    EXPECT_EQ((token = strtok(buffer, " ")), &buffer[0]);
+    EXPECT_TRUE(strcmp(token, "abcd") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, "?")), &buffer[5]);
+    EXPECT_TRUE(strcmp(token, "efgh") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), &buffer[11]);
+    EXPECT_TRUE(strcmp(token, "ijk;") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), &buffer[16]);
+    EXPECT_TRUE(strcmp(token, "e") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), NULL);
+    EXPECT_TRUE(memcmp(buffer, "abcd\0efgh\0 ijk;\0e", sizeof(buffer)) EQU);
+END_DECL
+}
