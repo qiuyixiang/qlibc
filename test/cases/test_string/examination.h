@@ -364,6 +364,32 @@ BEGIN_DECL
     EXPECT_EQ((token = strtok(NULL, ",")), NULL);
 END_DECL
 BEGIN_DECL
+    /// This test case will explore the internal implementation
+    /// of strtok function
+    char buffer[] = "   abc  abc abc   abc ";
+    char * token = NULL;
+
+    EXPECT_EQ((token = strtok(buffer, " ")), &buffer[3]);
+    EXPECT_TRUE(strcmp(token, "abc") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), &buffer[8]);
+    EXPECT_TRUE(strcmp(token, "abc") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), &buffer[12]);
+    EXPECT_TRUE(strcmp(token, "abc") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), &buffer[18]);
+    EXPECT_TRUE(strcmp(token, "abc") EQU);
+
+    EXPECT_EQ((token = strtok(NULL, " ")), NULL);
+    EXPECT_EQ((token = strtok(NULL, " ")), NULL);
+
+    /// This cases expose that strtok will only fill '\0' in the back
+    /// of the target character and just skip front invalid character
+    const char expected[] = "   abc\0 abc\0abc\0  abc\0";
+    EXPECT_TRUE(memcmp(expected, buffer, sizeof(buffer)) EQU);
+END_DECL
+BEGIN_DECL
     char buffer[] = "abc abc abc";
     const char * delim = " ";
     char * token;
