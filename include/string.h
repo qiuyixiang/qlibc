@@ -43,6 +43,7 @@
 #undef memcpy
 #undef memmove
 
+// Type define for string.h
 #ifndef __cplusplus
 #define NULL ((void*)0)
 #else
@@ -54,6 +55,7 @@ typedef unsigned long   size_t;
 #ifdef __cplusplus
 extern "C" { 
 #endif
+
 // String manipulation
 char* strcpy(char *restrict dest, const char *restrict src);
 char* strncpy(char *restrict dest, const char *restrict src, size_t count);
@@ -87,6 +89,12 @@ int memcmp(const void* lhs, const void* rhs, size_t count);
 void* memset(void *dest, int ch, size_t count);
 void* memcpy(void *restrict dest, const void *restrict src, size_t count);
 void* memmove(void* dest, const void* src, size_t count);
+
+// Miscellaneous
+#if (defined(QLIBC_POSIX_FINISH)) && (QLIBC_POSIX_FINISH == 1)
+// Not implemented yet (need for Unix POSIX)
+char* strerror(int errnum);
+#endif
 
 #ifdef __cplusplus
 }

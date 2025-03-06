@@ -286,3 +286,9 @@ void* memmove(void* dest, const void* src, size_t count){
     }
     return dest;
 }
+
+// Miscellaneous
+#if (defined(QLIBC_POSIX_FINISH)) && (QLIBC_POSIX_FINISH == 1)
+// Not implemented yet (need for Unix POSIX)
+char* strerror(int errnum) { }
+#endif
