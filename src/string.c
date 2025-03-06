@@ -76,6 +76,12 @@ char *strncat(char *restrict dest, const char *restrict src, size_t count){
     dest[_dest_len + _write_count] = NULL_TER;
     return dest;
 }
+
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+#error "Not implement strxfrm in string library"
+size_t strxfrm(char *restrict dest, const char *restrict src, size_t count);
+#endif
+
 // String examination
 
 /**
@@ -110,7 +116,7 @@ int strncmp(const char* lhs, const char* rhs, size_t count){
 }
 
 #if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
-#error "Not implement strcoll for local yet !"
+#error "Not implement strcoll in string library"
 int strcoll(const char* lhs, const char* rhs) { }
 #endif
 
@@ -159,7 +165,7 @@ size_t strcspn(const char *dest, const char *src){
  *  from the null-terminated byte string pointed to by breakset,
  *  and returns a pointer to that character.
  */
-char *strpbrk(const char *dest, const char *breakset){
+char* strpbrk(const char *dest, const char *breakset){
     dest += strcspn(dest, breakset);
     return *dest ? (char *)dest : NULL;
 }

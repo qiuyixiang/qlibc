@@ -39,7 +39,7 @@
 
 // Macro for specify whether qlibc is finished
 #define FINISH                      0
-// Current the qlibc doesn't support for unicode encoding
+// Current Version of the qlibc doesn't support for unicode encoding
 #define QLIBC_WCHAR_SUPPORT         0
 
 // Macros for the qlibc library version

@@ -227,3 +227,9 @@ BEGIN_DECL
     EXPECT_EQ(buffer[strlen(buffer) + 2], 0x44);
 END_DECL
 }
+// Test for strxfrm
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+SUB_TEST_CASE(strxfrm){
+    static_assert(0, "Need Test cases for strxfrm !");
+}
+#endif

@@ -75,7 +75,9 @@ SUB_TEST_CASE(strncmp){
 }
 // Test for strcoll
 #if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
-SUB_TEST_CASE(strcoll){ }
+SUB_TEST_CASE(strcoll){
+    static_assert(0, "Need Test cases for strcoll !");
+}
 #endif
 // Test for strchr
 SUB_TEST_CASE(strchr){

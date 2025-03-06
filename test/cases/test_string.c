@@ -25,6 +25,9 @@ TEST_CASE(string){
     RUN_SUB_CASE(strncpy);
     RUN_SUB_CASE(strcat);
     RUN_SUB_CASE(strncat);
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+    RUN_SUB_CASE(strxfrm);
+#endif
 
     // Test String examination
     RUN_SUB_CASE(strlen);

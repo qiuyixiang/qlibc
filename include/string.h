@@ -60,6 +60,10 @@ char* strncpy(char *restrict dest, const char *restrict src, size_t count);
 char *strcat(char *restrict dest, const char *restrict src);
 char *strncat(char *restrict dest, const char *restrict src, size_t count);
 
+#if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
+size_t strxfrm(char *restrict dest, const char *restrict src, size_t count);
+#endif
+
 // String examination
 size_t strlen(const char* str);
 int strcmp(const char* lhs, const char* rhs);
