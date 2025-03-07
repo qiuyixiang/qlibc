@@ -31,6 +31,10 @@ TEST_CASE(stddef){
     EXPECT_TRUE(BITS(ptrdiff_t) >= 17);
     EXPECT_EQ(NULL, 0);
     EXPECT_TRUE(sizeof(max_align_t) >= sizeof(long double));
+#if (defined(TEST_WORD)) && (TEST_WORD == BITS64)
+    // maximum alignment in x86_64 should return 16 bytes
+    EXPECT_EQ(sizeof(max_align_t), 16);
+#endif
     EXPECT_TRUE(BITS(size_t) >= 16);
 
     EXPECT_EQ(offsetof(unpacked, _CHAR), 0);
