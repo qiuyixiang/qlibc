@@ -23,7 +23,7 @@
 # All variables declared here
 
 # Target Architecture 
-ARCH 			:=		x86_64
+ARCH 			:=		i386
 # Library build information
 LIB				:=		qlibc
 VERSION			:=		0.1

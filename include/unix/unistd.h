@@ -23,4 +23,25 @@
  */
 
 // This Header Provide API for Unix POSIX System
+#ifndef _QLIBC_UNISTD_H
+#define _QLIBC_UNISTD_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// File Descriptor Index
+#define STDIN_FILENO        0
+#define STDOUT_FILENO       1
+#define STDERR_FILENO       2
+
+// File IO Functions
+extern int close(int fd);
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

@@ -105,7 +105,7 @@ $(BUILD_DIR)/$(STDIO_UNIT).o:	$(CASES_STDIO_DEP)
 # Special Rule define for test unistd
 UNISTD_UNIT				:=		test_unistd
 TEST_UNISTD_DIR			:=		$(TEST_DIR)/$(UNISTD_UNIT)
-CASES_UNISTD_DEP		:=		
+CASES_UNISTD_DEP		:=		$(TEST_UNISTD_DIR)/types.h
 $(BUILD_DIR)/$(UNISTD_UNIT).o:	$(CASES_UNISTD_DEP)
 
 # General Rules for build test cases file
