@@ -30,8 +30,12 @@ VERSION			:=		0.1
 METHOD			:=		static
 # Debugger flag
 DEBUG			:=		false
+
 # Compiler and toolchain
-TOOL_CHAIN		:=		
+# Undefine this macro and add value when you want use 
+# cross compiler
+# TOOL_CHAIN		:=		x86_64-elf
+
 # C ANSI/ISO standard version
 STD				:=		11
 # Verbose Display

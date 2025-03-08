@@ -26,8 +26,8 @@
 include ./config/config.mk
 
 # Tool Configuration
-CC					:=		gcc
-AR					:=		ar
+CC					:=		$(TOOL_CHAIN)-gcc
+AR					:=		$(TOOL_CHAIN)-ar
 
 # Path Relative Variable
 SOURCE_DIR			:=		./src
@@ -43,6 +43,9 @@ INCLUDE_ARCH_DIR	:=		$(ARCH_DIR)/$(ARCH)
 ifdef V
 VERBOSE				:=		$(V)
 endif
+
+# Macro for Host OS
+HOST_OS				:=		$(shell uname)
 
 # GNU C Compiler Flags
 
@@ -109,9 +112,9 @@ OBJ_LIST			:=		$(ALL_SRC_LIST:.c=.o)
 OBJ_LIST			:=		$(addprefix $(OBJ_DIR)/, $(notdir $(OBJ_LIST)))
 
 .DEFAULT_GOAL		:=	all
-.PHONY				:=	clean check_obj test lib install
+.PHONY				:=	clean check_obj test lib install check_arch
 
-all: lib
+all: check_arch lib
 
 # Build the qlibc library
 lib: check_obj info $(OBJ_LIST)
@@ -124,9 +127,11 @@ else
 	@echo "+ AR\t\tlib$(LIB)-$(VERSION).a"
 endif
 # Build for dynamic library
+
 endif
 	@echo "Successfully build the $(METHOD) library in : $(BUILD_DIR)/lib$(LIB)-$(VERSION).a\n"
 
+# Show Qlibc Version Information
 info:
 	@echo "Qlibc A light-weighted C Standard Library Which is fully portable to any system."
 	@echo "Current build Version: $(VERSION)"
@@ -142,9 +147,19 @@ clean:
 	@rm -rf	$(BUILD_DIR)
 	@$(MAKE) -C $(TEST_DIR) clean
 
+# Architecture Compatible Check for Host OS
+check_arch:
+ifeq ($(HOST_OS), Darwin)
+ifneq ($(ARCH), aarch64)
+ifndef TOOL_CHAIN
+	$(error Your Host OS is incompatible with target arch $(ARCH) \
+	please configure TOOL_CHAIN in config/config.mk)
+endif
+endif
+endif
+
 # install target
 install: lib
-
 
 # Build objs in src/*.c
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c

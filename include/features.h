@@ -52,7 +52,7 @@
 // Macros for POSIX Consistency
 #define QLIBC_POSIX_FINISH          0
 
-/// Compatible with glibc features when qlibc is not finished
+// Compatible with glibc features when qlibc is not finished
 #if (defined(FINISH)) && (FINISH == 0) && (defined(__linux__))
 #include </usr/include/features.h>
 #endif
