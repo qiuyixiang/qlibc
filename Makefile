@@ -65,9 +65,14 @@ CC_ENVIRONMENT		:=
 # FSE_CPP				:=		-nostdinc
 FSE_CC				:=		-ffreestanding -fno-builtin
 CC_ENVIRONMENT		+=		$(FSE_CPP) $(FSE_CC)
+
 # Options for Preprocessor
+# Include Search Directory List: 
+#		include/ 	include/unix	arch/ARCH
 CC_INCLUDES			:=		
-CC_INCLUDES			+=		-I $(INCLUDE_DIR) -I $(INCLUDE_ARCH_DIR)
+CC_INCLUDES			+=		-I $(INCLUDE_DIR)
+CC_INCLUDES			+=		-I $(INCLUDE_ARCH_DIR)
+CC_INCLUDES			+=		-I $(INCLUDE_DIR)/unix
 # Options for Architecture
 CC_ARCH				:=		
 ifeq ($(ARCH), i386)
@@ -137,7 +142,17 @@ clean:
 	@rm -rf	$(BUILD_DIR)
 	@$(MAKE) -C $(TEST_DIR) clean
 
+# Build objs in src/*.c
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c
+ifeq ($(VERBOSE), 1)
+	$(CC) $(CC_FLAGS) -c $< -o $@
+else
+	@$(CC) $(CC_FLAGS) -c $< -o $@
+	@echo "+ CC\t\t$(notdir $<)"
+endif
+
+# Build objs in arch/*.c
+$(OBJ_DIR)/%.o: $(ARCH_DIR)/$(ARCH)/%.c
 ifeq ($(VERBOSE), 1)
 	$(CC) $(CC_FLAGS) -c $< -o $@
 else

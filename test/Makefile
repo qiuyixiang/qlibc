@@ -35,12 +35,22 @@ BUILD_DIR			:=		./build
 TEST_ARCH			:=		$(ARCH)
 
 # GNU C Compiler Flags
+# Import from outer Makefile
+# CC_WARNING CC_OPTIMIZER CC_DEBUGGER CC_ARCH
+
+# GNU GCC Warning flags
 CC_WARNING			+=		-Wno-unused-parameter
+# GNU GCC Environment flags
 CC_ENVIRONMENT		:=		-fno-builtin
+# GNU GCC Macros flags
 CC_MACROS			:=		
 CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
 CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
-CC_INCLUDES			:=		-isystem $(INCLUDE_DIR) -isystem $(INCLUDE_ARCH_DIR)
+# GNU GCC Includes flags
+CC_INCLUDES			:=		
+CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)
+CC_INCLUDES			+=		-isystem $(INCLUDE_ARCH_DIR)
+CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)/unix
 
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) $(CC_ENVIRONMENT)
@@ -91,6 +101,12 @@ STDIO_UNIT				:=		test_stdio
 TEST_STDIO_DIR			:=		$(TEST_DIR)/$(STDIO_UNIT)
 CASES_STDIO_DEP			:=	
 $(BUILD_DIR)/$(STDIO_UNIT).o:	$(CASES_STDIO_DEP)
+
+# Special Rule define for test unistd
+UNISTD_UNIT				:=		test_unistd
+TEST_UNISTD_DIR			:=		$(TEST_DIR)/$(UNISTD_UNIT)
+CASES_UNISTD_DEP		:=		
+$(BUILD_DIR)/$(UNISTD_UNIT).o:	$(CASES_UNISTD_DEP)
 
 # General Rules for build test cases file
 $(BUILD_DIR)/%.o : $(TEST_DIR)/%.c

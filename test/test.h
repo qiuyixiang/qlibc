@@ -145,9 +145,11 @@ extern TEST_CASE(stdalign);
 extern TEST_CASE(stdnoreturn);
 extern TEST_CASE(stdint);
 extern TEST_CASE(limits);
+extern TEST_CASE(string);
+extern TEST_CASE(unistd);
+
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
-extern TEST_CASE(string);
 
 #define RUN_ALL_TEST()          \
         RUN_TEST(assert);       \
@@ -158,7 +160,8 @@ extern TEST_CASE(string);
         RUN_TEST(stdnoreturn);  \
         RUN_TEST(stdint);       \
         RUN_TEST(limits);       \
-        RUN_TEST(string)
+        RUN_TEST(string);       \
+        RUN_TEST(unistd);
 
 #ifdef assert
 #undef assert
