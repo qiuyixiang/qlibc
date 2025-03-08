@@ -22,6 +22,14 @@
  *  SOFTWARE.
  */
 
-// Implementation of Low-Level Unix unistd
+// Implementation of Low-Level function declared in unistd for i386
 
 #include <bits/syscall.h>
+#include <unistd.h>
+
+POSIX_API ssize_t write(int fd, const void *buf, size_t count){
+    return __syscall3(__NR_write, (u32)fd, (u32)buf, (u32)count);
+}
+POSIX_API ssize_t read(int fd, void *buf, size_t count){
+    return __syscall3(__NR_read, (u32)fd, (u32)buf, (u32)count);
+}

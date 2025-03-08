@@ -90,6 +90,10 @@
 #define TEST_WORD       NON_WORD_SIZE
 #endif
 
+// Test Configuration Argument
+
+// Test Interactive (Explicit Output) Test flag
+#define TEST_INTERACTIVE                0
 
 /// Only main.c needs these interfaces
 #ifdef MAIN_TEST

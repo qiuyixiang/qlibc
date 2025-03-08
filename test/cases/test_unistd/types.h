@@ -2,9 +2,20 @@
 #include "../../test.h"
 #include <unistd.h>
 
+#define BITS(TYPE)  sizeof(TYPE) * 8
+
 SUB_TEST_CASE(unistd_types){
     // Test file number
     EXPECT_EQ(STDIN_FILENO, 0);
     EXPECT_EQ(STDOUT_FILENO, 1);
     EXPECT_EQ(STDERR_FILENO, 2);
+    // Test ssize_t
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(BITS(ssize_t), 32);
+    EXPECT_EQ(BITS(size_t), 32);
+#elif (TEST_WORD == BITS64)
+    EXPECT_EQ(BITS(ssize_t), 64);
+    EXPECT_EQ(BITS(size_t), 64);
+#endif
+
 }

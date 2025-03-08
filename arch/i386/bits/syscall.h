@@ -47,6 +47,7 @@
 // System call Instruction in i386 linux
 #define __ASM__             __asm__ __volatile__
 #define SYSTEMCALL_PREFIX   static inline
+#define POSIX_API
 
 typedef signed long             i32;
 typedef unsigned long           u32;

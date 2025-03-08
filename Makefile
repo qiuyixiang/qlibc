@@ -109,7 +109,7 @@ OBJ_LIST			:=		$(ALL_SRC_LIST:.c=.o)
 OBJ_LIST			:=		$(addprefix $(OBJ_DIR)/, $(notdir $(OBJ_LIST)))
 
 .DEFAULT_GOAL		:=	all
-.PHONY				:=	clean check_obj test lib
+.PHONY				:=	clean check_obj test lib install
 
 all: lib
 
@@ -141,6 +141,10 @@ check_obj:
 clean:
 	@rm -rf	$(BUILD_DIR)
 	@$(MAKE) -C $(TEST_DIR) clean
+
+# install target
+install: lib
+
 
 # Build objs in src/*.c
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c
