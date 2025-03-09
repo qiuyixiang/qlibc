@@ -76,11 +76,16 @@ typedef unsigned long           u32;
 #define __NR_lseek		            19
 #define __NR_getpid		            20
 
+#include <errno.h>
 // Unified Error Checking
 // This function will make sure that errno contain correct value
 SYSTEMCALL_PREFIX i32 __syscall_ret(u32 _ret){
 #ifdef _QLIBC_ERRNO_H
-
+    if ((i32)_ret < 0){
+        errno = -(i32)_ret;
+        return -1;
+    }
+    return (i32)_ret;
 #else
     return (i32)_ret;
 #endif

@@ -51,4 +51,8 @@ TEST_CASE(error){
     EXPECT_EQ(EDOM, 33);
     EXPECT_EQ(ERANGE, 34);
 #endif
+
+#if (defined(TEST_ARCH)) && (TEST_ARCH == aarch64)
+/// Not Implement Yet !
+#endif
 }
