@@ -43,8 +43,14 @@
 #define QLIBC_WCHAR_SUPPORT         0
 
 // Macros for the qlibc library version
+// for qlibc version 0.1 0.2 1.0
+#define _QLIBC_01_                  1
+#define _QLIBC_02_                  2
+#define _QLIBC_10_                  10
+
+// The default version is 0.1
 #ifndef QLIBC_VERSION
-#define _QLIBC_VERSION_             0.1
+#define _QLIBC_VERSION_             _QLIBC_01_
 #else
 #define _QLIBC_VERSION_             QLIBC_VERSION     
 #endif

@@ -23,11 +23,17 @@
 # All variables declared here
 
 # Target Architecture 
+# Current Support Architecture : i386, x86_64
 ARCH 			:=		i386
+
 # Library build information
 LIB				:=		qlibc
 VERSION			:=		0.1
+
+# Library Build Method 
+# Current Support Method : static
 METHOD			:=		static
+
 # Debugger flag
 DEBUG			:=		false
 
@@ -38,5 +44,6 @@ DEBUG			:=		false
 
 # C ANSI/ISO standard version
 STD				:=		11
+
 # Verbose Display
 VERBOSE			:=		0

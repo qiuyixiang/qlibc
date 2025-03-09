@@ -139,7 +139,7 @@
                                 "be ignored !\n"                                                \
                                 "Host Machine Architecture: " HOST_MACHINE   "\n"               \
                                 "Test Machine Architecture: " QLIBC_ARCH_STR "\n\n",            \
-                                _QLIBC_VERSION_)
+                                (double)_QLIBC_VERSION_ / 10)
                         
 extern TEST_CASE(assert);
 extern TEST_CASE(ctype);
@@ -150,6 +150,7 @@ extern TEST_CASE(stdnoreturn);
 extern TEST_CASE(stdint);
 extern TEST_CASE(limits);
 extern TEST_CASE(string);
+extern TEST_CASE(error);
 extern TEST_CASE(unistd);
 
 extern TEST_CASE(stdio);
@@ -165,7 +166,8 @@ extern TEST_CASE(stdlib);
         RUN_TEST(stdint);       \
         RUN_TEST(limits);       \
         RUN_TEST(string);       \
-        RUN_TEST(unistd);
+        RUN_TEST(unistd);       \
+        RUN_TEST(error);
 
 #ifdef assert
 #undef assert
