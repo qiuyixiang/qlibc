@@ -52,30 +52,6 @@
 typedef signed long             i32;
 typedef unsigned long           u32;
 
-
-// System call Procedure Number
-#define __NR_restart_syscall        0
-#define __NR_exit		            1
-#define __NR_fork		            2
-#define __NR_read		            3
-#define __NR_write		            4
-#define __NR_open		            5
-#define __NR_close		            6
-#define __NR_waitpid		        7
-#define __NR_creat		            8
-#define __NR_link		            9
-#define __NR_unlink		            10
-#define __NR_execve		            11
-#define __NR_chdir		            12
-#define __NR_time		            13
-#define __NR_mknod		            14
-#define __NR_chmod		            15
-#define __NR_lchown		            16
-#define __NR_break		            17
-#define __NR_oldstat		        18
-#define __NR_lseek		            19
-#define __NR_getpid		            20
-
 #include <errno.h>
 // Unified Error Checking
 // This function will make sure that errno contain correct value
@@ -147,4 +123,26 @@ SYSTEMCALL_PREFIX i32 __syscall6(u32 _NR, u32 _arg1, u32 _arg2, u32 _arg3, u32 _
     return __syscall_ret(ret);
 }
 
+// System call Procedure Number
+#define __NR_restart_syscall        0
+#define __NR_exit		            1
+#define __NR_fork		            2
+#define __NR_read		            3
+#define __NR_write		            4
+#define __NR_open		            5
+#define __NR_close		            6
+#define __NR_waitpid		        7
+#define __NR_creat		            8
+#define __NR_link		            9
+#define __NR_unlink		            10
+#define __NR_execve		            11
+#define __NR_chdir		            12
+#define __NR_time		            13
+#define __NR_mknod		            14
+#define __NR_chmod		            15
+#define __NR_lchown		            16
+#define __NR_break		            17
+#define __NR_oldstat		        18
+#define __NR_lseek		            19
+#define __NR_getpid		            20
 #endif

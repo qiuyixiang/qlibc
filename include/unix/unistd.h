@@ -23,6 +23,9 @@
  */
 
 // This Header Provide API for Unix POSIX System
+// In the current qlibc version
+// The <unistd.h> only support the function that ISO C needs
+
 #ifndef _QLIBC_UNISTD_H
 #define _QLIBC_UNISTD_H
 
@@ -35,7 +38,9 @@ extern "C" {
 #define STDOUT_FILENO       1
 #define STDERR_FILENO       2
 
+// Type define for general types
 typedef signed long         ssize_t;
+typedef long                off_t;
 #include <stddef.h>
 
 // File IO Functions
