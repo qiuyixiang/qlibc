@@ -152,6 +152,7 @@ extern TEST_CASE(limits);
 extern TEST_CASE(string);
 extern TEST_CASE(error);
 extern TEST_CASE(unistd);
+extern TEST_CASE(fcntl);
 
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
@@ -168,6 +169,7 @@ extern TEST_CASE(stdlib);
         RUN_TEST(string);       \
         RUN_TEST(error);        \
         RUN_TEST(unistd);       \
+        RUN_TEST(fcntl);
 
 #ifdef assert
 #undef assert

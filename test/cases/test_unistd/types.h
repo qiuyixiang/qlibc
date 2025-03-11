@@ -32,4 +32,8 @@ SUB_TEST_CASE(unistd_types){
     EXPECT_EQ(BITS(off_t), 64);
 #endif
 #endif
+    // Test for offset of a file
+    EXPECT_EQ(SEEK_SET, 0);
+    EXPECT_EQ(SEEK_CUR, 1);
+    EXPECT_EQ(SEEK_END, 2);
 }

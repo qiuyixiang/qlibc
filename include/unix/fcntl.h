@@ -22,38 +22,20 @@
  *  SOFTWARE.
  */
 
+// this header provide file control support for Unix
+// in the current version it only provide functions that ISO C needs
 
-// this header provide API for Unix POSIX System 
-// in the current qlibc version the <unistd.h> only support the function that ISO C needs
+#ifndef _QLIBC_FCNTL_H
+#define _QLIBC_FCNTL_H
 
-#ifndef _QLIBC_UNISTD_H
-#define _QLIBC_UNISTD_H
+#include <bits/syscall.h>
 
-// file descriptor index
-#define STDIN_FILENO        0
-#define STDOUT_FILENO       1
-#define STDERR_FILENO       2
-
-// current file offset mode
-#define SEEK_SET            0
-#define SEEK_CUR            1
-#define SEEK_END            2
-
-// type define for general types
-typedef signed long         ssize_t;
-typedef long                off_t;
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/// File IO Functions
-extern ssize_t write(int fd, const void *buf, size_t count);
-extern ssize_t read(int fd, void *buf, size_t count);
-extern int close(int fd);
-// the default offset in a file is 0
-extern off_t lseek(int fd, off_t offset, int whence);
+// file control functions
 
 #ifdef __cplusplus
 }
