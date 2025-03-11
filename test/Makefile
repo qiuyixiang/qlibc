@@ -109,6 +109,12 @@ CASES_UNISTD_DEP		:=		$(TEST_UNISTD_DIR)/types.h		\
 								$(TEST_UNISTD_DIR)/io.h
 $(BUILD_DIR)/$(UNISTD_UNIT).o:	$(CASES_UNISTD_DEP)
 
+# Special Rule defined for test sys
+SYS_UNIT				:=		test_sys
+TEST_SYS_DIR			:=		$(TEST_DIR)/$(SYS_UNIT)
+CASES_SYS_DEP			:=		$(TEST_SYS_DIR)/syscall.h
+$(BUILD_DIR)/$(SYS_UNIT).o:		$(CASES_SYS_DEP)
+
 # General Rules for build test cases file
 $(BUILD_DIR)/%.o : $(TEST_DIR)/%.c
 	@$(CC) $(CC_FLAGS) -c $< -o $@

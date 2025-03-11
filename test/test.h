@@ -41,10 +41,30 @@
 #define EXPECT_EQ(VAL1, VAL2)                   assert((VAL1) == (VAL2))
 #define EXPECT_NE(VAL1, VAL2)                   assert((VAL1) != (VAL2))
 
+
+#define _COLOR_RESET        "\033[0m"
+#define _COLOR_BLACK        "\033[30m"  
+#define _COLOR_RED          "\033[31m"  
+#define _COLOR_GREEN        "\033[32m"  
+#define _COLOR_YELLOW       "\033[33m"  
+#define _COLOR_BLUE         "\033[34m"  
+#define _COLOR_MAGENTA      "\033[35m"  
+#define _COLOR_CYAN         "\033[36m"  
+#define _COLOR_WHITE        "\033[37m"  
+
+
+// declare test case function
 #define TEST_CASE(CASE)                         void CONCAT(test_, CASE)()
+// declare sub-test case function
 #define SUB_TEST_CASE(CASE)                     TEST_CASE(CASE)
+// run sub test case without print success information
 #define RUN_SUB_CASE(CASE)                      CONCAT(test_, CASE)()
 
+#define _RUN_SUCCESS(CASE)      fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] "         \
+        "\tTest Case Success\n", STRING(CASE))
+// run test case and print success information
+#define RUN_TEST_P(CASE)          CONCAT(test_, CASE)();                                         \
+        _RUN_SUCCESS(CASE)   
 
 /**
  * The Macro TEST_ARCH and TEST_WORD is the two main control macros
@@ -98,16 +118,6 @@
 /// Only main.c needs these interfaces
 #ifdef MAIN_TEST
 
-#define _COLOR_RESET        "\033[0m"
-#define _COLOR_BLACK        "\033[30m"  
-#define _COLOR_RED          "\033[31m"  
-#define _COLOR_GREEN        "\033[32m"  
-#define _COLOR_YELLOW       "\033[33m"  
-#define _COLOR_BLUE         "\033[34m"  
-#define _COLOR_MAGENTA      "\033[35m"  
-#define _COLOR_CYAN         "\033[36m"  
-#define _COLOR_WHITE        "\033[37m"  
-
 // Macros for Host Machine Architecture String
 #if (defined(__x86_64__)) || (defined(__amd64__))
 #define HOST_MACHINE    "x86_64"
@@ -129,11 +139,6 @@
 #define HOST_MACHINE    "Unknown"
 #endif
 
-#define _RUN_SUCCESS(CASE)      fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] "         \
-                                "\tTest Case Success\n", STRING(CASE))
-#define RUN_TEST(CASE)          CONCAT(test_, CASE)();                                          \
-                                _RUN_SUCCESS(CASE)    
-
 #define SHOW_MACHINE(ARCH)      fprintf(stdout, "Test framework for qlibc %.1f \nIf the test "  \
                                 "machine differ from host machine some if the test cases will " \
                                 "be ignored !\n"                                                \
@@ -153,23 +158,25 @@ extern TEST_CASE(string);
 extern TEST_CASE(error);
 extern TEST_CASE(unistd);
 extern TEST_CASE(fcntl);
+extern TEST_CASE(sys);
 
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
 #define RUN_ALL_TEST()          \
-        RUN_TEST(assert);       \
-        RUN_TEST(ctype);        \
-        RUN_TEST(stdbool);      \
-        RUN_TEST(stddef);       \
-        RUN_TEST(stdalign);     \
-        RUN_TEST(stdnoreturn);  \
-        RUN_TEST(stdint);       \
-        RUN_TEST(limits);       \
-        RUN_TEST(string);       \
-        RUN_TEST(error);        \
-        RUN_TEST(unistd);       \
-        RUN_TEST(fcntl);
+RUN_TEST_P(assert);       \
+RUN_TEST_P(ctype);        \
+RUN_TEST_P(stdbool);      \
+RUN_TEST_P(stddef);       \
+RUN_TEST_P(stdalign);     \
+RUN_TEST_P(stdnoreturn);  \
+RUN_TEST_P(stdint);       \
+RUN_TEST_P(limits);       \
+RUN_TEST_P(string);       \
+RUN_TEST_P(error);        \
+RUN_TEST_P(unistd);       \
+RUN_TEST_P(fcntl);        \
+        test_sys();         
 
 #ifdef assert
 #undef assert
