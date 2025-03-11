@@ -52,19 +52,26 @@
 #define _COLOR_CYAN         "\033[36m"  
 #define _COLOR_WHITE        "\033[37m"  
 
+#define _RUN_SUCCESS(CASE)      fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] "         \
+                                "\tTest Case Success\n", STRING(CASE))
+
+extern int test_case_counter;
 
 // declare test case function
 #define TEST_CASE(CASE)                         void CONCAT(test_, CASE)()
 // declare sub-test case function
 #define SUB_TEST_CASE(CASE)                     TEST_CASE(CASE)
-// run sub test case without print success information
-#define RUN_SUB_CASE(CASE)                      CONCAT(test_, CASE)()
 
-#define _RUN_SUCCESS(CASE)      fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] "         \
-        "\tTest Case Success\n", STRING(CASE))
+// run test case 
+#define RUN_TEST(CASE)                          CONCAT(test_, CASE)();          \
+                                                test_case_counter++;
+// run sub test case
+#define RUN_SUB_CASE(CASE)                      RUN_TEST(CASE)
+
 // run test case and print success information
-#define RUN_TEST_P(CASE)          CONCAT(test_, CASE)();                                         \
-        _RUN_SUCCESS(CASE)   
+#define RUN_TEST_P(CASE)                        CONCAT(test_, CASE)();          \
+                                                _RUN_SUCCESS(CASE);             \
+                                                test_case_counter++;
 
 /**
  * The Macro TEST_ARCH and TEST_WORD is the two main control macros
@@ -145,7 +152,14 @@
                                 "Host Machine Architecture: " HOST_MACHINE   "\n"               \
                                 "Test Machine Architecture: " QLIBC_ARCH_STR "\n\n",            \
                                 (double)_QLIBC_VERSION_ / 10)
-                        
+
+#define BEGIN_TEST_FRAME()      SHOW_MACHINE(QLIBC_ARCH_STR)
+#define END_TEST_FRAME()        fprintf(stdout, "Total %d Test modules, all passed !\n", test_case_counter)
+#define SHOW_LIBC_START()       fprintf(stdout, "Start test cases from libc:\n")
+#define SHOW_LIBC_END()         fputc('\n', stdout)
+#define SHOW_UNIX_START()       fprintf(stdout, "Start test cases from unix:\n")
+#define SHOW_UNIX_END()         SHOW_LIBC_END()
+
 extern TEST_CASE(assert);
 extern TEST_CASE(ctype);
 extern TEST_CASE(stdbool);
@@ -163,20 +177,26 @@ extern TEST_CASE(sys);
 extern TEST_CASE(stdio);
 extern TEST_CASE(stdlib);
 
-#define RUN_ALL_TEST()          \
-RUN_TEST_P(assert);       \
-RUN_TEST_P(ctype);        \
-RUN_TEST_P(stdbool);      \
-RUN_TEST_P(stddef);       \
-RUN_TEST_P(stdalign);     \
-RUN_TEST_P(stdnoreturn);  \
-RUN_TEST_P(stdint);       \
-RUN_TEST_P(limits);       \
-RUN_TEST_P(string);       \
-RUN_TEST_P(error);        \
-RUN_TEST_P(unistd);       \
-RUN_TEST_P(fcntl);        \
-        test_sys();         
+#define RUN_ALL_TEST()                  \
+        BEGIN_TEST_FRAME();             \
+        SHOW_LIBC_START();              \
+        RUN_TEST_P(assert);             \
+        RUN_TEST_P(ctype);              \
+        RUN_TEST_P(stdbool);            \
+        RUN_TEST_P(stddef);             \
+        RUN_TEST_P(stdalign);           \
+        RUN_TEST_P(stdnoreturn);        \
+        RUN_TEST_P(stdint);             \
+        RUN_TEST_P(limits);             \
+        RUN_TEST_P(string);             \
+        RUN_TEST_P(error);              \
+        SHOW_LIBC_END();                \
+        SHOW_UNIX_START();              \
+        RUN_TEST_P(unistd);             \
+        RUN_TEST_P(fcntl);              \
+        RUN_TEST(sys);                  \
+        SHOW_UNIX_END();                \
+        END_TEST_FRAME();               \
 
 #ifdef assert
 #undef assert
