@@ -33,3 +33,6 @@ POSIX_API ssize_t write(int fd, const void *buf, size_t count){
 POSIX_API ssize_t read(int fd, void *buf, size_t count){
     return __syscall3(__NR_read, (u32)fd, (u32)buf, (u32)count);
 }
+POSIX_API int close(int fd){
+    return __syscall1(__NR_close, (u32)fd);
+}

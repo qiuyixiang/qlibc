@@ -1,6 +1,8 @@
 // Test IO Operation in unistd
 #include "../../test.h"
 #include <unistd.h>
+#include <errno.h>
+#include <stdint.h>
 
 #define BUFFER_SIZE_S       64
 #define BUFFER_SIZE_M       128
@@ -8,6 +10,7 @@
 #define BUFFER_SIZE_1K      1024
 #define BUFFER_SIZE_2K      2048
 
+// test for write
 SUB_TEST_CASE(unistd_write){
 #if (TEST_INTERACTIVE == 1)
 BEGIN_DECL
@@ -17,6 +20,7 @@ BEGIN_DECL
 END_DECL
 #endif
 }
+// test for read
 SUB_TEST_CASE(unistd_read){
 #if (TEST_INTERACTIVE == 1)
 BEGIN_DECL
@@ -25,4 +29,9 @@ BEGIN_DECL
     EXPECT_EQ((size_t)return_val, 4);
 END_DECL
 #endif
+}
+// test for close
+SUB_TEST_CASE(unistd_close){
+    EXPECT_EQ(close(INT32_MAX), -1);
+    EXPECT_EQ(errno, EBADF);
 }

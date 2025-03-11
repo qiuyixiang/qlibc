@@ -166,8 +166,8 @@ extern TEST_CASE(stdlib);
         RUN_TEST(stdint);       \
         RUN_TEST(limits);       \
         RUN_TEST(string);       \
+        RUN_TEST(error);        \
         RUN_TEST(unistd);       \
-        RUN_TEST(error);
 
 #ifdef assert
 #undef assert

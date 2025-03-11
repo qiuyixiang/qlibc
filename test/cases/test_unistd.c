@@ -11,4 +11,5 @@ TEST_CASE(unistd){
     // Test IO function in unistd
     RUN_SUB_CASE(unistd_write);
     RUN_SUB_CASE(unistd_read);
+    RUN_SUB_CASE(unistd_close);
 }
