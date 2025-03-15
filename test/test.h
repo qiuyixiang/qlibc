@@ -24,184 +24,91 @@
 
 #ifndef QLIBC_TEST_H
 #define QLIBC_TEST_H
-#include <stdio.h>
-#include <assert.h>
 
-/// A Simple Utility Test Macros
-#define CONCAT(LHS, RHS)                        LHS ## RHS
-#define CONCAT3(VAL1, VAL2, VAL3)               VAL1 ## VAL2 ## VAL3   
-#define CONCAT4(VAL1, VAL2, VAL3, VAL4)         VAL1 ## VAL2 ## VAL3 ## VAL4
-
-#define STRING(VAR)         #VAR
-#define BEGIN_DECL          {
-#define END_DECL            }
-
-#define EXPECT_TRUE(EXPR)                       assert((EXPR))
-#define EXPECT_FALSE(EXPR)                      assert(!(EXPR))
-#define EXPECT_EQ(VAL1, VAL2)                   assert((VAL1) == (VAL2))
-#define EXPECT_NE(VAL1, VAL2)                   assert((VAL1) != (VAL2))
-
-
-#define _COLOR_RESET        "\033[0m"
-#define _COLOR_BLACK        "\033[30m"  
-#define _COLOR_RED          "\033[31m"  
-#define _COLOR_GREEN        "\033[32m"  
-#define _COLOR_YELLOW       "\033[33m"  
-#define _COLOR_BLUE         "\033[34m"  
-#define _COLOR_MAGENTA      "\033[35m"  
-#define _COLOR_CYAN         "\033[36m"  
-#define _COLOR_WHITE        "\033[37m"  
-
-#define _RUN_SUCCESS(CASE)      fprintf(stdout, "[" _COLOR_GREEN "%s" _COLOR_RESET "] "         \
-                                "\tTest Case Success\n", STRING(CASE))
-
-extern int test_case_counter;
-
-// declare test case function
-#define TEST_CASE(CASE)                         void CONCAT(test_, CASE)()
-// declare sub-test case function
-#define SUB_TEST_CASE(CASE)                     TEST_CASE(CASE)
-
-// run test case 
-#define RUN_TEST(CASE)                          CONCAT(test_, CASE)();          \
-                                                test_case_counter++;
-// run sub test case
-#define RUN_SUB_CASE(CASE)                      RUN_TEST(CASE)
-
-// run test case and print success information
-#define RUN_TEST_P(CASE)                        CONCAT(test_, CASE)();          \
-                                                _RUN_SUCCESS(CASE);             \
-                                                test_case_counter++;
-
-/**
- * The Macro TEST_ARCH and TEST_WORD is the two main control macros
- * for the test framework, they mainly support machine specific test
- * cases control. 
- */
-
-/// Macros for Machine Architecture
-#undef TEST_ARCH
-#define NONE_ARCH       0
-#define x86_64          1
-#define i386            2
-#define x86             3
-#define arm             4
-#define aarch64         5
-
-/// Make sure that the consistence between target architecture and host architecture
-#if ((defined(__x86_64__)) || defined(__amd64__)) && (defined(QLIBC_ARCH_x86_64))
-#define TEST_ARCH       x86_64
-#elif (defined(__i386__)) && (defined(QLIBC_ARCH_i386))
-#define TEST_ARCH       i386
-#elif (defined(__x86__)) && (defined(QLIBC_ARCH_x86))
-#define TEST_ARCH       x86
-#elif (defined(__arm__)) && (defined(QLIBC_ARCH_arm))
-#define TEST_ARCH       arm
-#elif (defined(__aarch64__)) && (defined(QLIBC_ARCH_aarch64))
-#define TEST_ARCH       aarch64
-#else
-#define TEST_ARCH       NONE_ARCH
-#endif
-
-/// Macros for Machine word size
-#undef TEST_WORD
-#define BITS32          32
-#define BITS64          64
-#define NON_WORD_SIZE   0
-
-#if (TEST_ARCH == i386) || (TEST_ARCH == x86) || (TEST_ARCH == arm)
-#define TEST_WORD       BITS32
-#elif (TEST_ARCH == x86_64) || (TEST_ARCH == aarch64)
-#define TEST_WORD       BITS64
-#else
-#define TEST_WORD       NON_WORD_SIZE
-#endif
+// using utest test framework
+#include <utest.h>
 
 // Test Configuration Argument
 
 // Test Interactive (Explicit Output) Test flag
 #define TEST_INTERACTIVE                0
 
-/// Only main.c needs these interfaces
-#ifdef MAIN_TEST
-
 // Macros for Host Machine Architecture String
-#if (defined(__x86_64__)) || (defined(__amd64__))
+#if (TEST_ARCH == X86_64)
 #define HOST_MACHINE    "x86_64"
 #endif
-#ifdef __i386__
+#if (TEST_ARCH == I386)
 #define HOST_MACHINE    "i386"
 #endif
-#ifdef __x86__
-#define HOST_MACHINE    "x86"
-#endif
-#ifdef __arm__
+#if (TEST_ARCH == ARM)
 #define HOST_MACHINE    "arm"
 #endif
-#ifdef __aarch64__
+#if (TEST_ARCH == AARCH64)
 #define HOST_MACHINE    "aarch64"
 #endif
-
 #ifndef HOST_MACHINE
 #define HOST_MACHINE    "Unknown"
 #endif
 
-#define SHOW_MACHINE(ARCH)      fprintf(stdout, "Test framework for qlibc %.1f \nIf the test "  \
+#define QLIBC_TEST_INFO()       fprintf(stdout, "Test framework for qlibc %.1f \nIf the test "  \
                                 "machine differ from host machine some if the test cases will " \
                                 "be ignored !\n"                                                \
                                 "Host Machine Architecture: " HOST_MACHINE   "\n"               \
                                 "Test Machine Architecture: " QLIBC_ARCH_STR "\n\n",            \
                                 (double)_QLIBC_VERSION_ / 10)
 
-#define BEGIN_TEST_FRAME()      SHOW_MACHINE(QLIBC_ARCH_STR)
-#define END_TEST_FRAME()        fprintf(stdout, "Total %d Test modules, all passed !\n", test_case_counter)
-#define SHOW_LIBC_START()       fprintf(stdout, "Start test cases from libc:\n")
-#define SHOW_LIBC_END()         fputc('\n', stdout)
-#define SHOW_UNIX_START()       fprintf(stdout, "Start test cases from unix:\n")
-#define SHOW_UNIX_END()         SHOW_LIBC_END()
+#define TEST_LIBC_BEGIN()       fprintf(stdout, "Start test for libc\n")
+#define TEST_LIBC_END()         fputc('\n', stdout)
 
+#define TEST_UNIX_BEGIN()       fprintf(stdout, "Start test for unix\n")
+#define TEST_UNIX_END()         fputc('\n', stdout)
+
+// libc Test Module
 extern TEST_CASE(assert);
-extern TEST_CASE(ctype);
 extern TEST_CASE(stdbool);
-extern TEST_CASE(stddef);
-extern TEST_CASE(stdalign);
-extern TEST_CASE(stdnoreturn);
-extern TEST_CASE(stdint);
-extern TEST_CASE(limits);
-extern TEST_CASE(string);
+extern TEST_CASE(ctype);
 extern TEST_CASE(error);
-extern TEST_CASE(unistd);
+extern TEST_CASE(limits);
+extern TEST_CASE(stdnoreturn);
+extern TEST_CASE(stdalign);
+extern TEST_CASE(stddef);
+extern TEST_CASE(stdint);
+extern TEST_CASE(string);
+
+#define RUN_LIBC_MODULE()               \
+        TEST_LIBC_BEGIN();              \
+        RUN_TEST_CASE(assert);          \
+        RUN_TEST_CASE(stdbool);         \
+        RUN_TEST_CASE(ctype);           \
+        RUN_TEST_CASE(error);           \
+        RUN_TEST_CASE(limits);          \
+        RUN_TEST_CASE(stdnoreturn);     \
+        RUN_TEST_CASE(stdalign);        \
+        RUN_TEST_CASE(stddef);          \
+        RUN_TEST_CASE(stdint);          \
+        RUN_TEST_CASE(string);          \
+        TEST_LIBC_END();
+
+// unix Test Module
 extern TEST_CASE(fcntl);
 extern TEST_CASE(sys);
+extern TEST_CASE(unistd);
 
-extern TEST_CASE(stdio);
-extern TEST_CASE(stdlib);
+#define RUN_UNIX_MODULE()               \
+        TEST_UNIX_BEGIN();              \
+        RUN_TEST_CASE(fcntl);           \
+        RUN_TEST_CASE(sys);             \
+        RUN_TEST_CASE(unistd);          \
+        TEST_UNIX_END();                
+
+
+#ifdef RUN_ALL_TEST
+#undef RUN_ALL_TEST
+#endif
 
 #define RUN_ALL_TEST()                  \
-        BEGIN_TEST_FRAME();             \
-        SHOW_LIBC_START();              \
-        RUN_TEST_P(assert);             \
-        RUN_TEST_P(ctype);              \
-        RUN_TEST_P(stdbool);            \
-        RUN_TEST_P(stddef);             \
-        RUN_TEST_P(stdalign);           \
-        RUN_TEST_P(stdnoreturn);        \
-        RUN_TEST_P(stdint);             \
-        RUN_TEST_P(limits);             \
-        RUN_TEST_P(string);             \
-        RUN_TEST_P(error);              \
-        SHOW_LIBC_END();                \
-        SHOW_UNIX_START();              \
-        RUN_TEST_P(unistd);             \
-        RUN_TEST_P(fcntl);              \
-        RUN_TEST(sys);                  \
-        SHOW_UNIX_END();                \
-        END_TEST_FRAME();               \
-
-#ifdef assert
-#undef assert
-#endif
+        QLIBC_TEST_INFO();              \
+        RUN_LIBC_MODULE();              \
+        RUN_UNIX_MODULE();
 
 #endif 
-
-#endif

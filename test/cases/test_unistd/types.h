@@ -1,5 +1,5 @@
 // This file test types and macros in unistd.h
-#include "../../test.h"
+#include <utest.h>
 #include <unistd.h>
 
 

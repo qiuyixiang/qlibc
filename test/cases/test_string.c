@@ -18,36 +18,36 @@ SUB_TEST_CASE(string_type){
 }   
 TEST_CASE(string){
     // Test String Types
-    RUN_SUB_CASE(string_type);
+    RUN_SUB_TEST_CASE(string_type);
 
     // Test String manipulation
-    RUN_SUB_CASE(strcpy);
-    RUN_SUB_CASE(strncpy);
-    RUN_SUB_CASE(strcat);
-    RUN_SUB_CASE(strncat);
+    RUN_SUB_TEST_CASE(strcpy);
+    RUN_SUB_TEST_CASE(strncpy);
+    RUN_SUB_TEST_CASE(strcat);
+    RUN_SUB_TEST_CASE(strncat);
 #if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
-    RUN_SUB_CASE(strxfrm);
+    RUN_SUB_TEST_CASE(strxfrm);
 #endif
 
     // Test String examination
-    RUN_SUB_CASE(strlen);
-    RUN_SUB_CASE(strcmp);
-    RUN_SUB_CASE(strncmp);
+    RUN_SUB_TEST_CASE(strlen);
+    RUN_SUB_TEST_CASE(strcmp);
+    RUN_SUB_TEST_CASE(strncmp);
 #if (defined(QLIBC_WCHAR_SUPPORT)) && (QLIBC_WCHAR_SUPPORT == 1)
-    RUN_SUB_CASE(strcoll);
+    RUN_SUB_TEST_CASE(strcoll);
 #endif
-    RUN_SUB_CASE(strchr);
-    RUN_SUB_CASE(strrchr);
-    RUN_SUB_CASE(strspn);
-    RUN_SUB_CASE(strcspn);
-    RUN_SUB_CASE(strpbrk);
-    RUN_SUB_CASE(strstr);
-    RUN_SUB_CASE(strtok);
+    RUN_SUB_TEST_CASE(strchr);
+    RUN_SUB_TEST_CASE(strrchr);
+    RUN_SUB_TEST_CASE(strspn);
+    RUN_SUB_TEST_CASE(strcspn);
+    RUN_SUB_TEST_CASE(strpbrk);
+    RUN_SUB_TEST_CASE(strstr);
+    RUN_SUB_TEST_CASE(strtok);
 
     // Test Character array manipulation
-    RUN_SUB_CASE(memchr);
-    RUN_SUB_CASE(memcmp);
-    RUN_SUB_CASE(memset);
-    RUN_SUB_CASE(memcpy);
-    RUN_SUB_CASE(memmove);
+    RUN_SUB_TEST_CASE(memchr);
+    RUN_SUB_TEST_CASE(memcmp);
+    RUN_SUB_TEST_CASE(memset);
+    RUN_SUB_TEST_CASE(memcpy);
+    RUN_SUB_TEST_CASE(memmove);
 }   

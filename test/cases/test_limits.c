@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <limits.h>
 
 #undef BITS8

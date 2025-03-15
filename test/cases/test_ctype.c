@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <ctype.h>
 
 #define TRUE    1
@@ -102,18 +102,18 @@ SUB_TEST_CASE(tolower){
     }   
 }
 TEST_CASE(ctype){
-    RUN_SUB_CASE(iscntrl);
-    RUN_SUB_CASE(isprint);
-    RUN_SUB_CASE(isspace);
-    RUN_SUB_CASE(isblank);
-    RUN_SUB_CASE(isgraph);
-    RUN_SUB_CASE(ispunct);
-    RUN_SUB_CASE(isalnum);
-    RUN_SUB_CASE(isalpha);
-    RUN_SUB_CASE(isupper);
-    RUN_SUB_CASE(islower);
-    RUN_SUB_CASE(isdigit);
-    RUN_SUB_CASE(isxdigit);
-    RUN_SUB_CASE(toupper);
-    RUN_SUB_CASE(tolower);
+    RUN_SUB_TEST_CASE(iscntrl);
+    RUN_SUB_TEST_CASE(isprint);
+    RUN_SUB_TEST_CASE(isspace);
+    RUN_SUB_TEST_CASE(isblank);
+    RUN_SUB_TEST_CASE(isgraph);
+    RUN_SUB_TEST_CASE(ispunct);
+    RUN_SUB_TEST_CASE(isalnum);
+    RUN_SUB_TEST_CASE(isalpha);
+    RUN_SUB_TEST_CASE(isupper);
+    RUN_SUB_TEST_CASE(islower);
+    RUN_SUB_TEST_CASE(isdigit);
+    RUN_SUB_TEST_CASE(isxdigit);
+    RUN_SUB_TEST_CASE(toupper);
+    RUN_SUB_TEST_CASE(tolower);
 }

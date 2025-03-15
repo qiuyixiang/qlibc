@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <stdint.h>
 
 #ifndef _QLIBC_STDINT_H

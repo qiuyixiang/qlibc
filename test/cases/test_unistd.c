@@ -7,10 +7,10 @@
 
 TEST_CASE(unistd){
     // Test Macros in unistd
-    RUN_SUB_CASE(unistd_types);
+    RUN_SUB_TEST_CASE(unistd_types);
     // Test IO function in unistd
-    RUN_SUB_CASE(unistd_write);
-    RUN_SUB_CASE(unistd_read);
-    RUN_SUB_CASE(unistd_close);
-    RUN_SUB_CASE(unistd_lseek);
+    RUN_SUB_TEST_CASE(unistd_write);
+    RUN_SUB_TEST_CASE(unistd_read);
+    RUN_SUB_TEST_CASE(unistd_close);
+    RUN_SUB_TEST_CASE(unistd_lseek);
 }

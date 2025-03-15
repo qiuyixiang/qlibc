@@ -45,7 +45,6 @@ CC_WARNING			+=		-Wno-unused-parameter
 CC_ENVIRONMENT		:=		-fno-builtin
 # GNU GCC Macros flags
 CC_MACROS			:=		
-CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
 CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
 # GNU GCC Includes flags
 CC_INCLUDES			:=		

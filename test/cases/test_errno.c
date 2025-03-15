@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <errno.h>
 
 #ifndef _QLIBC_ERRNO_H
@@ -15,7 +15,7 @@ TEST_CASE(error){
     
 // These Macros test the consistency with x86 arch
 // which may different on other arch such as aarch64 and arm
-#if (defined(TEST_ARCH)) && ((TEST_ARCH == i386) || (TEST_ARCH == x86_64)) 
+#if (defined(TEST_ARCH)) && ((TEST_ARCH == I386) || (TEST_ARCH == X86_64)) 
     EXPECT_EQ(EPERM, 1);
     EXPECT_EQ(ENOENT, 2);
     EXPECT_EQ(ESRCH, 3);
@@ -52,7 +52,7 @@ TEST_CASE(error){
     EXPECT_EQ(ERANGE, 34);
 #endif
 
-#if (defined(TEST_ARCH)) && (TEST_ARCH == aarch64)
+#if (defined(TEST_ARCH)) && (TEST_ARCH == AARCH64)
 /// Not Implement Yet !
 #endif
 }

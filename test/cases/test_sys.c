@@ -4,5 +4,5 @@
 
 TEST_CASE(sys){
     // test for syscall
-    RUN_TEST_P(syscall);
+    RUN_SUB_TEST_CASE(syscall);
 }

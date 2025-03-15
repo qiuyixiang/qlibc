@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <stdbool.h>
 
 TEST_CASE(stdbool){

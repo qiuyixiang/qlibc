@@ -1,10 +1,10 @@
 // test for unix/linux system call
 
-#include "../../test.h"
+#include <utest.h>
 #include <sys/syscall.h>
 
 SUB_TEST_CASE(syscall){
-#if (TEST_ARCH == i386)
+#if (TEST_ARCH == I386)
     EXPECT_EQ(SYS_restart_syscall, 0);
     EXPECT_EQ(SYS_exit, 1);
     EXPECT_EQ(SYS_fork, 2);

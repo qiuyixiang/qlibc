@@ -1,4 +1,4 @@
-#include "../test.h"
+#include <utest.h>
 #include <stdalign.h>
 
 #if (defined(__STDC_VERSION__) && (__STDC_VERSION__ < _STDC_C23))
