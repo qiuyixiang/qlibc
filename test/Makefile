@@ -30,6 +30,7 @@ INCLUDE_DIR			:=		../include
 ARCH_DIR			:=		../arch
 INCLUDE_ARCH_DIR	:=		$(ARCH_DIR)/$(ARCH)
 BUILD_DIR			:=		./build
+UTEST_DIR			:=		./utest
 
 # Set Test Architecture
 TEST_ARCH			:=		$(ARCH)
@@ -48,9 +49,12 @@ CC_MACROS			+=		-D QLIBC_ARCH_$(TEST_ARCH)
 CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
 # GNU GCC Includes flags
 CC_INCLUDES			:=		
+# System Headers from qlibc
 CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)
 CC_INCLUDES			+=		-isystem $(INCLUDE_ARCH_DIR)
 CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)/unix
+# extern headers form test module
+CC_INCLUDES			+=		-isystem $(UTEST_DIR)/include
 
 CC_FLAGS			:=		-std=c$(STD)
 CC_FLAGS			+=		$(CC_WARNING) $(CC_OPTIMIZER) $(CC_DEBUGGER) $(CC_ENVIRONMENT)
@@ -61,7 +65,7 @@ CASES_SRC			:=		$(sort $(shell find $(TEST_DIR) -name "*.c"))
 CASES_OBJ			:=		$(CASES_SRC:.c=.o)
 CASES_LIST			:=		$(addprefix $(BUILD_DIR)/, $(notdir $(CASES_OBJ)))
 # Object File List
-OBJ_LIST			:=		$(CASES_LIST) $(BUILD_DIR)/main.o
+OBJ_LIST			:=		$(CASES_LIST) $(BUILD_DIR)/main.o $(BUILD_DIR)/utest.o
 
 .DEFAULT_GOAL		:=		all
 .PHONY				:=		all clean dir_check
@@ -123,3 +127,7 @@ $(BUILD_DIR)/%.o : $(TEST_DIR)/%.c
 $(BUILD_DIR)/main.o: main.c test.h
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 	@echo "+ CC\t\t$<"
+
+$(BUILD_DIR)/utest.o: $(UTEST_DIR)/utest.c
+	@$(CC) $(CC_FLAGS) -c $< -o $@
+	@echo "+ CC\t\t$(notdir $<)"

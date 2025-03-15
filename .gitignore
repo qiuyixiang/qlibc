@@ -1,7 +1,7 @@
 # Ignore Build File
 build/
 test/build/
-test/main.out
+/main.out
 
 # Ignore VS Code Generated Dir
 .vscode/
