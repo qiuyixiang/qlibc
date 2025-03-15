@@ -139,13 +139,16 @@ extern uint32_t __global_subtest_counter;
 #define _RUN_FUNC(NAME)                     CONCAT(_test_, NAME)()
 #define _SUCCESS_INFO(NAME, FLAG)                           \
     if (FLAG == _FLAG_TEST_CASE)                            \
-        fprintf(stdout, "%-30sTest Case Passed\n",        \
+        fprintf(stdout, "%-30sTest Case Passed\n\n",        \
         "[" _COLOR_GREEN STRING(NAME) _COLOR_RESET "]");    \
     else if (FLAG == _FLAG_TEST_SUB_CASE)                   \
-        fprintf(stdout, " |-%-30sSub-Test Case Passed\n",    \
-        "[" _COLOR_GREEN STRING(NAME) _COLOR_RESET "]");   \
+        fprintf(stdout, " |-%-30sSub-Test Case Passed\n",   \
+        "[" _COLOR_GREEN STRING(NAME) _COLOR_RESET "]");    \
 
 #define _RUN_TEST(CASE, FLAG)                               \
+    if (FLAG == _FLAG_TEST_CASE)                            \
+        fprintf(stdout, "%-21sStart Running Test Case\n",   \
+        "[" STRING(CASE) "]");                              \
     _RUN_FUNC(CASE);                                        \
     _SUCCESS_INFO(CASE, FLAG);                              \
     if (FLAG == _FLAG_TEST_CASE)                            \
