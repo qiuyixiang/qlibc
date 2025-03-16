@@ -61,7 +61,7 @@
 #define TEST_LIBC_END()         fputc('\n', stdout)
 
 #define TEST_UNIX_BEGIN()       fprintf(stdout, "Start test for unix\n")
-#define TEST_UNIX_END()         fputc('\n', stdout)
+#define TEST_UNIX_END()         
 
 // libc Test Module
 extern TEST_CASE(assert);
@@ -101,13 +101,17 @@ extern TEST_CASE(unistd);
         RUN_TEST_CASE(unistd);          \
         TEST_UNIX_END();                
 
+#define INIT_QLIBC_TEST()               \
+        QLIBC_TEST_INFO();              \
+        SET_OUTPUT_FORMAT               \
+        (FORMAT_DEFAULT);               \
 
 #ifdef RUN_ALL_TEST
 #undef RUN_ALL_TEST
 #endif
 
 #define RUN_ALL_TEST()                  \
-        QLIBC_TEST_INFO();              \
+        INIT_QLIBC_TEST();              \
         RUN_LIBC_MODULE();              \
         RUN_UNIX_MODULE();
 
