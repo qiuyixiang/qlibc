@@ -28,7 +28,7 @@
 // this module is part of project util and this header provide public interfaces of utest module
 // utest is a simple unit test module which support many facility macros
 
-// @version: utest 0.1
+// @version: utest 1.0
 // @author: QIU YIXIANG
 
 // test case assertion
@@ -36,11 +36,19 @@
 #define ASSERT_FALSE(EXPR)
 #define ASSERT_EQ(VAL1, VAL2)
 #define ASSERT_NE(VAL1, VAL2)
+#define ASSERT_GT(VAL1, VAL2)
+#define ASSERT_GE(VAL1, VAL2)
+#define ASSERT_LT(VAL1, VAL2)
+#define ASSERT_LE(VAL1, VAL2)
 
 #define EXPECT_TRUE(EXPR)                    
 #define EXPECT_FALSE(EXPR)                  
 #define EXPECT_EQ(VAL1, VAL2)                 
 #define EXPECT_NE(VAL1, VAL2)
+#define EXPECT_GT(VAL1, VAL2)
+#define EXPECT_GE(VAL1, VAL2)
+#define EXPECT_LT(VAL1, VAL2)
+#define EXPECT_LE(VAL1, VAL2)
 
 #define EXPECT_STR_EQ(STR1, STR2)
 #define EXPECT_STR_NE(STR1, STR2)
@@ -73,20 +81,37 @@
 
 // test cases function
 
+#define FORMAT_DEFAULT
+#define FORMAT_TIGHT
+// set test cases output format
+#define SET_OUTPUT_FORMAT(FORMAT)
+
 // create test case
 #define TEST_CASE(CASE)
 // create sub-test case
 #define SUB_TEST_CASE(SUBCASE)
+
+// Flags for RUN_TEST_CASE_FLAG
+#define FLAG_TEST_CASE
+#define FLAG_SUB_TEST_CASE
+#define FLAG_PURE_FUNC
+#define FLAG_HAS_SUB_CASE
+
 // will run test case and print success info 
 #define RUN_TEST_CASE(CASE)
-// similar to RUN_TEST_CASE but will not save status (no counter and info)
-#define RUN_TEST_FUNC(FUNC)
 // will run sub-test case and print success info
-#define RUN_SUB_TEST_CASE(SUBCASE)
+#define RUN_SUB_TEST_CASE(CASE)
+// similar to RUN_TEST_CASE but has a flag argument
+#define RUN_TEST_FLAG(CASE, FLAG)
 
 // In this version of utest RUN_ALL_TEST will do nothing which means you need run
 // test functions manually by calling RUN_TEST_CASE or RUN_SUB_TEST_CASE
 #define RUN_ALL_TEST()
 
+#ifndef __cplusplus
 #include <utest/_utest.h>
+#else
+#include <utest/_utest.hpp>
+#endif
+
 #endif

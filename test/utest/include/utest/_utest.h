@@ -29,7 +29,7 @@
 #error "Never use <_utest.h> directly; include <utest.h> instead."
 #endif
 
-// this macro will force enable assert()
+// this macro will force enable assert
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
@@ -44,21 +44,37 @@
 #undef ASSERT_FALSE
 #undef ASSERT_EQ
 #undef ASSERT_NE
+#undef ASSERT_GT
+#undef ASSERT_GE
+#undef ASSERT_LT
+#undef ASSERT_LE
 
 #define ASSERT_TRUE(EXPR)                   assert((EXPR))
 #define ASSERT_FALSE(EXPR)                  assert(!(EXPR))
 #define ASSERT_EQ(VAL1, VAL2)               assert((VAL1) == (VAL2))
 #define ASSERT_NE(VAL1, VAL2)               assert((VAL1) != (VAL2))
+#define ASSERT_GT(VAL1, VAL2)               assert((VAL1) > (VAL2))
+#define ASSERT_GE(VAL1, VAL2)               assert((VAL1) >= (VAL2))
+#define ASSERT_LT(VAL1, VAL2)               assert((VAL1) < (VAL2))
+#define ASSERT_LE(VAL1, VAL2)               assert((VAL1) <= (VAL2))
 
 #undef EXPECT_TRUE
 #undef EXPECT_FALSE
 #undef EXPECT_EQ
 #undef EXPECT_NE
+#undef EXPECT_GT
+#undef EXPECT_GE
+#undef EXPECT_LT
+#undef EXPECT_LE
 
 #define EXPECT_TRUE(EXPR)                   ASSERT_TRUE(EXPR)               
 #define EXPECT_FALSE(EXPR)                  ASSERT_FALSE(EXPR)                
 #define EXPECT_EQ(VAL1, VAL2)               ASSERT_EQ(VAL1, VAL2)                  
 #define EXPECT_NE(VAL1, VAL2)               ASSERT_NE(VAL1, VAL2)
+#define EXPECT_GT(VAL1, VAL2)               ASSERT_GT(VAL1, VAL2)
+#define EXPECT_GE(VAL1, VAL2)               ASSERT_GE(VAL1, VAL2)
+#define EXPECT_LT(VAL1, VAL2)               ASSERT_LT(VAL1, VAL2)
+#define EXPECT_LE(VAL1, VAL2)               ASSERT_LT(VAL1, VAL2)
 
 #undef EXPECT_STR_EQ
 #undef EXPECT_STR_NE
@@ -93,10 +109,6 @@
 #define _COLOR_CYAN         "\033[36m"
 #define _COLOR_WHITE        "\033[37m"
 
-#define _FLAG_TEST_CASE         1
-#define _FLAG_TEST_SUB_CASE     2
-#define _FLAG_TEST_PURE_FUNC    3
-
 #define _ATTR_CONSTRUCTOR       __attribute__((constructor))
 #define _ATTR_DESTRUCTOR        __attribute__((destructor))
 
@@ -121,40 +133,28 @@
 #define TEST_WORD       BITS64
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern _ATTR_CONSTRUCTOR void _init_utest(void);
 extern _ATTR_DESTRUCTOR void _fini_utest(void);
-
-#ifdef __cplusplus
-}
-#endif                                       
+extern void _run_test(void(*__case_handler)(), const char * __case, uint32_t __flag);
 
 extern uint32_t __global_test_counter;
 extern uint32_t __global_subtest_counter;
+extern uint32_t __global_ot_format;
+
+#define FLAG_TEST_CASE                      1
+#define FLAG_SUB_TEST_CASE                  (FLAG_TEST_CASE << 1)
+#define FLAG_PURE_FUNC                      (FLAG_TEST_CASE << 2)
+#define FLAG_HAS_SUB_CASE                   (FLAG_TEST_CASE | FLAG_SUB_TEST_CASE)
+
+#define FORMAT_DEFAULT                      1
+#define FORMAT_TIGHT                        (FORMAT_DEFAULT << 1)
+
+#undef SET_OUTPUT_FORMAT
+#define SET_OUTPUT_FORMAT(FORMAT)           __global_ot_format = FORMAT
 
 #define _DECLARE_FUNC(NAME)                 void CONCAT(_test_, NAME)(void)
 #define _RUN_FUNC(NAME)                     CONCAT(_test_, NAME)()
-#define _SUCCESS_INFO(NAME, FLAG)                           \
-    if (FLAG == _FLAG_TEST_CASE)                            \
-        fprintf(stdout, "%-30sTest Case Passed\n\n",        \
-        "[" _COLOR_GREEN STRING(NAME) _COLOR_RESET "]");    \
-    else if (FLAG == _FLAG_TEST_SUB_CASE)                   \
-        fprintf(stdout, " |-%-30sSub-Test Case Passed\n",   \
-        "[" _COLOR_GREEN STRING(NAME) _COLOR_RESET "]");    \
-
-#define _RUN_TEST(CASE, FLAG)                               \
-    if (FLAG == _FLAG_TEST_CASE)                            \
-        fprintf(stdout, "%-21sStart Running Test Case\n",   \
-        "[" STRING(CASE) "]");                              \
-    _RUN_FUNC(CASE);                                        \
-    _SUCCESS_INFO(CASE, FLAG);                              \
-    if (FLAG == _FLAG_TEST_CASE)                            \
-        __global_test_counter++;                            \
-    else if (FLAG == _FLAG_TEST_SUB_CASE)                   \
-        __global_subtest_counter++;             
+#define _RUN_TEST(CASE, FLAG)               _run_test(&CONCAT(_test_, CASE), STRING(CASE), FLAG)
 
 #undef TEST_CASE
 #undef SUB_TEST_CASE
@@ -163,13 +163,12 @@ extern uint32_t __global_subtest_counter;
 #define SUB_TEST_CASE(SUBCASE)              _DECLARE_FUNC(SUBCASE)
 
 #undef RUN_TEST_CASE
-#undef RUN_TEST_FUNC
 #undef RUN_SUB_TEST_CASE
+#undef RUN_TEST_FLAG
 
-#define RUN_TEST_CASE(CASE)                 _RUN_TEST(CASE, _FLAG_TEST_CASE)
-#define RUN_TEST_FUNC(FUNC)                 _RUN_TEST(FUNC, _FLAG_TEST_PURE_FUNC)
-#define RUN_SUB_TEST_CASE(SUBCASE)          _RUN_TEST(SUBCASE, _FLAG_TEST_SUB_CASE)
-            
+#define RUN_TEST_CASE(CASE)                 RUN_TEST_FLAG(CASE, FLAG_TEST_CASE)
+#define RUN_SUB_TEST_CASE(CASE)             RUN_TEST_FLAG(CASE, FLAG_SUB_TEST_CASE)
+#define RUN_TEST_FLAG(CASE, FLAG)           _RUN_TEST(CASE, FLAG)
                
 #undef RUN_ALL_TEST
 #define RUN_ALL_TEST()
