@@ -24,4 +24,23 @@
 
 // implement fcntl utility functions for i386
 #include <fcntl.h>
+#include <stdarg.h>
+#include <bits/syscall.h>
 
+POSIX_API int open(const char * path, int oflag, ...){
+    mode_t __mode;
+    va_list __args;
+    va_start(__args, oflag);
+    __mode = va_arg(__args, mode_t);
+    va_end(__args);
+    return __syscall3(__NR_open, (u32)path, oflag, __mode);
+}
+
+POSIX_API int openat(int dfd, const char * path, int oflag, ...){
+    mode_t __mode;
+    va_list __args;
+    va_start(__args, oflag);
+    __mode = va_arg(__args, mode_t);
+    va_end(__args);
+    return __syscall4(__NR_open, dfd, (u32)path, oflag, __mode);
+}

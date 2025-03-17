@@ -147,4 +147,6 @@ SYSTEMCALL_PREFIX i32 __syscall6(u32 _NR, u32 _arg1, u32 _arg2, u32 _arg3, u32 _
 #define __NR_getpid		            20
 #define __NR_mount                  21
 
+#define __NR_openat                 295
+
 #endif

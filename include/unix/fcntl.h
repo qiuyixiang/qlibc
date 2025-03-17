@@ -28,14 +28,15 @@
 #ifndef _QLIBC_FCNTL_H
 #define _QLIBC_FCNTL_H
 
-#include <bits/syscall.h>
-
+#include <sys/types.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 // file control functions
+extern int open(const char * path, int oflag, ...);
+extern int openat(int dfd, const char * path, int oflag, ...);
 
 #ifdef __cplusplus
 }

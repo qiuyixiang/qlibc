@@ -72,6 +72,7 @@ void _run_test(void(*__case_handler)(), const char * __case, uint32_t __flag){
         ++__global_test_counter;
 
     }else if (__flag & FLAG_SUB_TEST_CASE){
+        (*__case_handler)();
         const char * _prefix = " |-";
         sprintf(__buffer, "%s[%s%s%s]", _prefix, _COLOR_GREEN, __case, _COLOR_RESET);
         _print_space(__buffer, SPACE_ALIGN_MAX - __case_len - strlen(_prefix));

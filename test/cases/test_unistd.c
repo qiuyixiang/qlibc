@@ -1,13 +1,10 @@
-// This file is the test framwork for unistd
-#include <unistd.h>
-
 // These test headers are not part of ISO C
-#include "test_unistd/types.h"
 #include "test_unistd/io.h"
+#include "test_unistd/macros.h"
 
 TEST_CASE(unistd){
-    // Test Macros in unistd
-    RUN_SUB_TEST_CASE(unistd_types);
+    
+    RUN_SUB_TEST_CASE(unistd_macros);
     // Test IO function in unistd
     RUN_SUB_TEST_CASE(unistd_write);
     RUN_SUB_TEST_CASE(unistd_read);

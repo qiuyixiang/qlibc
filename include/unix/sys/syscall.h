@@ -25,8 +25,8 @@
 // implement macros for system call number
 // start with SYS_ 
 
-#ifndef _QLIBC_SYSCALL_H
-#define _QLIBC_SYSCALL_H   
+#ifndef _QLIBC_SYS_SYSCALL_H
+#define _QLIBC_SYS_SYSCALL_H   
 
 // this header file will included system call number depends on architecture
 #include <bits/syscall.h>
@@ -56,5 +56,7 @@
 #define SYS_lseek               __NR_lseek
 #define SYS_getpid              __NR_getpid
 #define SYS_mount               __NR_mount
+
+#define SYS_openat              __NR_openat
 
 #endif

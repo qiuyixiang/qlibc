@@ -21,21 +21,17 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *  SOFTWARE.
  */
+// typedef for unix types
 
-// Implementation of Low-Level function declared in unistd for i386
+#ifndef _QLIBC_SYS_TYPES_H
+#define _QLIBC_SYS_TYPES_H
 
-#include <bits/syscall.h>
-#include <unistd.h>
+#include <stddef.h>
 
-POSIX_API ssize_t write(int fd, const void *buf, size_t count){
-    return __syscall3(__NR_write, fd, (u32)buf, count);
-}
-POSIX_API ssize_t read(int fd, void *buf, size_t count){
-    return __syscall3(__NR_read, fd, (u32)buf, count);
-}
-POSIX_API int close(int fd){
-    return __syscall1(__NR_close, fd);
-}
-POSIX_API off_t lseek(int fd, off_t offset, int whence){
-    return (off_t)__syscall3(__NR_lseek, fd, offset, whence);
-}
+// type define for general types
+typedef signed long         ssize_t;
+typedef long                off_t;
+typedef unsigned int        mode_t;
+
+
+#endif
