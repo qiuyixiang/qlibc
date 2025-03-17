@@ -74,6 +74,7 @@ extern TEST_CASE(stdalign);
 extern TEST_CASE(stddef);
 extern TEST_CASE(stdint);
 extern TEST_CASE(string);
+extern TEST_CASE(stdarg);
 
 #define RUN_LIBC_MODULE()               \
         TEST_LIBC_BEGIN();              \
@@ -87,6 +88,7 @@ extern TEST_CASE(string);
         RUN_TEST_CASE(stddef);          \
         RUN_TEST_CASE(stdint);          \
         RUN_TEST_CASE(string);          \
+        RUN_TEST_CASE(stdarg);          \
         TEST_LIBC_END();
 
 // unix Test Module

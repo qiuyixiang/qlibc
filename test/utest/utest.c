@@ -77,6 +77,7 @@ void _run_test(void(*__case_handler)(), const char * __case, uint32_t __flag){
         _print_space(__buffer, SPACE_ALIGN_MAX - __case_len - strlen(_prefix));
         fprintf(stdout, " Sub-Test Case Passed!\n");
         ++__global_subtest_counter;
-    }   
+    }else if (__flag & FLAG_PURE_FUNC)
+        (*__case_handler)();
     
 }

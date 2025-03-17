@@ -22,20 +22,43 @@
  *  SOFTWARE.
  */
 
-// Implementation of Low-Level function declared in unistd for i386
+// Implement Variable Arguments
 
-#include <bits/syscall.h>
-#include <unistd.h>
+// the implementation of this library utility depends on
+// low level architecture and System ABI
 
-POSIX_API ssize_t write(int fd, const void *buf, size_t count){
-    return __syscall3(__NR_write, (u32)fd, (u32)buf, (u32)count);
-}
-POSIX_API ssize_t read(int fd, void *buf, size_t count){
-    return __syscall3(__NR_read, (u32)fd, (u32)buf, (u32)count);
-}
-POSIX_API int close(int fd){
-    return __syscall1(__NR_close, (u32)fd);
-}
-POSIX_API off_t lseek(int fd, off_t offset, int whence){
-    return (off_t)__syscall3(__NR_lseek, (u32)fd, (u32)offset, (u32)whence);
-}
+#ifndef _QLIBC_STDARG_H
+#define _QLIBC_STDARG_H
+
+#if (defined(__GNU_LIBRARY__) && (!FINISH))
+typedef __builtin_va_list   __gnuc_va_list;
+#endif
+
+#if __GNUC__ >= 3
+
+typedef __builtin_va_list   va_list;
+
+#define va_start(ap, last)          __builtin_va_start(ap, last)
+#define va_arg(ap, type)            __builtin_va_arg(ap, type)
+#define va_end(ap)                  __builtin_va_end(ap)
+#define va_copy(dest, src)          __builtin_va_copy(dest, src)
+
+#else
+
+#undef __va_start
+#undef __va_arg
+#undef __va_end
+#undef __va_copy
+
+#include <bits/stdarg.h>
+
+typedef __va_list           va_list;
+
+#define va_start(ap, last)          __va_start(ap, last)
+#define va_arg(ap, type)            __va_arg(ap, type)
+#define va_end(ap)                  __va_end(ap)
+#define va_copy(dest, src)          __va_copy(dest, src)
+
+#endif
+
+#endif

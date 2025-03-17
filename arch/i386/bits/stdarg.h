@@ -22,20 +22,18 @@
  *  SOFTWARE.
  */
 
-// Implementation of Low-Level function declared in unistd for i386
+#ifndef _QLIBC_I386_STDARG_H
+#define _QLIBC_I386_STDARG_H
 
-#include <bits/syscall.h>
-#include <unistd.h>
+// implementation of variable arguments in i386
+// all of the arguments in function are passed through
+// stack in x86 or i386
 
-POSIX_API ssize_t write(int fd, const void *buf, size_t count){
-    return __syscall3(__NR_write, (u32)fd, (u32)buf, (u32)count);
-}
-POSIX_API ssize_t read(int fd, void *buf, size_t count){
-    return __syscall3(__NR_read, (u32)fd, (u32)buf, (u32)count);
-}
-POSIX_API int close(int fd){
-    return __syscall1(__NR_close, (u32)fd);
-}
-POSIX_API off_t lseek(int fd, off_t offset, int whence){
-    return (off_t)__syscall3(__NR_lseek, (u32)fd, (u32)offset, (u32)whence);
-}
+typedef char * __va_list;
+
+#define __va_start(arg_ptr, last_fixed_arg)         ((arg_ptr) = (__va_list)&last_fixed_arg + sizeof(last_fixed_arg))
+#define __va_arg(arg_ptr, type)                     (*(type *)((arg_ptr += sizeof(type)) - sizeof(type)))
+#define __va_end(arg_ptr)                           ((arg_ptr) = (__va_list)0)
+#define __va_copy(dest, src)                        ((dest) = (src))
+
+#endif
