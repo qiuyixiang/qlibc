@@ -22,20 +22,5 @@
  *  SOFTWARE.
  */
 
-// Implementation of Low-Level function declared in unistd for i386
+// implement fcntl utility functions 
 
-#include <bits/syscall.h>
-#include <unistd.h>
-
-POSIX_API ssize_t write(int fd, const void *buf, size_t count){
-    return __syscall3(__NR_write, fd, (u32)buf, count);
-}
-POSIX_API ssize_t read(int fd, void *buf, size_t count){
-    return __syscall3(__NR_read, fd, (u32)buf, count);
-}
-POSIX_API int close(int fd){
-    return __syscall1(__NR_close, fd);
-}
-POSIX_API off_t lseek(int fd, off_t offset, int whence){
-    return (off_t)__syscall3(__NR_lseek, fd, offset, whence);
-}

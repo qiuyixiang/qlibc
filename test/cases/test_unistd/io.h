@@ -1,6 +1,7 @@
 // Test IO Operation in unistd
 #include <utest.h>
 #include <unistd.h>
+#include <sys/syscall.h>
 #include <errno.h>
 #include <stdint.h>
 
