@@ -22,26 +22,24 @@
  *  SOFTWARE.
  */
 
-// this header provide file control support for Unix
-// in the current version it only provide functions that ISO C needs
+// implement fcntl for i386 generic linux 
 
-#ifndef _QLIBC_FCNTL_H
-#define _QLIBC_FCNTL_H
-
-#include <sys/types.h>
-
-#include <bits/fcntl.h>
-
-#ifdef __cplusplus
-extern "C" {
+#ifndef _QLIBC_I386_FCNTL_H
+#error "Never use <bits/fcntl-linux.h> directly; include <fcntl.h> instead."
 #endif
 
-// file control functions
-extern int open(const char * path, int oflag, ...);
-extern int openat(int dfd, const char * path, int oflag, ...);
+#define O_RDONLY        0
+#define O_WRONLY        1
+#define O_RDWR          2
+#define O_CREAT         0100
+#define O_APPEND        02000
+#define O_CLOEXEC       02000000
+#define O_DIRECTORY     00200000
+#define O_EXCL          0200
+#define O_NOCTTY        0400
+#define O_NOFOLLOW      00400000
+#define O_NONBLOCK      04000
+#define O_SYNC          04010000
+#define O_TRUNC         01000
+#define O_FSYNC         O_SYNC
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif

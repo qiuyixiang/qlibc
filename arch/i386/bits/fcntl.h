@@ -22,26 +22,10 @@
  *  SOFTWARE.
  */
 
-// this header provide file control support for Unix
-// in the current version it only provide functions that ISO C needs
+#ifndef _QLIBC_I386_FCNTL_H
+#define _QLIBC_I386_FCNTL_H
 
-#ifndef _QLIBC_FCNTL_H
-#define _QLIBC_FCNTL_H
+#include <bits/fcntl-linux.h>
 
-#include <sys/types.h>
-
-#include <bits/fcntl.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// file control functions
-extern int open(const char * path, int oflag, ...);
-extern int openat(int dfd, const char * path, int oflag, ...);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
