@@ -24,12 +24,39 @@
 
 // Integer type implementation for i386 architecture
 
-typedef long                __intptr_t__;
-typedef unsigned long       __uintptr_t__;
+// Integer Fast Type
+typedef int8_t                  int_fast8_t;
+typedef int32_t                 int_fast16_t;
+typedef int32_t                 int_fast32_t;
+typedef int64_t                 int_fast64_t;
 
-#define __INTPTR_MIN__      INT32_MIN
-#define __INTPTR_MAX__      INT32_MAX
-#define __UINTPTR_MAX__     UINT32_MAX
-#define __PTRDIFF_MIN__     INT32_MIN
-#define __PTRDIFF_MAX__     INT32_MAX
-#define __SIZE_MAX__        UINT32_MAX
+typedef uint8_t                 uint_fast8_t;
+typedef uint32_t                uint_fast16_t;
+typedef uint32_t                uint_fast32_t;
+typedef uint64_t                uint_fast64_t;
+
+#define INT_FAST8_MIN           INT8_MIN
+#define INT_FAST16_MIN          INT32_MIN
+#define INT_FAST32_MIN          INT32_MIN
+#define INT_FAST64_MIN          INT64_MIN
+
+#define INT_FAST8_MAX           INT8_MAX
+#define INT_FAST16_MAX          INT32_MAX
+#define INT_FAST32_MAX          INT32_MAX
+#define INT_FAST64_MAX          INT64_MAX
+
+#define UINT_FAST8_MAX          UINT8_MAX
+#define UINT_FAST16_MAX         UINT32_MAX
+#define UINT_FAST32_MAX         UINT32_MAX
+#define UINT_FAST64_MAX         UINT64_MAX
+
+typedef int32_t                 intptr_t;
+typedef uint32_t                uintptr_t;
+
+#define INTPTR_MIN              INT32_MIN      
+#define INTPTR_MAX              INT32_MAX      
+#define UINTPTR_MAX             UINT32_MAX
+     
+#define PTRDIFF_MIN             INT32_MIN     
+#define PTRDIFF_MAX             INT32_MAX     
+#define SIZE_MAX                UINT32_MAX   

@@ -43,11 +43,6 @@ typedef short                   int16_t;
 typedef int                     int32_t;
 typedef long long               int64_t;
 
-typedef int8_t                  int_fast8_t;
-typedef int16_t                 int_fast16_t;
-typedef int32_t                 int_fast32_t;
-typedef int64_t                 int_fast64_t;
-
 typedef int8_t                  int_least8_t;
 typedef int16_t                 int_least16_t;
 typedef int32_t                 int_least32_t;
@@ -62,11 +57,6 @@ typedef unsigned char           uint8_t;
 typedef unsigned short          uint16_t;
 typedef unsigned int            uint32_t;
 typedef unsigned long long      uint64_t;
-
-typedef uint8_t                 uint_fast8_t;
-typedef uint16_t                uint_fast16_t;
-typedef uint32_t                uint_fast32_t;
-typedef uint64_t                uint_fast64_t;
 
 typedef uint8_t                 uint_least8_t;
 typedef uint16_t                uint_least16_t;
@@ -92,22 +82,6 @@ typedef unsigned long long      uintmax_t;
 #define UINT16_MAX              (0xffff)
 #define UINT32_MAX              (0xffffffff)
 #define UINT64_MAX              (0xffffffffffffffff)
-
-// Integer Fast Type
-#define INT_FAST8_MIN           INT8_MIN
-#define INT_FAST16_MIN          INT16_MIN
-#define INT_FAST32_MIN          INT32_MIN
-#define INT_FAST64_MIN          INT64_MIN
-
-#define INT_FAST8_MAX           INT8_MAX
-#define INT_FAST16_MAX          INT16_MAX
-#define INT_FAST32_MAX          INT32_MAX
-#define INT_FAST64_MAX          INT64_MAX
-
-#define UINT_FAST8_MAX          UINT8_MAX
-#define UINT_FAST16_MAX         UINT16_MAX
-#define UINT_FAST32_MAX         UINT32_MAX
-#define UINT_FAST64_MAX         UINT64_MAX
 
 // Integer Least Type
 #define INT_LEAST8_MIN          INT8_MIN
@@ -147,18 +121,7 @@ typedef unsigned long long      uintmax_t;
 #define WINT_MAX                UINT32_MAX
 
 /// The types below depends on specific machine architecture
-#include <bits/stdint.h>
-
-typedef __intptr_t__            intptr_t;
-typedef __uintptr_t__           uintptr_t;
-
-#define INTPTR_MIN              __INTPTR_MIN__      
-#define INTPTR_MAX              __INTPTR_MAX__      
-#define UINTPTR_MAX             __UINTPTR_MAX__
-     
-#define PTRDIFF_MIN             __PTRDIFF_MIN__     
-#define PTRDIFF_MAX             __PTRDIFF_MAX__     
-#define SIZE_MAX                __SIZE_MAX__        
+#include <bits/stdint.h>     
 
 #define INT8_C(value)           value
 #define INT16_C(value)          value

@@ -41,16 +41,12 @@ TEST_CASE(stdint){
     // Test for fixed-width integer types
     CHECK_TYPE_BITS(int);
 
-#if (USING_QLIBC == 1)
-    CHECK_TYPE_BITS(int_fast);
-#else
     EXPECT_EQ(BITS(int_fast8_t), 8);
 #if (TEST_WORD == BITS32)
-    EXPECT_EQ(BITS(int_fast16_t), BITS32);
-    EXPECT_EQ(BITS(int_fast32_t), BITS32);
+    EXPECT_EQ(BITS(int_fast16_t), 32);
+    EXPECT_EQ(BITS(int_fast32_t), 32);
 #endif
     EXPECT_EQ(BITS(int_fast64_t), 64);
-#endif
 
     CHECK_TYPE_BITS(int_least);
 
@@ -70,16 +66,12 @@ TEST_CASE(stdint){
 
     CHECK_TYPE_BITS(uint);
 
-#if (USING_QLIBC == 1)
-    CHECK_TYPE_BITS(uint_fast);
-#else
     EXPECT_EQ(BITS(uint_fast8_t), 8);
 #if (TEST_WORD == BITS32)
-    EXPECT_EQ(BITS(uint_fast16_t), BITS32);
-    EXPECT_EQ(BITS(uint_fast32_t), BITS32);
+    EXPECT_EQ(BITS(uint_fast16_t), 32);
+    EXPECT_EQ(BITS(uint_fast32_t), 32);
 #endif
     EXPECT_EQ(BITS(uint_fast64_t), 64);
-#endif
 
     CHECK_TYPE_BITS(uint_least);
 
@@ -110,9 +102,26 @@ TEST_CASE(stdint){
     EXPECT_EQ(UINT32_MAX, (uint32_t)0xffffffff);
     EXPECT_EQ(UINT64_MAX, (uint64_t)0xffffffffffffffff);
 
-    CHECK_TYPE_VALUE_EQ(INT_FAST, INT, MIN);
-    CHECK_TYPE_VALUE_EQ(INT_FAST, INT, MAX);
-    CHECK_TYPE_VALUE_EQ(UINT_FAST, UINT, MAX);
+    EXPECT_EQ(INT_FAST8_MIN, INT8_MIN);
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(INT_FAST16_MIN, INT32_MIN);
+    EXPECT_EQ(INT_FAST32_MIN, INT32_MIN);
+#endif
+    EXPECT_EQ(INT_FAST64_MIN, INT64_MIN);
+
+    EXPECT_EQ(INT_FAST8_MAX, INT8_MAX);
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(INT_FAST16_MAX, INT32_MAX);
+    EXPECT_EQ(INT_FAST32_MAX, INT32_MAX);
+#endif
+    EXPECT_EQ(INT_FAST64_MAX, INT64_MAX);
+
+    EXPECT_EQ(UINT_FAST8_MAX, UINT8_MAX);
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(UINT_FAST16_MAX, UINT32_MAX);
+    EXPECT_EQ(UINT_FAST32_MAX, UINT32_MAX);
+#endif
+    EXPECT_EQ(UINT_FAST64_MAX, UINT64_MAX);
 
     CHECK_TYPE_VALUE_EQ(INT_LEAST, INT, MIN);
     CHECK_TYPE_VALUE_EQ(INT_LEAST, INT, MAX);
