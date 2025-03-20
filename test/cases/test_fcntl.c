@@ -37,10 +37,16 @@ SUB_TEST_CASE(fcntl_open){
     EXPECT_EQ(errno, ENOENT);
 }
 SUB_TEST_CASE(fcntl_openat){
+#if (USING_QLIBC == 1)
     int dir_fd = open("../", O_RDONLY | O_DIRECTORY);
+#else 
+    int dir_fd = open("../", O_RDONLY | __O_DIRECTORY);
+#endif
     EXPECT_GT(dir_fd, STDERR_FILENO);
+#if (USING_QLIBC == 1)
     EXPECT_EQ(openat(dir_fd, NON_EXIST_FILE, O_RDONLY), -1);
     EXPECT_EQ(errno, ENOENT);
+#endif
 }
 SUB_TEST_CASE(fcntl_create){
 

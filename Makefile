@@ -140,6 +140,9 @@ info:
 
 test: lib
 	@$(MAKE) -C $(TEST_DIR)
+# Test Output Compare with GNU C library
+gnu:
+	@$(MAKE) -C $(TEST_DIR) USING_GNU=1
 
 check_obj:
 	@mkdir -p $(OBJ_DIR)

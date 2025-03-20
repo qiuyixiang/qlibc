@@ -1,7 +1,7 @@
 #include <utest.h>
 #include <stdint.h>
 
-#ifndef _QLIBC_STDINT_H
+#if ((USING_QLIBC == 1) && (!defined(_QLIBC_STDINT_H)))
 #error "Expected <stdint.h> in qlibc !"
 #endif
 
@@ -40,7 +40,18 @@
 TEST_CASE(stdint){
     // Test for fixed-width integer types
     CHECK_TYPE_BITS(int);
+
+#if (USING_QLIBC == 1)
     CHECK_TYPE_BITS(int_fast);
+#else
+    EXPECT_EQ(BITS(int_fast8_t), 8);
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(BITS(int_fast16_t), BITS32);
+    EXPECT_EQ(BITS(int_fast32_t), BITS32);
+#endif
+    EXPECT_EQ(BITS(int_fast64_t), 64);
+#endif
+
     CHECK_TYPE_BITS(int_least);
 
     EXPECT_EQ(BITS(intmax_t), BITS_64);
@@ -58,7 +69,18 @@ TEST_CASE(stdint){
 #endif
 
     CHECK_TYPE_BITS(uint);
+
+#if (USING_QLIBC == 1)
     CHECK_TYPE_BITS(uint_fast);
+#else
+    EXPECT_EQ(BITS(uint_fast8_t), 8);
+#if (TEST_WORD == BITS32)
+    EXPECT_EQ(BITS(uint_fast16_t), BITS32);
+    EXPECT_EQ(BITS(uint_fast32_t), BITS32);
+#endif
+    EXPECT_EQ(BITS(uint_fast64_t), 64);
+#endif
+
     CHECK_TYPE_BITS(uint_least);
 
     EXPECT_EQ(BITS(uintmax_t), BITS_64);

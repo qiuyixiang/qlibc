@@ -11,7 +11,7 @@
 #define BUFFER_SIZE_1K      1024
 #define BUFFER_SIZE_2K      2048
 
-#ifndef _QLIBC_UNISTD_H
+#if ((USING_QLIBC == 1) && (!defined(_QLIBC_UNISTD_H)))
 #error "Expected <unistd.h> in qlibc"
 #endif
 

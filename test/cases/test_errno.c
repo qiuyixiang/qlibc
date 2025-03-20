@@ -1,8 +1,10 @@
 #include <utest.h>
 #include <errno.h>
 
+#if (defined(USING_QLIBC) && (USING_QLIBC == 1))
 #ifndef _QLIBC_ERRNO_H
 #error "Expect <errno.h> in qlibc"
+#endif
 #endif
 
 // Test for errno.h

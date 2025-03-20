@@ -7,7 +7,7 @@
 #define BITS8   8
 #define BITS16  16
 
-#ifndef _QLIBC_LIMITS_H
+#if ((USING_QLIBC == 1) && (!defined(_QLIBC_LIMITS_H)))
 #error "Expected <limits.h> in qlibc !"
 #endif
 

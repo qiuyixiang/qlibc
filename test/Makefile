@@ -41,17 +41,28 @@ TEST_ARCH			:=		$(ARCH)
 
 # GNU GCC Warning flags
 CC_WARNING			+=		-Wno-unused-parameter
+ifeq ($(USING_GNU), 1)
+CC_WARNING			+=		-Wno-stringop-truncation
+endif
+
 # GNU GCC Environment flags
 CC_ENVIRONMENT		:=		-fno-builtin
 # GNU GCC Macros flags
 CC_MACROS			:=		
 CC_MACROS			+=		-D QLIBC_ARCH_STR='"$(TEST_ARCH)"'
+ifeq ($(USING_GNU), 1)
+CC_MACROS			+=		-D USING_QLIBC=0
+else
+CC_MACROS			+=		-D USING_QLIBC=1
+endif
 # GNU GCC Includes flags
 CC_INCLUDES			:=		
 # System Headers from qlibc
+ifneq ($(USING_GNU), 1)
 CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)
 CC_INCLUDES			+=		-isystem $(INCLUDE_ARCH_DIR)
 CC_INCLUDES			+=		-isystem $(INCLUDE_DIR)/unix
+endif
 # extern headers form test module
 CC_INCLUDES			+=		-isystem $(UTEST_DIR)/include
 
@@ -72,16 +83,21 @@ OBJ_LIST			:=		$(CASES_LIST) $(BUILD_DIR)/main.o $(BUILD_DIR)/utest.o
 all: dir_check main
 
 main: $(OBJ_LIST)
+ifeq ($(USING_GNU), 1)
+	@$(CC) $(CC_FLAGS) $^ -o ../gnu_$@.out
+	@echo "+ LD\t\tgnu_$@.out"
+else
 ifeq ($(METHOD), static)
-	@$(CC) $(LD_FLAGS) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ../main.out
-	@echo "+ LD\t\tmain.out"
+	@$(CC) $(LD_FLAGS) $^ -L$(LIB_DIR) -l$(LIB)-$(VERSION) -o ../$@.out
+	@echo "+ LD\t\t$@.out"
+endif
 endif
 
 dir_check:
 	@mkdir -p $(BUILD_DIR)
 clean:
 	@rm -rf $(BUILD_DIR)
-	@rm -f ../main.out 
+	@rm -f ../main.out ../gnu_main.out
 
 # Define for sub-test cases dependencies
 

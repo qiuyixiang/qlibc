@@ -1,7 +1,7 @@
 #include <utest.h>
 #include <stdarg.h>
 
-#ifndef _QLIBC_STDARG_H
+#if ((USING_QLIBC == 1) && (!defined(_QLIBC_STDARG_H)))
 #error "Expect header <stdarg.h> in qlibc"
 #endif
 

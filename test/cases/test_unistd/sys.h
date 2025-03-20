@@ -2,6 +2,7 @@
 #include <utest.h>
 #include <sys/syscall.h>
 
+#if (USING_QLIBC == 1)
 // internal implementation not public interface
 #include <sys/_syscall.h>
 
@@ -15,4 +16,8 @@ SUB_TEST_CASE(unistd_syscall){
     EXPECT_EQ(__SYSCALL_NARGS(ANY_NR, 1, 2, 3, 4, 5), 5);
     EXPECT_EQ(__SYSCALL_NARGS(ANY_NR, 1, 2, 3, 4, 5, 6), 6);
 }
+#else 
+SUB_TEST_CASE(unistd_syscall) { }
+#endif
+
 #undef ANY_NR

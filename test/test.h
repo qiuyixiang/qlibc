@@ -50,12 +50,16 @@
 #define HOST_MACHINE    "Unknown"
 #endif
 
+#if (defined(USING_QLIBC) && (USING_QLIBC == 1))
 #define QLIBC_TEST_INFO()       fprintf(stdout, "Test framework for qlibc %.1f \nIf the test "  \
                                 "machine differ from host machine some if the test cases will " \
                                 "be ignored !\n"                                                \
                                 "Host Machine Architecture: " HOST_MACHINE   "\n"               \
                                 "Test Machine Architecture: " QLIBC_ARCH_STR "\n\n",            \
                                 (double)_QLIBC_VERSION_ / 10)
+#else
+#define QLIBC_TEST_INFO()       fprintf(stdout, "Test Output Control Group : GNU glibc \n")     
+#endif
 
 #define TEST_LIBC_BEGIN()       fprintf(stdout, "Start test for libc\n")
 #define TEST_LIBC_END()         fputc('\n', stdout)
