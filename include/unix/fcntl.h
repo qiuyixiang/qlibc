@@ -37,8 +37,9 @@ extern "C" {
 #endif
 
 // file control functions
-extern int open(const char * path, int oflag, ...);
-extern int openat(int dfd, const char * path, int oflag, ...);
+extern int open(const char * filename, int flag, ...);
+extern int openat(int fd, const char * filename, int flag, ...);
+extern int creat(const char * filename, mode_t mode);
 
 #ifdef __cplusplus
 }

@@ -3,6 +3,7 @@
 #include <utest.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <unistd.h>
 
 #define NON_EXIST_FILE      "non-exist.txt"
 
@@ -37,13 +38,17 @@ SUB_TEST_CASE(fcntl_open){
 }
 SUB_TEST_CASE(fcntl_openat){
     int dir_fd = open("../", O_RDONLY | O_DIRECTORY);
-    EXPECT_NE(dir_fd, -1);
+    EXPECT_GT(dir_fd, STDERR_FILENO);
     EXPECT_EQ(openat(dir_fd, NON_EXIST_FILE, O_RDONLY), -1);
     EXPECT_EQ(errno, ENOENT);
+}
+SUB_TEST_CASE(fcntl_create){
+
 }
 
 TEST_CASE(fcntl){
     RUN_SUB_TEST_CASE(fcntl_macros);
     RUN_SUB_TEST_CASE(fcntl_open);
     RUN_SUB_TEST_CASE(fcntl_openat);
+    RUN_SUB_TEST_CASE(fcntl_create);
 }

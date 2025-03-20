@@ -37,8 +37,8 @@ END_DECL
 }
 // Test for close
 SUB_TEST_CASE(unistd_close){
-    // EXPECT_EQ(close(INT32_MAX), -1);
-    // EXPECT_EQ(errno, EBADF);
+    EXPECT_EQ(close(INT32_MAX), -1);
+    EXPECT_EQ(errno, EBADF);
 }
 // Test for lseek
 SUB_TEST_CASE(unistd_lseek){

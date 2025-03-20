@@ -28,25 +28,28 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 
-int open(const char * path, int oflag, ...){
-    mode_t __mode = 0;
+int open(const char *filename, int flag, ...){
+    mode_t mode = 0;
 
-    if (oflag & O_CREAT){
+    if (flag & O_CREAT){
         va_list __args;
-        va_start(__args, oflag);
-        __mode = va_arg(__args, mode_t);
+        va_start(__args, flag);
+        mode = va_arg(__args, mode_t);
         va_end(__args);
     }
-    return syscall(SYS_open, path, oflag, __mode);
+    return syscall(SYS_open, filename, flag, mode);
 }
-int openat(int dfd, const char * path, int oflag, ...){
-    mode_t __mode = 0;
+int openat(int fd, const char *filename, int flag, ...){
+    mode_t mode = 0;
 
-    if (oflag & O_CREAT){
+    if (flag & O_CREAT){
         va_list __args;
-        va_start(__args, oflag);
-        __mode = va_arg(__args, mode_t);
+        va_start(__args, flag);
+        mode = va_arg(__args, mode_t);
         va_end(__args);
     }
-    return syscall(SYS_openat, dfd, path, oflag, __mode);
+    return syscall(SYS_openat, fd, filename, flag, mode);
+}
+int creat(const char * filename, mode_t mode){
+    return open(filename, O_WRONLY | O_CREAT | O_TRUNC, mode);
 }
