@@ -23,4 +23,30 @@
  */
 
 // implement fcntl utility functions 
+#include <fcntl.h>
+#include <stdarg.h>
+#include <unistd.h>
+#include <sys/syscall.h>
 
+int open(const char * path, int oflag, ...){
+    mode_t __mode = 0;
+
+    if (oflag & O_CREAT){
+        va_list __args;
+        va_start(__args, oflag);
+        __mode = va_arg(__args, mode_t);
+        va_end(__args);
+    }
+    return syscall(SYS_open, path, oflag, __mode);
+}
+int openat(int dfd, const char * path, int oflag, ...){
+    mode_t __mode = 0;
+
+    if (oflag & O_CREAT){
+        va_list __args;
+        va_start(__args, oflag);
+        __mode = va_arg(__args, mode_t);
+        va_end(__args);
+    }
+    return syscall(SYS_openat, dfd, path, oflag, __mode);
+}

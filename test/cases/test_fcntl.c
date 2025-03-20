@@ -2,6 +2,9 @@
 
 #include <utest.h>
 #include <fcntl.h>
+#include <errno.h>
+
+#define NON_EXIST_FILE      "non-exist.txt"
 
 SUB_TEST_CASE(fcntl_macros){
     EXPECT_EQ(O_RDONLY, 0);
@@ -28,7 +31,19 @@ SUB_TEST_CASE(fcntl_macros){
     
 #endif
 }
+SUB_TEST_CASE(fcntl_open){
+    EXPECT_EQ(open(NON_EXIST_FILE, O_RDONLY), -1);
+    EXPECT_EQ(errno, ENOENT);
+}
+SUB_TEST_CASE(fcntl_openat){
+    int dir_fd = open("../", O_RDONLY | O_DIRECTORY);
+    EXPECT_NE(dir_fd, -1);
+    EXPECT_EQ(openat(dir_fd, NON_EXIST_FILE, O_RDONLY), -1);
+    EXPECT_EQ(errno, ENOENT);
+}
 
 TEST_CASE(fcntl){
     RUN_SUB_TEST_CASE(fcntl_macros);
+    RUN_SUB_TEST_CASE(fcntl_open);
+    RUN_SUB_TEST_CASE(fcntl_openat);
 }

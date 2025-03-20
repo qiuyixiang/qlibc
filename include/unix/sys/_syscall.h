@@ -60,17 +60,17 @@
 
 #define _syscall4(NR, ARG1, ARG2, ARG3, ARG4)               \
     cast_ret(__syscall4(cast_arg(NR), cast_arg(ARG1),       \
-    cast_arg(ARG2), cast_arg(ARG3)), cast_arg(ARG4))
+    cast_arg(ARG2), cast_arg(ARG3), cast_arg(ARG4)))
 
 #define _syscall5(NR, ARG1, ARG2, ARG3, ARG4, ARG5)         \
     cast_ret(__syscall5(cast_arg(NR), cast_arg(ARG1),       \
-    cast_arg(ARG2), cast_arg(ARG3)), cast_arg(ARG4),        \
-    cast_arg(ARG5))
+    cast_arg(ARG2), cast_arg(ARG3), cast_arg(ARG4),         \
+    cast_arg(ARG5)))
 
 #define _syscall6(NR, ARG1, ARG2, ARG3, ARG4, ARG5, ARG6)   \
     cast_ret(__syscall6(cast_arg(NR), cast_arg(ARG1),       \
-    cast_arg(ARG2), cast_arg(ARG3)), cast_arg(ARG4),        \
-    cast_arg(ARG5), cast_arg(ARG6))
+    cast_arg(ARG2), cast_arg(ARG3), cast_arg(ARG4),         \
+    cast_arg(ARG5), cast_arg(ARG6)))
 
 #define __SYSCALL_CONCAT_X(X, Y)    X##Y
 #define __SYSCALL_CONCAT(X, Y)      __SYSCALL_CONCAT_X(X, Y)
