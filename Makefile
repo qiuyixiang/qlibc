@@ -36,6 +36,7 @@ CONFIG_DIR			:=		./config
 BUILD_DIR			:=		./build
 ARCH_DIR			:=		./arch
 TEST_DIR			:=		./test
+BUILD_INC_DIR		:=		$(BUILD_DIR)/include
 OBJ_DIR				:=		$(BUILD_DIR)/obj
 INCLUDE_ARCH_DIR	:=		$(ARCH_DIR)/$(ARCH)
 
@@ -112,7 +113,7 @@ OBJ_LIST			:=		$(ALL_SRC_LIST:.c=.o)
 OBJ_LIST			:=		$(addprefix $(OBJ_DIR)/, $(notdir $(OBJ_LIST)))
 
 .DEFAULT_GOAL		:=	all
-.PHONY				:=	clean check_obj test lib install check_arch
+.PHONY				:=	clean check_obj test lib header check_arch help
 
 all: check_arch lib
 
@@ -150,6 +151,18 @@ clean:
 	@rm -rf	$(BUILD_DIR)
 	@$(MAKE) -C $(TEST_DIR) clean
 
+# Show help information
+help:
+	@echo "Qlibc Makefile for this project"
+	@echo "Current build Version: $(VERSION)"
+	@echo "Copyright (C) QIU YIXIANG"
+	@echo "\tmake\t\tbuild the library"
+	@echo "\tmake help\tshow help information"
+	@echo "\tmake test\tbuild test cases"
+	@echo "\tmake gnu\tbuild test cases using GNU glibc"
+	@echo "\tmake header\tbuild uniform header files"
+	@echo ""
+
 # Architecture Compatible Check for Host OS
 check_arch:
 ifeq ($(HOST_OS), Darwin)
@@ -162,7 +175,12 @@ endif
 endif
 
 # install target
-install: lib
+header: 
+	@mkdir -p $(BUILD_INC_DIR)
+	@cp $(INCLUDE_DIR)/*.h $(BUILD_INC_DIR)
+	@cp -r $(INCLUDE_DIR)/unix/* $(BUILD_INC_DIR)
+	@cp -r $(INCLUDE_ARCH_DIR)/bits $(BUILD_INC_DIR)/bits
+	@echo "Install header files in $(BUILD_INC_DIR)"
 
 # Build objs in src/*.c
 $(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c
