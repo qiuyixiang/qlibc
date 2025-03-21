@@ -51,6 +51,7 @@ long syscall(long number, ...);
 extern ssize_t write(int fd, const void *buf, size_t count);
 extern ssize_t read(int fd, void *buf, size_t count);
 extern int close(int fd);
+
 // the default offset in a file is 0
 extern off_t lseek(int fd, off_t offset, int whence);
 

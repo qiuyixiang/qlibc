@@ -30,3 +30,12 @@
 int close(int fd){
     return syscall(SYS_close, fd);
 }
+off_t lseek(int fd, off_t offset, int whence){
+    return syscall(SYS_lseek, fd, offset, whence);
+}
+ssize_t write(int fd, const void *buffer, size_t bytes){
+    return syscall(SYS_write, fd, buffer, bytes);
+}
+ssize_t read(int fd, void *buffer, size_t bytes){
+    return syscall(SYS_read, fd, buffer, bytes);
+}

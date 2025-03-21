@@ -2,8 +2,8 @@
 #include <utest.h>
 #include <unistd.h>
 #include <sys/syscall.h>
+#include <fcntl.h>
 #include <errno.h>
-#include <stdint.h>
 
 #define BUFFER_SIZE_S       64
 #define BUFFER_SIZE_M       128
@@ -42,7 +42,16 @@ SUB_TEST_CASE(unistd_close){
 }
 // Test for lseek
 SUB_TEST_CASE(unistd_lseek){
-    // EXPECT_EQ(lseek(INT32_MAX, 0, SEEK_CUR), -1);
-    // EXPECT_EQ(errno, EBADF);
+    EXPECT_EQ(lseek(INT32_MAX, 0, SEEK_CUR), -1);
+    EXPECT_EQ(errno, EBADF);
+
+BEGIN_DECL
+    int fd = open("LICENSE", O_RDONLY);
+    EXPECT_GE(fd, STDERR_FILENO);
+    EXPECT_EQ(lseek(fd, 0, SEEK_CUR), 0);
+    EXPECT_EQ(lseek(fd, 0, SEEK_SET), 0);
+    EXPECT_EQ(lseek(fd, 10, SEEK_SET), 10);
+    EXPECT_EQ(lseek(fd, 0, SEEK_CUR), 10);
+END_DECL
 }
 
