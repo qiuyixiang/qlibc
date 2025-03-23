@@ -2,6 +2,7 @@
 #include "test_unistd/io.h"
 #include "test_unistd/sys.h"
 #include "test_unistd/macros.h"
+#include "test_unistd/util.h"
 
 TEST_CASE(unistd){
     
@@ -13,4 +14,6 @@ TEST_CASE(unistd){
     RUN_SUB_TEST_CASE(unistd_read);
     RUN_SUB_TEST_CASE(unistd_close);
     RUN_SUB_TEST_CASE(unistd_lseek);
+    // Test util function in unistd
+    RUN_SUB_TEST_CASE(unistd_getopt);
 }

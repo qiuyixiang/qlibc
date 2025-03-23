@@ -126,7 +126,8 @@ UNISTD_UNIT				:=		test_unistd
 TEST_UNISTD_DIR			:=		$(TEST_DIR)/$(UNISTD_UNIT)
 CASES_UNISTD_DEP		:=		$(TEST_UNISTD_DIR)/macros.h		\
 								$(TEST_UNISTD_DIR)/io.h			\
-								$(TEST_UNISTD_DIR)/sys.h
+								$(TEST_UNISTD_DIR)/sys.h		\
+								$(TEST_UNISTD_DIR)/util.h
 $(BUILD_DIR)/$(UNISTD_UNIT).o:	$(CASES_UNISTD_DEP)
 
 # Special Rule defined for test sys
